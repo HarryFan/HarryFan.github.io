@@ -1,5 +1,5 @@
 # build output
-dist/
+# dist/  # 暫時註解掉以便追蹤
 
 # generated types
 .astro/
