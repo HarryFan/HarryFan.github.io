@@ -2,44 +2,29 @@
 import { defineConfig } from 'astro/config';
 import tailwind from "@astrojs/tailwind";
 
-// 判斷是否為生產環境
-const isProduction = process.env.NODE_ENV === 'production';
-
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()],
-  
-  // 設定站點 URL
-  site: 'https://harryfan.github.io',
-  
-  // 設定基礎路徑
-  base: '/',
-  
-  // 設定輸出目錄
-  output: 'static',
-  
-  // 設定資源檔案處理
+  site: 'https://harryfan.github.io', // 使用你的 GitHub 使用者網址
+  base: '/', // 根目錄部署
   build: {
-    format: 'directory',
-    assets: 'assets',
+    assets: 'assets', // 指定資源目錄名稱
+    assetsPrefix: ''
   },
-  
-  // Vite 配置
   vite: {
-    base: '/',
     build: {
+      // 停用資源檔案名稱的雜湊碼，避免每次構建產生不同的檔案名稱
       rollupOptions: {
         output: {
           entryFileNames: 'assets/[name].js',
           chunkFileNames: 'assets/[name].js',
-          assetFileNames: 'assets/[name][extname]'
+          assetFileNames: 'assets/[name].[ext]'
         }
       }
     }
   },
-  
+  integrations: [tailwind()],
   server: {
-    port: 3000,
+    port: 3000, // 指定固定端口
     host: true
   }
 });
