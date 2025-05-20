@@ -3,6 +3,34 @@ import Layout from '../layouts/Layout.astro';
 import '../styles/global.css';
 ---
 
+<style is:global>
+  /* 基本 Tailwind 樣式 */
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  
+  /* 確保基本容器樣式 */
+  .container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  
+  /* 基本文字顏色 */
+  body {
+    background-color: white;
+    color: #111827;
+  }
+  
+  /* 暗色模式 */
+  .dark body {
+    background-color: #111827;
+    color: white;
+  }
+</style>
+
 <Layout title="導覽首頁">
   <div class="container mx-auto px-4 py-8 space-y-16">
     <!-- 1. Hero 區域 -->
