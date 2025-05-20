@@ -1,48 +1,84 @@
-# Astro Starter Kit: Basics
+# Harry Fan's Digital Home
 
-```sh
-npm create astro@latest -- --template basics
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fharryfan)](https://twitter.com/harryfan)
+
+歡迎來到我的個人網站！這裡是我在網路上的數位家園，展示我的專業作品、技術分享和個人隨筆。
+
+## 🌟 網站導覽
+
+| 網站名稱 | 簡介 | 連結 |
+|---------|------|------|
+| 🏠 首頁 | 個人主頁 | [https://harryfan.github.io/](https://harryfan.github.io/) |
+| 🎨 作品集 | 精選專案與設計作品 | [https://harryfan.github.io/harry-portfolio/](https://harryfan.github.io/harry-portfolio/) |
+| ✍️ 部落格 | 技術文章與生活隨筆 | [https://harryfan.github.io/harry-blog/](https://harryfan.github.io/harry-blog/) |
+
+## 🚀 本地開發
+
+### 必要條件
+- Node.js 18.0.0 或更新版本
+- npm 9.0.0 或更新版本
+
+### 安裝與執行
+
+1. 克隆倉庫
+   ```bash
+   git clone https://github.com/harryfan/harryfan.github.io.git
+   cd harryfan.github.io
+   ```
+
+2. 安裝依賴
+   ```bash
+   npm install
+   ```
+
+3. 啟動開發伺服器
+   ```bash
+   npm run dev
+   ```
+   開發伺服器將運行在 [http://localhost:4324](http://localhost:4324)
+
+4. 建置生產版本
+   ```bash
+   npm run build
+   ```
+
+## 🛠 技術棧
+
+- [Astro](https://astro.build/) - 現代化靜態網站生成器
+- [Tailwind CSS](https://tailwindcss.com/) - 實用優先的 CSS 框架
+- [TypeScript](https://www.typescriptlang.org/) - 型別安全的 JavaScript 超集
+- [Vite](https://vitejs.dev/) - 次世代前端工具鏈
+
+## 📝 專案結構
+
 ```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
 /
-├── public/
-│   └── favicon.svg
+├── public/          # 靜態資源
 ├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── assets/      # 圖片、字體等資源
+│   ├── components/   # 可重用的 UI 組件
+│   ├── layouts/      # 頁面佈局
+│   ├── pages/        # 頁面組件
+│   └── styles/       # 全局樣式
+├── .github/         # GitHub 配置
+├── .vscode/         # VSCode 配置
+├── astro.config.mjs  # Astro 配置
+├── tailwind.config.mjs # Tailwind 配置
+└── package.json     # 專案依賴與腳本
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 📬 聯絡我
 
-## 🧞 Commands
+- ✉️ 郵箱: [your.email@example.com](mailto:your.email@example.com)
+- 🐦 Twitter: [@harryfan](https://twitter.com/harryfan)
+- 💼 LinkedIn: [Your LinkedIn](https://www.linkedin.com/in/yourprofile/)
+- 🌐 個人網站: [https://harryfan.github.io](https://harryfan.github.io)
 
-All commands are run from the root of the project, from a terminal:
+## 📄 授權
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+本專案採用 [MIT 授權](LICENSE) - 詳見 [LICENSE](LICENSE) 文件。
 
-## 👀 Want to learn more?
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+👨‍💻 由 [Harry Fan](https://github.com/harryfan) 建立與維護
