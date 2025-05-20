@@ -1,5 +1,5 @@
 # build output
-dist/
+# dist/  # 已移除，因為我們需要追蹤 dist 目錄以進行 GitHub Pages 部署
 
 # generated types
 .astro/

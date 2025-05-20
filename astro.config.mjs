@@ -8,16 +8,20 @@ const isProduction = process.env.NODE_ENV === 'production';
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind()],
+  
   // 設定站點 URL
-  site: isProduction ? 'https://harryfan.github.io' : 'http://localhost:3000',
+  site: 'https://harryfan.github.io',
   
   // 設定基礎路徑
   base: '/',
   
+  // 設定輸出目錄
+  output: 'static',
+  
   // 設定資源檔案處理
   build: {
+    format: 'directory',
     assets: 'assets',
-    assetsPrefix: isProduction ? '/' : ''
   },
   
   // Vite 配置
@@ -28,12 +32,7 @@ export default defineConfig({
         output: {
           entryFileNames: 'assets/[name].js',
           chunkFileNames: 'assets/[name].js',
-          assetFileNames: ({ name }) => {
-            if (/\.(woff|woff2|ttf|eot|svg|png|jpg|jpeg|gif|ico|webp)$/i.test(name ?? '')) {
-              return 'assets/[name][extname]';
-            }
-            return 'assets/[name]-[hash][extname]';
-          }
+          assetFileNames: 'assets/[name][extname]'
         }
       }
     }
