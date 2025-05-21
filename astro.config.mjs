@@ -4,28 +4,28 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://harryfan.github.io',
-  base: '/HarryFan.github.io/',
-  
+  integrations: [tailwind()],
+  output: 'static',
+  base: '/',
+  site: 'https://harryfan.github.io/HarryFan.github.io',
   build: {
-    assets: 'assets'
+    assets: 'assets',
+    assetsPrefix: '/'
   },
-  
+  // 確保 CSS 檔案不包含雜湊值
   vite: {
     build: {
-      cssCodeSplit: false,
+      assetsInlineLimit: 0,
       rollupOptions: {
         output: {
           entryFileNames: 'assets/[name].js',
           chunkFileNames: 'assets/[name].js',
-          assetFileNames: 'assets/[name][extname]'
+          assetFileNames: 'assets/[name].[ext]'
         }
       }
     }
   },
-  
-  integrations: [tailwind()],
-  
+  // 開發伺服器設定
   server: {
     port: 3000,
     host: true

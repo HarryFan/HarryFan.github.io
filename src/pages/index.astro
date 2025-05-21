@@ -1,40 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import '../styles/global.css';
 ---
 
-<style is:global>
-  /* 基本 Tailwind 樣式 */
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  
-  /* 確保基本容器樣式 */
-  .container {
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: 1rem;
-    padding-left: 1rem;
-  }
-  
-  /* 基本文字顏色 */
-  body {
-    background-color: white;
-    color: #111827;
-  }
-  
-  /* 暗色模式 */
-  .dark body {
-    background-color: #111827;
-    color: white;
-  }
-</style>
+<Layout title="導覽首頁" description="Harry Fan 的個人網站">
 
-<Layout title="導覽首頁">
-  <div class="container mx-auto px-4 py-8 space-y-16">
-    <!-- 1. Hero 區域 -->
-    <header class="relative overflow-hidden rounded-2xl shadow-xl animate-fade-in">
+
+  <!-- 主要內容 -->
+  <main class="flex-1">
+    <div class="w-full max-w-7xl mx-auto px-4 py-8">
+      <!-- Hero 區域 -->
+      <section class="relative overflow-hidden rounded-2xl shadow-xl mb-16">
       <div class="absolute inset-0">
         <img
           src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
@@ -54,7 +29,7 @@ import '../styles/global.css';
           <p class="mt-6 text-xl text-gray-300 max-w-2xl">前端開發者 | UI/UX 愛好者 | 技術分享者</p>
         </div>
       </div>
-    </header>
+    </section>
 
     <!-- 2. 關於我區塊 -->
     <section class="py-16 animate-fade-in-delay-1">

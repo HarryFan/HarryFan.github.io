@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 強制載入基本樣式，不使用 hash */
+/* 自定義基本樣式 */
 .container {
   width: 100%;
   margin-right: auto;
@@ -19,6 +19,54 @@
 
 .flex {
   display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-delay-1 {
+  animation: fadeIn 0.8s ease-out 0.2s forwards;
+  opacity: 0;
 }
 
 .flex-col {

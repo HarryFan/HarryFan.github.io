@@ -3,13 +3,13 @@
 ## 🔧 專案初始化
 
 - [x] 確認 `astro.config.mjs` 設定
-  - [x] `site` 設定為 `https://harryfan.github.io/`
+  - [x] `site` 設定為 `https://harryfan.github.io/HarryFan.github.io`
   - [x] `base` 設定為 `/`
-- [x] 設定 `.github/workflows/deploy.yml` 自動部署
+- [x] 設定 手動部署腳本 `npm run deploy`
 - [x] 安裝並設定 Tailwind CSS
-- [ ] 設定 favicon 和網站圖示
+- [x] 設定 favicon 和網站圖示
 - [ ] 設定 robots.txt 和 sitemap.xml
-- [ ] 加入基本 SEO 設定（meta tags）
+- [x] 加入基本 SEO 設定（meta tags）
 
 ## 🎨 首頁設計
 
