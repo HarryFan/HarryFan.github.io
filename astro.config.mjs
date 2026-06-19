@@ -1,33 +1,57 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import tailwind from "@astrojs/tailwind";
+import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+
+// 判斷是否為生產環境
+const isProduction = process.env.NODE_ENV === 'production';
+// 根目錄部署到 HarryFan.github.io（使用者主頁 repo），base 一律為 '/'
+const basePath = '/';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()],
-  output: 'static',
-  base: '/',
-  site: 'https://harryfan.github.io/HarryFan.github.io',
+  // 設定站點 URL
+  site: isProduction ? 'https://harryfan.github.io' : 'http://localhost:4324',
+
+  // 設定基礎路徑
+  base: basePath,
+
+  // 設定資源檔案處理
   build: {
     assets: 'assets',
-    assetsPrefix: '/'
+    assetsPrefix: ''
   },
-  // 確保 CSS 檔案不包含雜湊值
+  
+  // Vite 配置
   vite: {
+    base: basePath,
     build: {
-      assetsInlineLimit: 0,
       rollupOptions: {
         output: {
           entryFileNames: 'assets/[name].js',
           chunkFileNames: 'assets/[name].js',
-          assetFileNames: 'assets/[name].[ext]'
+          assetFileNames: ({ name }) => {
+            if (/\.(woff|woff2|ttf|eot|svg|png|jpg|jpeg|gif|ico|webp)$/i.test(name ?? '')) {
+              return 'assets/[name][extname]';
+            }
+            return 'assets/[name]-[hash][extname]';
+          }
         }
       }
     }
   },
-  // 開發伺服器設定
+  
+  // 整合插件
+  integrations: [
+    mdx(),
+    sitemap({
+      customPages: ['https://harryfan.github.io/']
+    })
+  ],
+  
+  // 開發服務器配置
   server: {
-    port: 3000,
+    port: 4324, // 使用指定端口
     host: true
   }
 });

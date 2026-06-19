@@ -1,0 +1,157 @@
+---
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<Layout
+	title="About"
+	description="前端工程師 Harry：設計與前端整合、MVP 快速落地、效能優化。"
+	pubDate={new Date('2026-03-19')}
+	heroImage="/blog-placeholder-about.jpg"
+>
+	<section class="about-hero">
+		<p class="about-kicker">About</p>
+		<h2 class="about-name">Harry（前端部署工程師 FDE）</h2>
+		<p class="about-lede">
+			過去我們在多個專案中，從 0 到 1 一起完成產品落地，具備設計與前端高度整合的實務經驗，也擅長在 MVP
+			階段快速建立可驗證的產品版本。
+		</p>
+	</section>
+
+	<section class="about-grid">
+		<div>
+			<h2>我擅長的事情</h2>
+			<ul class="about-list">
+				<li>15 年以上前端開發經驗</li>
+				<li>專精 Vue / Nuxt.js、React / Next.js 架構</li>
+				<li>擅長 SSR、RWD、無障礙與效能優化</li>
+				<li>帶領 5 至 8 人前端團隊，導入 CI/CD</li>
+			</ul>
+		</div>
+
+		<div>
+			<h2>連結</h2>
+			<ul class="about-links">
+				<li>
+					<a href={`${import.meta.env.BASE_URL}resume/`}>技術履歷</a>
+				</li>
+				<li class="about-podcast">
+					<figure class="about-cover">
+						<img
+							src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/af/91/5c/af915c86-761e-d762-afd2-35ddba87a5a2/mza_11340146304140465011.jpg/600x600bb.jpg"
+							alt="妖你聽新聞 Podcast 封面"
+							width="112"
+							height="112"
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Podcast 封面</figcaption>
+					</figure>
+					<a
+						href="http://linktr.ee/yaonews"
+						target="_blank"
+						rel="noreferrer"
+					>
+						妖你聽新聞
+					</a>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="about-human">
+		<h2>另一面：人文關懷</h2>
+		<p>
+			除了技術，我也做 Podcast《妖你聽新聞》。它不是我的主打作品，而是我把人文關懷、社會觀察與幽默感放進生活的出口。
+			在這個什麼都能被美化、消音、漂白的年代，我們用更直白的方式，聊那些被主流忽略、被扭曲、被搞笑到變形的時事。
+		</p>
+	</section>
+
+	<style>
+		.about-hero {
+			padding-bottom: 1.1rem;
+			border-bottom: 1px solid rgb(var(--gray-light));
+			margin-bottom: 1.6rem;
+		}
+		.about-kicker {
+			margin: 0 0 0.75rem;
+			font-size: 0.95rem;
+			font-weight: 700;
+			color: rgb(var(--gray));
+		}
+		.about-name {
+			margin: 0;
+			font-size: clamp(1.65rem, 2.2vw, 2.05rem);
+			letter-spacing: -0.02em;
+		}
+		.about-lede {
+			margin: 0.9rem 0 0;
+			max-width: 68ch;
+		}
+		.about-grid {
+			display: grid;
+			grid-template-columns: 1.05fr 0.95fr;
+			gap: 2rem;
+			padding: 0.25rem 0 1.4rem;
+			border-bottom: 1px solid rgb(var(--gray-light));
+			margin-bottom: 1.6rem;
+		}
+		.about-list {
+			margin: 0.75rem 0 0;
+			padding-left: 1.15rem;
+		}
+		.about-links {
+			list-style: none;
+			margin: 0.75rem 0 0;
+			padding: 0;
+			display: grid;
+			gap: 0.8rem;
+		}
+		.about-links a {
+			color: rgb(var(--black));
+			text-decoration: none;
+			border-bottom: 1px solid rgba(var(--gray), 35%);
+		}
+		.about-links a:hover {
+			border-bottom-color: rgba(var(--gray), 65%);
+		}
+		.about-podcast {
+			display: grid;
+			grid-template-columns: auto 1fr;
+			column-gap: 1rem;
+			align-items: start;
+		}
+		.about-cover {
+			margin: 0;
+		}
+		.about-cover img {
+			border-radius: 10px;
+			border: 1px solid rgba(var(--gray), 22%);
+			width: 112px;
+			height: 112px;
+		}
+		.about-cover figcaption {
+			margin-top: 0.45rem;
+			font-size: 0.95rem;
+			color: rgb(var(--gray));
+		}
+		.about-podcast__links {
+			display: grid;
+			gap: 0.4rem;
+		}
+		.about-human p {
+			max-width: 72ch;
+		}
+		@media (max-width: 720px) {
+			.about-grid {
+				grid-template-columns: 1fr;
+			}
+			.about-podcast {
+				grid-template-columns: 1fr;
+			}
+			.about-cover img {
+				width: 96px;
+				height: 96px;
+			}
+		}
+	</style>
+</Layout>

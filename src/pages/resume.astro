@@ -1,0 +1,296 @@
+---
+import Layout from '../layouts/BlogPost.astro';
+
+const experience = [
+	{ company: '凱文科技服務有限公司 Kevin Technology Services', role: 'Web 前端工程師', date: '2023.03 - 至今', points: ['打造 Trello 風格的拖拉式專案管理系統。', '整合 GA4 與 Google Ads 追蹤，並以 OpenAI API 開發 AI 工具。', '將舊有系統遷移到 Vue 3 + Vite，提升建置效能。'] },
+	{ company: '旺晁有限公司 Wang Chao Co., Ltd.', role: '前端技術主管 Front-End Lead', date: '2022.05 - 2023.01', points: ['帶領 5 至 8 人前端團隊，導入 Jenkins CI/CD 流程。', '開發跨平台 Electron + Vue 2 通訊工具。'] },
+	{ company: 'Friday 購物商城', role: 'Web 前端工程師', date: '2021.08 - 2022.04', points: ['重構 ECM／SCM 前端系統，主導從舊架構到現代化的遷移。'] },
+	{ company: '祖恩國際有限公司 Zu En International', role: 'Web 工程師', date: '2019.03 - 2021.07', points: ['開發行銷活動頁，並以 PhoneGap 打造混合式 App。'] },
+	{ company: 'TVBS 聯利媒體 TVBS Television', role: '前端工程師', date: '2016.11 - 2019.02', points: ['以 Angular 與 PHP 開發響應式新聞與節目網站。'] },
+	{ company: '明訊資訊 Ming Xun Information', role: '前端工程師', date: '2015.12 - 2016.09', points: ['建置符合 WCAG 無障礙規範的台灣高鐵網站，並進行 SEO 優化。'] },
+	{ company: '台灣酷網 Taiwan Cool Web', role: '資深工程師', date: '2015.06 - 2015.11', points: ['以 SASS／Gulp 開發響應式網站，並整合 WeChat API。'] },
+	{ company: '施明德文教基金會 Shih Ming-teh Foundation', role: '資深工程師', date: '2015.01 - 2015.06', points: ['打造台灣首個線上總統連署平台（混合式 App + RWD）。'] },
+	{ company: '飛迅設計 Suncity Group Feixun Design', role: '前端工程師', date: '2013.08 - 2014.12', points: ['開發 CMS 應用與 WordPress 網站，並製作圖表資料視覺化。'] },
+	{ company: '戲子科技 Xizi Technology', role: 'Web 工程師', date: '2012.04 - 2013.07', points: ['以 PHP 開發 niusnews 妞新聞數位媒體平台。'] },
+	{ company: '高屏實業有限公司 Kao Ping Enterprise', role: '網頁設計師', date: '2011.04 - 2012.02', points: ['設計品牌視覺，並以 HTML／CSS／JS 建置企業網站。'] },
+];
+
+const skills = [
+	{ group: '框架', items: 'Vue.js 2／3、Composition API、Pinia、Vuex、React、Nuxt.js' },
+	{ group: 'UI／樣式', items: 'Tailwind CSS、SCSS、Element UI、Ant Design Vue、Vant UI' },
+	{ group: '建置工具', items: 'Vite、Webpack、TypeScript、Node.js、Gulp' },
+	{ group: 'DevOps', items: 'Git Flow、Jenkins CI/CD、GA4／GTM' },
+	{ group: '其他', items: 'OpenAI API、Electron、ECPay、WordPress、PhoneGap' },
+];
+
+const projects = [
+	{ title: '台灣高鐵 南港站無障礙網頁', desc: '依無障礙規範（WCAG）建置 + SEO 服務。', url: 'https://www.thsrc.com.tw/ArticleContent/2f940836-cedc-41ef-8e28-c2336ac8fe68' },
+	{ title: '八仙塵爆 700 天 新聞專題', desc: 'H5 互動式新聞專題。', url: 'http://vip.tvbs.com.tw/project/activity/basian700days/index.html' },
+	{ title: 'TVBS 新聞網站', desc: '大流量新聞入口網站前端維運。', url: 'https://news.tvbs.com.tw/' },
+	{ title: '女人我最大 節目官網', desc: 'TVBS 美妝生活節目官網。', url: 'https://woman.tvbs.com.tw/' },
+	{ title: 'TVBS 人才招募', desc: '企業徵才 H5 形象頁。', url: 'http://www.tvbs.com.tw/careers/' },
+	{ title: '中美洲辦事處 官網', desc: '機構形象網站。', url: 'https://www.cato.com.tw/' },
+];
+---
+
+<Layout
+	title="履歷"
+	description="范綱栓 Harry Fan：前端部署工程師 FDE，15 年以上經驗，專精 Vue.js 架構與效能優化。"
+	pubDate={new Date('2026-03-19')}
+	heroImage="/blog-placeholder-about.jpg"
+>
+	<section class="resume-hero">
+		<p class="resume-kicker">前端部署工程師 FDE · Vue.js 專家</p>
+		<h2 class="resume-name">范綱栓 Harry Fan</h2>
+		<p class="resume-summary">
+			15 年以上前端開發經驗，專精 Vue.js 架構與網站效能優化。曾帶領 5 至 8 人的前端團隊，
+			交付企業級系統，並為從新創到大型媒體的各種公司打造產品。
+		</p>
+	</section>
+
+	<section class="resume-grid">
+		<div>
+			<h2>擅長領域</h2>
+			<ul class="resume-list">
+				<li>Vue / Nuxt.js、React / Next.js 的產品型開發</li>
+				<li>SSR、RWD、無障礙與效能優化</li>
+				<li>設計與前端整合：把設計決策落到可維護的 UI</li>
+				<li>帶領團隊與導入 CI/CD 工程化流程</li>
+			</ul>
+		</div>
+		<div>
+			<h2>聯絡方式</h2>
+			<ul class="resume-contacts">
+				<li>
+					<span class="resume-contacts__label">Email</span>
+					<span class="resume-contacts__value">
+						<a href="mailto:harryvan2025@gmail.com">harryvan2025@gmail.com</a>
+					</span>
+				</li>
+				<li>
+					<span class="resume-contacts__label">Line</span>
+					<span class="resume-contacts__value">harryvan</span>
+				</li>
+				<li>
+					<span class="resume-contacts__label">Facebook</span>
+					<span class="resume-contacts__value">Harris Fan</span>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="resume-block">
+		<h2>工作經歷</h2>
+		<div class="resume-timeline">
+			{experience.map((job) => (
+				<div class="resume-job">
+					<div class="resume-job__head">
+						<span class="resume-job__role">{job.role}</span>
+						<span class="resume-job__date">{job.date}</span>
+					</div>
+					<div class="resume-job__company">{job.company}</div>
+					<ul>
+						{job.points.map((p) => <li>{p}</li>)}
+					</ul>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section class="resume-block">
+		<h2>技能</h2>
+		<div class="resume-skills">
+			{skills.map((s) => (
+				<div class="resume-skill">
+					<span class="resume-skill__group">{s.group}</span>
+					<span class="resume-skill__items">{s.items}</span>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section class="resume-block">
+		<h2>精選作品</h2>
+		<ul class="resume-links">
+			{projects.map((p) => (
+				<li>
+					<a href={p.url} target="_blank" rel="noopener">{p.title}</a>
+					<span class="resume-muted-inline">{p.desc}</span>
+				</li>
+			))}
+		</ul>
+		<p class="resume-muted">近年於凱文科技、旺晁等公司負責 B 端總控後台與 Vue 系統，屬內部專案，僅以文字說明。</p>
+	</section>
+
+	<section class="resume-block">
+		<h2>學歷</h2>
+		<div class="resume-job">
+			<div class="resume-job__head">
+				<span class="resume-job__role">資訊工程學系（學士）</span>
+				<span class="resume-job__date">2004 - 2009</span>
+			</div>
+			<div class="resume-job__company">國立台灣科技大學 NTUST</div>
+		</div>
+	</section>
+
+	<section class="resume-block">
+		<h2>輸出與作品</h2>
+		<ul class="resume-links">
+			<li><a href={`${import.meta.env.BASE_URL}blog/`}>Blog（技術筆記）</a></li>
+			<li>
+				<a href="http://linktr.ee/yaonews" target="_blank" rel="noreferrer">
+					Podcast《妖你聽新聞》
+				</a>
+			</li>
+		</ul>
+	</section>
+
+	<section class="resume-block">
+		<h2>附件</h2>
+		<p class="resume-muted">需要更完整的檔案／作品集附件，放在這個資料夾。</p>
+		<p>
+			<a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noreferrer">
+				Google Drive（履歷附件）
+			</a>
+		</p>
+	</section>
+
+	<style>
+		.resume-hero {
+			padding-bottom: 1.1rem;
+			border-bottom: 1px solid rgb(var(--gray-light));
+			margin-bottom: 1.6rem;
+		}
+		.resume-kicker {
+			margin: 0 0 0.75rem;
+			font-size: 0.95rem;
+			font-weight: 700;
+			color: var(--teal);
+		}
+		.resume-name {
+			margin: 0;
+			font-size: clamp(1.65rem, 2.2vw, 2.05rem);
+			letter-spacing: -0.02em;
+		}
+		.resume-summary {
+			margin: 0.9rem 0 0;
+			max-width: 72ch;
+		}
+		.resume-grid {
+			display: grid;
+			grid-template-columns: 1.1fr 0.9fr;
+			gap: 2rem;
+			padding: 0.25rem 0 1.4rem;
+			border-bottom: 1px solid rgb(var(--gray-light));
+			margin-bottom: 1.6rem;
+		}
+		.resume-list {
+			margin: 0.75rem 0 0;
+			padding-left: 1.15rem;
+		}
+		.resume-contacts {
+			list-style: none;
+			margin: 0.75rem 0 0;
+			padding: 0;
+			display: grid;
+			gap: 0.7rem;
+		}
+		.resume-contacts li {
+			display: grid;
+			grid-template-columns: 4.5rem 1fr;
+			gap: 0.75rem;
+			align-items: baseline;
+		}
+		.resume-contacts__label {
+			font-size: 0.95rem;
+			color: rgb(var(--gray));
+		}
+		.resume-contacts__value {
+			font-weight: 700;
+			color: rgb(var(--black));
+			overflow-wrap: anywhere;
+		}
+		.resume-block {
+			margin: 1.8rem 0 0;
+		}
+		.resume-timeline {
+			display: grid;
+			gap: 1.4rem;
+			margin-top: 0.9rem;
+		}
+		.resume-job__head {
+			display: flex;
+			align-items: baseline;
+			justify-content: space-between;
+			gap: 1rem;
+			flex-wrap: wrap;
+		}
+		.resume-job__role {
+			font-weight: 800;
+		}
+		.resume-job__date {
+			color: rgb(var(--gray));
+			font-size: 0.9rem;
+			white-space: nowrap;
+		}
+		.resume-job__company {
+			color: rgb(var(--gray-dark));
+			font-weight: 700;
+			margin-top: 0.1rem;
+		}
+		.resume-job ul {
+			margin: 0.4rem 0 0;
+			padding-left: 1.15rem;
+		}
+		.resume-skills {
+			display: grid;
+			gap: 0.7rem;
+			margin-top: 0.9rem;
+		}
+		.resume-skill {
+			display: grid;
+			grid-template-columns: 6rem 1fr;
+			gap: 0.75rem;
+			align-items: baseline;
+		}
+		.resume-skill__group {
+			font-weight: 800;
+		}
+		.resume-skill__items {
+			color: rgb(var(--gray-dark));
+		}
+		.resume-links {
+			list-style: none;
+			margin: 0.75rem 0 0;
+			padding: 0;
+			display: grid;
+			gap: 0.7rem;
+		}
+		.resume-links a {
+			color: rgb(var(--black));
+			text-decoration: none;
+			border-bottom: 1px solid rgba(var(--gray), 35%);
+		}
+		.resume-links a:hover {
+			border-bottom-color: rgba(var(--gray), 65%);
+		}
+		.resume-muted-inline {
+			color: rgb(var(--gray));
+			margin-left: 0.5rem;
+			font-size: 0.92rem;
+		}
+		.resume-muted {
+			margin: 0.75rem 0 0.9rem;
+			color: rgb(var(--gray-dark));
+		}
+		@media (max-width: 720px) {
+			.resume-grid,
+			.resume-skill {
+				grid-template-columns: 1fr;
+			}
+			.resume-skill {
+				gap: 0.2rem;
+			}
+		}
+	</style>
+</Layout>

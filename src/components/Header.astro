@@ -1,0 +1,109 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<header>
+	<nav>
+		<h2><a href={`${import.meta.env.BASE_URL}blog/`}>{SITE_TITLE}</a></h2>
+		<div class="internal-links">
+			<HeaderLink href="/blog/">Blog</HeaderLink>
+			<HeaderLink href="/about/">About</HeaderLink>
+		</div>
+		<div class="social-links">
+			<HeaderLink href="/resume/">Resume</HeaderLink>
+		</div>
+	</nav>
+</header>
+<style>
+	header {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		margin: 0;
+		padding: 0 clamp(0.75rem, 3vw, 1.4rem);
+		background: color-mix(in srgb, var(--paper-soft) 94%, transparent);
+		border-bottom: 4px solid var(--rule);
+		backdrop-filter: blur(10px);
+	}
+
+	h2 {
+		margin: 0;
+		font-size: 1rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	h2 a,
+	h2 a.active {
+		text-decoration: none;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		max-width: var(--wide-width);
+		margin: 0 auto;
+		min-height: 72px;
+	}
+
+	.internal-links,
+	.social-links {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+
+	nav a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0.45rem 0.65rem;
+		color: rgb(var(--ink));
+		border: 2px solid transparent;
+		text-decoration: none;
+		font-size: 0.95rem;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	nav a:hover {
+		color: rgb(var(--ink));
+		border-color: var(--rule);
+		background: var(--paper);
+		transform: rotate(-1deg);
+	}
+
+	nav a.active {
+		color: var(--paper-soft);
+		background: var(--red);
+		border-color: var(--rule);
+		box-shadow: 5px 5px 0 var(--yellow);
+		text-decoration: none;
+		transform: rotate(-1deg);
+	}
+
+	@media (max-width: 720px) {
+		nav {
+			min-height: auto;
+			padding: 0.75rem 0;
+			align-items: flex-start;
+			flex-wrap: wrap;
+		}
+
+		h2 {
+			width: 100%;
+		}
+
+		.internal-links,
+		.social-links {
+			flex-wrap: wrap;
+		}
+
+		nav a {
+			padding: 0.5rem 0.55rem;
+		}
+	}
+</style>

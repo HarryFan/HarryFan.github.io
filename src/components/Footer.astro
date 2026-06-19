@@ -1,0 +1,57 @@
+---
+const today = new Date();
+---
+
+<footer>
+	&copy; {today.getFullYear()} Harry. All rights reserved.
+	<div class="social-links">
+		<a href={`${import.meta.env.BASE_URL}blog/`}>Blog</a>
+		<a href={`${import.meta.env.BASE_URL}about/`}>About</a>
+		<a
+			href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr"
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			技術履歷
+			<span class="sr-only">（新分頁開啟）</span>
+		</a>
+		<a
+			href="http://linktr.ee/yaonews"
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			妖你聽新聞
+			<span class="sr-only">（新分頁開啟）</span>
+		</a>
+	</div>
+</footer>
+<style>
+	footer {
+		margin-top: clamp(2rem, 6vw, 5rem);
+		padding: 2rem 1rem 5rem;
+		background: var(--paper-soft);
+		border-top: 4px solid var(--rule);
+		color: rgb(var(--muted));
+		text-align: center;
+	}
+
+	.social-links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.65rem 1rem;
+		margin-top: 1em;
+	}
+
+	.social-links a {
+		color: rgb(var(--ink));
+		text-decoration: none;
+		border-bottom: 3px solid var(--teal);
+		font-weight: 700;
+	}
+
+	.social-links a:hover {
+		color: var(--red);
+		border-bottom-color: var(--red);
+	}
+</style>
