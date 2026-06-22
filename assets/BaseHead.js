@@ -1,6 +1,6 @@
-import { d as createAstro, c as createComponent, b as addAttribute, a as renderTemplate } from './astro/server.js';
+import { e as createAstro, c as createComponent, d as addAttribute, r as renderTemplate } from './astro/server.js';
 /* empty css               */
-import { a as SITE_TITLE } from './consts.js';
+import { S as SITE_TITLE } from './consts.js';
 
 const $$Astro = createAstro("https://harryfan.github.io");
 const $$BaseHead = createComponent(($$result, $$props, $$slots) => {
