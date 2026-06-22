@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.18.2"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2025-06-12-ga4-frontend-optimization/"><!-- Primary Meta Tags --><title>🚀 網站最佳化大揭密：GA4資料追蹤與前端效能提升的奇妙旅程</title><meta name="title" content="🚀 網站最佳化大揭密：GA4資料追蹤與前端效能提升的奇妙旅程"><meta name="description" content="探索如何透過 GA4 資料追蹤與前端效能優化技術，讓您的網站跑得更快、更聰明，同時提升使用者體驗和轉換率。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2025-06-12-ga4-frontend-optimization/"><meta property="og:title" content="🚀 網站最佳化大揭密：GA4資料追蹤與前端效能提升的奇妙旅程"><meta property="og:description" content="探索如何透過 GA4 資料追蹤與前端效能優化技術，讓您的網站跑得更快、更聰明，同時提升使用者體驗和轉換率。"><meta property="og:image" content="https://harryfan.github.io/blog-placeholder-1.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2025-06-12-ga4-frontend-optimization/"><meta property="twitter:title" content="🚀 網站最佳化大揭密：GA4資料追蹤與前端效能提升的奇妙旅程"><meta property="twitter:description" content="探索如何透過 GA4 資料追蹤與前端效能優化技術，讓您的網站跑得更快、更聰明，同時提升使用者體驗和轉換率。"><meta property="twitter:image" content="https://harryfan.github.io/blog-placeholder-1.jpg"><style>:root{--accent: #137f73;--accent-dark: #0c5149;--paper: #f4e6cf;--paper-soft: #fbf3e5;--paper-deep: #e9cfaa;--ink: 31, 27, 23;--black: 31, 27, 23;--muted: 104, 87, 70;--gray: 104, 87, 70;--gray-light: 226, 199, 161;--gray-dark: 52, 43, 35;--red: #df3f31;--yellow: #edbd37;--teal: #137f73;--clay: #a3543f;--rule: rgba(var(--ink), .9);--soft-rule: rgba(var(--ink), .18);--gray-gradient: color-mix(in srgb, var(--paper-deep) 42%, transparent), var(--paper);--box-shadow: 10px 10px 0 var(--yellow);--box-shadow-red: 10px 10px 0 var(--red);--content-width: 720px;--wide-width: 1080px;--radius: 6px}@font-face{font-family:Atkinson;src:url(../fonts/atkinson-regular.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:Atkinson;src:url(../fonts/atkinson-bold.woff) format("woff");font-weight:700;font-style:normal;font-display:swap}*{box-sizing:border-box}body{font-family:Atkinson,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;margin:0;padding:0;text-align:left;background:linear-gradient(90deg,rgba(var(--ink),.035) 1px,transparent 1px),linear-gradient(180deg,rgba(var(--ink),.025) 1px,transparent 1px),var(--paper);background-size:42px 42px,42px 42px,auto;word-wrap:break-word;overflow-wrap:break-word;color:rgb(var(--gray-dark));font-size:20px;line-height:1.72}body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 10% 8%,rgba(223,63,49,.12) 0 90px,transparent 92px),radial-gradient(circle at 92% 16%,rgba(19,127,115,.11) 0 120px,transparent 122px),linear-gradient(135deg,transparent 0 78%,rgba(237,189,55,.18) 78% 82%,transparent 82%)}main{width:var(--content-width);max-width:calc(100% - 2rem);margin:auto;padding:clamp(2rem,5vw,4.5rem) 0}h1,h2,h3,h4,h5,h6{margin:0 0 .5rem;color:rgb(var(--ink));line-height:1.08;font-weight:800}h1{font-size:clamp(2.4rem,6vw,4.2rem)}h2{font-size:clamp(1.9rem,4vw,3rem)}h3{font-size:clamp(1.45rem,3vw,2.2rem)}h4{font-size:clamp(1.15rem,2vw,1.55rem)}h5{font-size:1.15rem}strong,b{font-weight:700}a{color:var(--accent-dark);text-decoration-thickness:.08em;text-underline-offset:.18em}a:hover{color:#9f251d}a:focus-visible,button:focus-visible{outline:3px solid rgb(var(--ink));outline-offset:4px;box-shadow:0 0 0 7px var(--yellow)}p{margin:0 0 1em}.prose p{margin-bottom:1.65em}.prose{font-size:clamp(1.05rem,2vw,1.18rem)}textarea,input{width:100%;font:inherit}table{width:100%;border-collapse:collapse}.prose table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}img{max-width:100%;height:auto;border-radius:var(--radius)}code{padding:.12em .32em;background-color:var(--paper-soft);border:1px solid var(--soft-rule);border-radius:3px;color:rgb(var(--ink))}pre{padding:1.35em;border:2px solid var(--rule);border-radius:var(--radius);background:var(--paper-soft);box-shadow:6px 6px #137f7340;overflow-x:auto}pre>code{all:unset}blockquote{position:relative;border-left:8px solid var(--red);padding:.3rem 0 .3rem 1.2rem;margin:2rem 0;font-size:clamp(1.25rem,3vw,1.6rem);color:rgb(var(--ink))}blockquote:before{content:"";position:absolute;left:-8px;bottom:-10px;width:72px;height:10px;background:var(--yellow)}hr{border:none;border-top:3px solid var(--rule);margin:2rem 0}@media(max-width:720px){body{font-size:18px}main{max-width:calc(100% - 1.25rem);padding:1.25rem 0 2.5rem}}.sr-only{border:0;padding:0;margin:0;position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);clip-path:inset(50%);white-space:nowrap}
+a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media(max-width:720px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{display:block;width:100%;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media(max-width:720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/ga4-frontend-optimization-cover.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2025-06-12T00:00:00.000Z"> Jun 12, 2025 </time>  </div> <h1 data-astro-cid-bvzihdzo>🚀 網站最佳化大揭密：GA4資料追蹤與前端效能提升的奇妙旅程</h1> <hr data-astro-cid-bvzihdzo> </div>  <h2 id="-前言為什麼我的網站要最佳化工程師的-os">🤔 前言：為什麼我的網站要最佳化？工程師的 OS</h2>
+<p>哈囉，大家好！身為一個前端工程師，每天除了跟程式碼奮鬥，心裡總有個小劇場：「我做的網站，大家用得順嗎？老闆會滿意嗎？」 你知道嗎？一個網站如果跑得卡卡
+的、找不到重點，使用者可能滑一下就「掰掰」，老闆的摳摳也就跟著「飛走了」。這時候，「資料」和「效能」就像我們的神隊友，能幫我們看清問題，讓網站煥然一新
+！</p>
+<p>今天，我想跟大家分享最近我在一個 Vue 3 單頁應用程式 (SPA) 專案中，如何透過 Google Analytics 4 (GA4) 這位資料分析專家，以及一些前端效能最佳化的實用技巧
+，讓網站變得更聰明、更有效率的故事。準備好了嗎？一起來看看這趟探索之旅吧！</p>
+<h2 id="️️-資料偵探辦案中ga4-如何成為我的神隊友">🕵️‍♂️ 資料偵探辦案中：GA4 如何成為我的神隊友？</h2>
+<p>以前我們用舊版 GA，就像拿著放大鏡看東西，雖然能看到一些蛛絲馬跡，但總覺得少了點什麼。現在有了 GA4，它更像是一個全方位的偵探，不再只看「有多少人來過」
+，而是更專注在「使用者在網站上做了些什麼」。</p>
+<h3 id="1--打造你的專屬事件情報網">1. 📊 打造你的專屬「事件」情報網</h3>
+<p>在 SPA 這種「一頁到底」的網站，使用者點選不同功能時，網址列可能會變，但瀏覽器其實沒有真的「重新整理頁面」。所以，我們得主動告訴 GA4：「嘿！使用者現在
+逛到『商品頁』囉！」、「他剛剛點了『加入購物車』按鈕喔！」</p>
+<p>我們寫了一個像這樣的中央情報中心 (<code>trackEvent</code> 函數)，之後不管想追蹤什麼千奇百怪的行為，都透過它來回報給 GA4，是不是很有效率？</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// 簡單說，就是一個統一的「事件通報中心」函數</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#B392F0"> trackEvent</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">eventName</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">eventParams</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {}) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> window.gtag </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 確認 GA4 已經準備就緒</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">gtag</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'event'</span><span style="color:#E1E4E8">, eventName, {</span></span>
+<span class="line"><span style="color:#6A737D">      // 發送事件給 GA4</span></span>
+<span class="line"><span style="color:#F97583">      ...</span><span style="color:#E1E4E8">eventParams, </span><span style="color:#6A737D">// 其他補充資訊，例如：商品名稱、價格等等</span></span>
+<span class="line"><span style="color:#E1E4E8">      send_to: window.gaId, </span><span style="color:#6A737D">// 確保情報送到正確的 GA4 基地</span></span>
+<span class="line"><span style="color:#E1E4E8">      debug_mode: </span><span style="color:#F97583">!import</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">meta</span><span style="color:#E1E4E8">.env.</span><span style="color:#79B8FF">PROD</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 開發模式下，可以看到更詳細的追蹤資訊</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h3 id="2--描繪使用者輪廓自訂你想看的資料維度">2. 👥 描繪使用者輪廓：自訂你想看的資料維度</h3>
+<p>光知道使用者點了什麼還不夠，我們想更深入了解「哪些人」在「做哪些事」。GA4 的「自訂維度與指標」就像給了我們很多空白標籤，可以自己定義想看的資訊，例如：</p>
+<ul>
+<li><strong>使用者足跡地圖</strong>：追蹤使用者是從哪個廣告點進來的，逛了哪些頁面，最後有沒有買單。</li>
+<li><strong>購物轉換漏斗分析</strong>：有多少人看了商品？多少人放進購物車？又有多少人成功結帳？找出哪個步驟客人流失最多。</li>
+<li><strong>VIP 客戶雷達</strong>：找出那些經常光顧、消費力強的忠實客戶，針對他們做更精準的行銷活動。</li>
+</ul>
+<h3 id="3--讓廣告預算花在刀口上整合-google-ads-轉換追蹤">3. 💰 讓廣告預算花在刀口上：整合 Google Ads 轉換追蹤</h3>
+<p>如果公司有在 Google 投放廣告，那每一塊錢都希望能帶來實際效益。我們把 GA4 跟 Google Ads 串接起來，這樣就能一清二楚地知道，哪個廣告真的有帶來客人，哪些
+只是在浪費預算。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// 通知 Google Ads：「報告！有人買東西了，這是你廣告的功勞喔！」</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#B392F0"> trackConversion</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">conversionType</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">additionalData</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {}) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> window.gtag </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// GA4 罷工中，稍後再試</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 先設定好不同的「轉換事件」代碼，例如「完成購買」是一個代碼，「註冊會員」又是另一個</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> conversionEvents</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    purchase: </span><span style="color:#9ECBFF">'AW-123456789/AbC-D_EFGHiJKL-MnOpqRstUv'</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 完成購買的識別碼</span></span>
+<span class="line"><span style="color:#E1E4E8">    signup: </span><span style="color:#9ECBFF">'AW-123456789/XyZ-123456'</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 註冊會員的識別碼</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (conversionEvents[conversionType]) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 如果是我們定義好的重要轉換行為</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">gtag</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'event'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'conversion'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#6A737D">      // 就發送一個「轉換」事件</span></span>
+<span class="line"><span style="color:#E1E4E8">      send_to: conversionEvents[conversionType], </span><span style="color:#6A737D">// 告訴 Google Ads 這是哪個轉換事件</span></span>
+<span class="line"><span style="color:#E1E4E8">      value: additionalData.value </span><span style="color:#F97583">||</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 這次轉換的價值（例如：訂單金額）</span></span>
+<span class="line"><span style="color:#E1E4E8">      currency: additionalData.currency </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> 'TWD'</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 使用的幣別</span></span>
+<span class="line"><span style="color:#E1E4E8">      transaction_id: additionalData.transactionId </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 訂單編號，避免重複計算轉換</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h2 id="-網站加速三部曲讓你的網站飛起來">🚀 網站加速三部曲：讓你的網站「飛」起來！</h2>
+<p>資料分析幫我們找出問題點，但如果網站慢得像烏龜，使用者根本沒耐心體驗我們精心設計的功能。所以，接下來就是前端工程師的拿手好戲——網站加速！</p>
+<h3 id="1️⃣-第一步程式碼化整為零需要時才呼叫">1️⃣ 第一步：程式碼「化整為零」，需要時才呼叫</h3>
+<p>想像一下，你走進一家大賣場，總不希望一進門，所有貨架上的商品都瞬間堆到你面前吧？網站也是一樣的道理。使用者可能一開始只需要看首頁，我們就先把首頁的程式
+碼給他；等他想看商品頁的時候，再把商品頁的程式碼送過去。這就是所謂的「程式碼分割」(Code Splitting) 和「懶載入」(Lazy Loading)。</p>
+<p>在 Vue 3，我們可以這樣實作：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// 路由設定檔，規劃網站的交通動線，哪個網址對應到哪個頁面</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> routes</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    path: </span><span style="color:#9ECBFF">'/product/:id'</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 例如：商品詳細頁的路徑</span></span>
+<span class="line"><span style="color:#6A737D">    // 當使用者點到這個路徑時，才去下載 ProductDetail.vue 這個頁面的程式碼</span></span>
+<span class="line"><span style="color:#B392F0">    component</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=></span><span style="color:#F97583"> import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'@/views/ProductDetail.vue'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">    meta: { preload: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> }, </span><span style="color:#6A737D">// 小技巧：如果是非常重要的頁面，可以考慮讓瀏覽器偷偷先下載一部分</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    path: </span><span style="color:#9ECBFF">'/about'</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 例如：「關於我們」頁面的路徑</span></span>
+<span class="line"><span style="color:#6A737D">    // webpackChunkName 可以幫打包後的程式碼檔案取個容易辨識的名字，方便管理</span></span>
+<span class="line"><span style="color:#B392F0">    component</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=></span><span style="color:#B392F0"> import</span><span style="color:#E1E4E8">(</span><span style="color:#6A737D">/* webpackChunkName: "about" */</span><span style="color:#9ECBFF"> '@/views/AboutView.vue'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
+<h3 id="2️⃣-第二步圖片瘦身大作戰美觀又不佔頻寬">2️⃣ 第二步：圖片「瘦身」大作戰，美觀又不佔頻寬</h3>
+<p>吸睛的圖片很重要，但過大的圖片檔案卻是拖慢網站速度的頭號戰犯之一。我們的圖片最佳化策略包含：</p>
+<ol>
+<li><strong>量身打造，提供最適尺寸</strong>：手機用戶就給他手機版的小圖，電腦螢幕大的用戶才給高解析大圖。用 <code>&#x3C;picture></code> 標籤和 <code>srcset</code> 屬性就能輕鬆搞定。</li>
+<li><strong>滑到再載入，節省用戶流量</strong>：使用者還沒看到的圖片，先不用急著下載。等他快滑到圖片位置時，再悄悄載入，這就是「圖片懶載入」。</li>
+<li><strong>自動壓縮，精簡檔案大小</strong>：在網站上線前，透過工具自動幫圖片「減肥」，去掉不必要的資訊，讓檔案變得更小巧。</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#6A737D">&#x3C;!-- 範例：一張圖片，多種尺寸，還會自動懶載入 --></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">picture</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#6A737D">  &#x3C;!-- 當螢幕寬度大於 1024px 時，優先使用這張大尺寸圖片 --></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">source</span><span style="color:#B392F0"> media</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"(min-width: 1024px)"</span><span style="color:#B392F0"> srcset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"/images/hero-large.jpg 1x, /images/hero-large@2x.jpg 2x"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#6A737D">  &#x3C;!-- 當螢幕寬度大於 640px 時，優先使用這張中尺寸圖片 --></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">source</span><span style="color:#B392F0"> media</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"(min-width: 640px)"</span><span style="color:#B392F0"> srcset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"/images/hero-medium.jpg 1x, /images/hero-medium@2x.jpg 2x"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#6A737D">  &#x3C;!-- 其他情況或手機上，就用這張小尺寸圖片 --></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">img</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"/images/hero-small.jpg"</span><span style="color:#B392F0"> srcset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"/images/hero-small.jpg 1x, /images/hero-small@2x.jpg 2x"</span><span style="color:#B392F0"> alt</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"一張非常重要的形象圖"</span><span style="color:#B392F0"> loading</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"lazy"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#6A737D">  &#x3C;!-- 加上這個屬性，瀏覽器就會自動幫我們做圖片懶載入 --></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">picture</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h3 id="3️⃣-第三步網站健康檢查不可少時刻監控核心效能指標">3️⃣ 第三步：網站「健康檢查」不可少，時刻監控核心效能指標</h3>
+<p>最佳化不是一次性的任務，我們還需要持續監控網站的「健康狀況」。Google 提出了一些「網站核心體驗指標」(Core Web Vitals)，像是網站主要內容的載入速度
+(LCP)、使用者首次互動的延遲時間 (FID)、頁面視覺的穩定性 (CLS) 等。我們把這些指標也納入 GA4 的追蹤範圍，隨時掌握網站的表現是不是在最佳狀態。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// 監控網站的「健康指數」</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#B392F0"> trackWebVitals</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> window.gtag </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// GA4 沒啟動，今天休息</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 一個小幫手函數，幫我們把監測到的資料回報給 GA4</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> trackMetric</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">gtag</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'event'</span><span style="color:#E1E4E8">, name, {</span></span>
+<span class="line"><span style="color:#6A737D">      // 事件名稱直接用指標的名稱，例如 LCP、FID</span></span>
+<span class="line"><span style="color:#E1E4E8">      event_category: </span><span style="color:#9ECBFF">'Web Vitals'</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 在 GA4 裡做個分類，方便查看報告</span></span>
+<span class="line"><span style="color:#E1E4E8">      value: Math.</span><span style="color:#B392F0">round</span><span style="color:#E1E4E8">(name </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'CLS'</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 1000</span><span style="color:#F97583"> :</span><span style="color:#E1E4E8"> value), </span><span style="color:#6A737D">// 把數值稍微處理一下，方便閱讀</span></span>
+<span class="line"><span style="color:#E1E4E8">      event_label: id, </span><span style="color:#6A737D">// 每個指標都會有一個獨特的 ID</span></span>
+<span class="line"><span style="color:#E1E4E8">      non_interaction: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 告訴 GA4 這不是使用者主動的互動，不要影響跳出率等資料的計算</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 使用 web-vitals 這個好用的函式庫來幫我們收集這些效能資料</span></span>
+<span class="line"><span style="color:#B392F0">  webVitals</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    getCLS: trackMetric.</span><span style="color:#B392F0">bind</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'CLS'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">    getFID: trackMetric.</span><span style="color:#B392F0">bind</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'FID'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">    getLCP: trackMetric.</span><span style="color:#B392F0">bind</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'LCP'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">    getFCP: trackMetric.</span><span style="color:#B392F0">bind</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'FCP'</span><span style="color:#E1E4E8">), </span><span style="color:#6A737D">// First Contentful Paint，使用者看到第一個內容出現的時間</span></span>
+<span class="line"><span style="color:#E1E4E8">    getTTFB: trackMetric.</span><span style="color:#B392F0">bind</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'TTFB'</span><span style="color:#E1E4E8">), </span><span style="color:#6A737D">// Time to First Byte，瀏覽器收到伺服器第一個位元組的時間</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h2 id="-讓-google-愛上我seo-最佳化實戰分享">🌟 讓 Google 愛上我：SEO 最佳化實戰分享</h2>
+<p>網站做得再棒，如果 Google 大神找不到，那也是英雄無用武之地。所以，SEO (搜尋引擎最佳化) 也是我們努力的重點項目。</p>
+<h3 id="1--讓每個頁面都有專屬識別證動態-meta-tags">1. 📝 讓每個頁面都有專屬「識別證」：動態 Meta Tags</h3>
+<p>SPA 網站常常所有頁面都共用同一個 HTML 骨架，這樣 Google 可能會「霧煞煞」，搞不清楚每個頁面的主題是什麼。我們利用 Vue Router 的「導航守衛」這個酷功能，
+在每次切換頁面時，動態更新頁面的標題 (<code>&#x3C;title></code>) 和網頁描述 (<code>&#x3C;meta name="description"></code>) 等重要資訊，就像幫每個頁面都準備一張獨一無二的「數位識別證」
+。</p>
+<h3 id="常見迷思csr-應用程式也能做好-seo">常見迷思：CSR 應用程式也能做好 SEO！</h3>
+<p>過去很多人以為只有 SSR (Server-Side Rendering) 才能做好 SEO，但這次專案經驗證明，現代的 CSR (Client-Side Rendering) 應用程式也能輕鬆應對搜尋引擎優化。
+特別是 Vite + Vue3 的組合，提供了極佳的開發體驗和效能表現，讓我們能輕鬆實現動態 Meta Tags、預渲染等 SEO 最佳實踐。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// 在 Vue Router 每次完成換頁動作後，執行一些事情</span></span>
+<span class="line"><span style="color:#E1E4E8">router.</span><span style="color:#B392F0">afterEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">to</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // 拿到新頁面預先設定好的標題，如果沒有就給它一個預設標題</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> title</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> to.meta.title </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> '這是我的網站預設標題'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  document.title </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> `${</span><span style="color:#E1E4E8">title</span><span style="color:#9ECBFF">} | 我的網站名稱`</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 更新瀏覽器頁籤上顯示的標題</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 同樣的道理，更新其他重要的 meta 標籤，例如網頁描述、分享到社群媒體時的預覽圖、標準網址等</span></span>
+<span class="line"><span style="color:#B392F0">  updateMetaTags</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    title: title,</span></span>
+<span class="line"><span style="color:#E1E4E8">    description: to.meta.description </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> '這是我的網站預設描述'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    image: to.meta.image </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> '/default-og-image.jpg'</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 設定分享時的預覽圖片</span></span>
+<span class="line"><span style="color:#E1E4E8">    url: window.location.href, </span><span style="color:#6A737D">// 設定標準的頁面網址</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="2--為-google-搜尋引擎開快速通道預渲染關鍵頁面">2. 🚀 為 Google 搜尋引擎開「快速通道」：預渲染關鍵頁面</h3>
+<p>雖然 Google 搜尋引擎越來越厲害，看得懂 JavaScript 動態產生的內容，但有時候還是主動幫它一把比較穩當。對於那些我們希望在搜尋結果中能有亮眼表現的「重點頁
+面」(例如首頁、產品列表頁)，我們可以使用「預渲染」(Prerendering) 技術。簡單來說，就是在網站打包上線前，先把這些頁面「預先畫好」變成靜態的 HTML 檔案，
+這樣 Google 爬蟲一來就能馬上看懂頁面內容，不用辛苦地等 JavaScript 執行完畢。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// vite.config.js (如果是使用 Vite 作為建置工具的專案設定檔)</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [</span></span>
+<span class="line"><span style="color:#B392F0">    vue</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#6A737D">    // PrerenderSPAPlugin 這個好用的工具可以幫我們完成預渲染的工作</span></span>
+<span class="line"><span style="color:#B392F0">    PrerenderSPAPlugin</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      staticDir: path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(__dirname, </span><span style="color:#9ECBFF">'dist'</span><span style="color:#E1E4E8">), </span><span style="color:#6A737D">// 告訴它打包後的檔案會放在哪個資料夾</span></span>
+<span class="line"><span style="color:#E1E4E8">      routes: [</span><span style="color:#9ECBFF">'/'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'/about'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'/products'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'/contact'</span><span style="color:#E1E4E8">], </span><span style="color:#6A737D">// 指定哪些路徑的頁面需要被預渲染</span></span>
+<span class="line"><span style="color:#E1E4E8">      renderer: </span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> PrerenderSPAPlugin.</span><span style="color:#B392F0">PuppeteerRenderer</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#6A737D">        // 設定在頁面觸發一個叫做 'render-event' 的事件之後才開始進行渲染</span></span>
+<span class="line"><span style="color:#6A737D">        // 這樣可以確保頁面上的動態內容都已經載入完成</span></span>
+<span class="line"><span style="color:#E1E4E8">        renderAfterDocumentEvent: </span><span style="color:#9ECBFF">'render-event'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      }),</span></span>
+<span class="line"><span style="color:#E1E4E8">    }),</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h2 id="-後記專業成長與未來展望">🎯 後記：專業成長與未來展望</h2>
+<p>這次專案讓我對現代網頁開發有了更深入的認識，特別是在 GA4 資料分析與前端效能優化的實務應用上。透過這次經驗，我不僅累積了寶貴的技術資產，也磨練了問題解
+決與團隊協作的能力。</p>
+<p>在技術快速演進的今天，持續學習與自我提升是工程師不可或缺的素養。我期待能將這些經驗應用於未來的專案中，並持續探索更多創新的技術解決方案。</p>
+<p>如果您對這個專案有任何想法或合作機會，歡迎隨時與我聯繫。感謝您的閱讀！</p>
+<hr>
+<div style="text-align: center;">
+  <img src="/images/harry-fan.webp" alt="Harry Fan" style="max-width: 300px; border-radius: 50%; margin: 0 auto; display: block;">
+  <h3>Harry Fan</h3>
+  <p>前端工程師 | 網站效能優化愛好者</p>
+  <p>熱愛探索新技術，專注於打造流暢的使用者體驗</p>
+</div>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>
