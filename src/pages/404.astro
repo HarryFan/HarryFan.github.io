@@ -1,0 +1,38 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+	<head>
+		<BaseHead title={`找不到頁面 | ${SITE_TITLE}`} description="頁面不存在或已搬移。" />
+		<!--
+			Retired the old /harry-blog/ project site. Its URLs now fall through to
+			this 404, so strip the prefix and redirect to the equivalent page at the
+			root domain. Runs before paint to avoid a flash of the 404 content.
+		-->
+		<script is:inline>
+			(function () {
+				var p = location.pathname;
+				if (p.indexOf('/harry-blog/') === 0 || p === '/harry-blog') {
+					var dest = p.replace(/^\/harry-blog/, '') || '/';
+					location.replace(dest + location.search + location.hash);
+				}
+			})();
+		</script>
+	</head>
+	<body>
+		<Header />
+		<main style="min-height:60vh;display:grid;place-items:center;padding:2rem;text-align:center;">
+			<div>
+				<h1>404</h1>
+				<p>找不到這個頁面，可能已經搬移或不存在。</p>
+				<p><a href="/blog/">回到 Blog</a></p>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
