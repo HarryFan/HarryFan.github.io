@@ -11,7 +11,6 @@ const frontmatter = {
   "negative_prompt": "3d render, photorealistic, low quality, blurry, extra fingers, deformed hands, text, watermark, oversaturated",
   "seo_title": "吉卜力風格提示詞｜ChatGPT、Midjourney、Flux 完整教學",
   "seo_description": "完整吉卜力風格 AI 圖片提示詞教學，附中文與英文 Prompt、Negative Prompt、關鍵詞拆解、常見錯誤與推薦模型，適用 ChatGPT、GPT Image、Midjourney、Flux、Stable Diffusion。",
-  "cover_image": "/blog-placeholder-1.jpg",
   "related_styles": ["makoto-shinkai", "watercolor", "pixar", "pixel-art", "oil-painting", "anime"],
   "pubDate": "2026-06-23T00:00:00.000Z",
   "updated_at": "2026-06-23T00:00:00.000Z",

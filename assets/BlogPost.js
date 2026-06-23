@@ -1,7 +1,8 @@
 import { e as createAstro, c as createComponent, a as renderComponent, b as renderHead, d as addAttribute, r as renderTemplate, g as renderSlot } from './astro/server.js';
 import { $ as $$BaseHead } from './BaseHead.js';
 import { a as $$Header, $ as $$Footer } from './Footer.js';
-import { r as resolveHeroSrc, c as coverSvgDataUri, $ as $$FormattedDate } from './contempoCover.js';
+import { $ as $$FormattedDate } from './FormattedDate.js';
+import { r as resolveHeroSrc, c as coverSvgDataUri } from './contempoCover.js';
 /* empty css               */
 
 const $$Astro = createAstro("https://harryfan.github.io");
