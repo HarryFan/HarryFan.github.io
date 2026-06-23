@@ -1,22 +1,14 @@
 import { e as createAstro, c as createComponent, m as maybeRenderHead, d as addAttribute, r as renderTemplate } from './astro/server.js';
-/* empty css                */
 import { r as resolveHeroSrc, c as coverSvgDataUri } from './contempoCover.js';
-
-const $$Astro$1 = createAstro("https://harryfan.github.io");
-const $$AdSlot = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
-  Astro2.self = $$AdSlot;
-  const { slot } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<aside class="ad-slot"${addAttribute(slot, "data-ad-slot")} aria-label="廣告版位" data-astro-cid-fgwukgf6> <span class="ad-slot__note" data-astro-cid-fgwukgf6>廣告版位（AdSense 待接）· ${slot}</span> <!-- 上線 AdSense 時，替換此元件內部為 <ins class="adsbygoogle"> 程式碼 --> </aside> `;
-}, "/Users/harry/Documents/Astro/harryfan.github.io/src/components/AdSlot.astro", void 0);
+/* empty css                */
 
 const $$Astro = createAstro("https://harryfan.github.io");
 const $$StyleCard = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$StyleCard;
-  const { slug, title, description, cover_image } = Astro2.props;
+  const { slug, title, description, cover_image, categoryLabel, featured = false } = Astro2.props;
   const coverSrc = resolveHeroSrc(cover_image) ?? coverSvgDataUri(title);
-  return renderTemplate`${maybeRenderHead()}<a class="style-card"${addAttribute(`${"/"}style/${slug}`, "href")} data-astro-cid-6yomozta> <img class="style-card__img"${addAttribute(coverSrc, "src")}${addAttribute(title, "alt")} loading="lazy" width="1440" height="720" data-astro-cid-6yomozta> <div class="style-card__body" data-astro-cid-6yomozta> <h3 class="style-card__title" data-astro-cid-6yomozta>${title}</h3> <p class="style-card__desc" data-astro-cid-6yomozta>${description}</p> </div> </a> `;
+  return renderTemplate`${maybeRenderHead()}<a${addAttribute(["style-card", { "style-card--featured": featured }], "class:list")}${addAttribute(`${"/"}style/${slug}`, "href")} data-astro-cid-6yomozta> <div class="style-card__media" data-astro-cid-6yomozta> <img class="style-card__img"${addAttribute(coverSrc, "src")}${addAttribute(title, "alt")} loading="lazy" width="1440" height="720" data-astro-cid-6yomozta> ${categoryLabel && renderTemplate`<span class="style-card__cat" data-astro-cid-6yomozta>${categoryLabel}</span>`} ${featured && renderTemplate`<span class="style-card__badge" data-astro-cid-6yomozta>熱門</span>`} </div> <div class="style-card__body" data-astro-cid-6yomozta> <h3 class="style-card__title" data-astro-cid-6yomozta>${title}</h3> <p class="style-card__desc" data-astro-cid-6yomozta>${description}</p> <span class="style-card__cta" data-astro-cid-6yomozta>看提示詞 →</span> </div> </a> `;
 }, "/Users/harry/Documents/Astro/harryfan.github.io/src/components/StyleCard.astro", void 0);
 
-export { $$AdSlot as $, $$StyleCard as a };
+export { $$StyleCard as $ };
