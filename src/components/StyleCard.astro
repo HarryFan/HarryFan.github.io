@@ -1,0 +1,35 @@
+---
+interface Props {
+	slug: string;
+	title: string;
+	description: string;
+	cover_image?: string;
+}
+const { slug, title, description, cover_image } = Astro.props;
+---
+<a class="style-card" href={`${import.meta.env.BASE_URL}style/${slug}`}>
+	{cover_image && <img class="style-card__img" src={cover_image} alt={title} loading="lazy" />}
+	<div class="style-card__body">
+		<h3 class="style-card__title">{title}</h3>
+		<p class="style-card__desc">{description}</p>
+	</div>
+</a>
+
+<style>
+	.style-card {
+		display: flex;
+		flex-direction: column;
+		border: 1px solid rgba(var(--gray, 96 115 159), 0.25);
+		border-radius: 12px;
+		overflow: hidden;
+		text-decoration: none;
+		color: inherit;
+		background: #fff;
+		transition: box-shadow 0.15s, transform 0.15s;
+	}
+	.style-card:hover { box-shadow: var(--box-shadow, 0 2px 6px rgba(0,0,0,0.1)); transform: translateY(-2px); }
+	.style-card__img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+	.style-card__body { padding: 0.9rem 1rem; }
+	.style-card__title { margin: 0 0 0.3rem; font-size: 1.1rem; }
+	.style-card__desc { margin: 0; font-size: 0.88rem; color: rgb(var(--gray, 96 115 159)); }
+</style>
