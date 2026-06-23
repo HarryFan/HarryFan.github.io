@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import StyleCard from '../../components/StyleCard.astro';
+
+const styles = await getCollection('styles');
+const byDateDesc = [...styles].sort((a, b) => +b.data.pubDate - +a.data.pubDate);
+
+const toCard = (s: any) => ({
+	slug: s.id,
+	title: s.data.title,
+	description: s.data.description,
+	cover_image: s.data.cover_image,
+});
+
+const groups = [
+	{ key: 'featured', title: '熱門風格', items: styles.filter((s) => s.data.featured).map(toCard) },
+	{ key: 'latest', title: '最新風格', items: byDateDesc.slice(0, 8).map(toCard) },
+	{ key: 'anime', title: '動漫風格', items: styles.filter((s) => s.data.category === 'anime').map(toCard) },
+	{ key: 'illustration', title: '插畫風格', items: styles.filter((s) => s.data.category === 'illustration').map(toCard) },
+	{ key: 'realistic', title: '寫實風格', items: styles.filter((s) => s.data.category === 'realistic').map(toCard) },
+	{ key: 'game', title: '遊戲風格', items: styles.filter((s) => s.data.category === 'game').map(toCard) },
+].filter((g) => g.items.length > 0);
+
+const seoTitle = 'AI 圖片風格提示詞圖鑑｜ChatGPT、Midjourney、Flux 提示詞大全';
+const seoDesc = '收錄數百種 AI 圖片生成風格提示詞，含中英文 Prompt、Negative Prompt 與教學，支援 ChatGPT、GPT Image、Midjourney、Flux、Stable Diffusion。';
+---
+<!doctype html>
+<html lang="zh-Hant">
+	<head>
+		<BaseHead title={seoTitle} description={seoDesc} />
+	</head>
+	<body>
+		<Header />
+		<main class="styles-main">
+			<section class="hero">
+				<h1>AI 圖片風格提示詞圖鑑</h1>
+				<p class="hero__sub">收錄數百種 AI 圖片生成風格提示詞，支援 ChatGPT、GPT Image、Midjourney、Flux、Stable Diffusion</p>
+			</section>
+
+			<AdSlot slot="hero" />
+
+			{groups.map((g) => (
+				<section class="group">
+					<h2>{g.title}</h2>
+					<div class="group__grid">
+						{g.items.map((it) => (
+							<StyleCard slug={it.slug} title={it.title} description={it.description} cover_image={it.cover_image} />
+						))}
+					</div>
+				</section>
+			))}
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.styles-main { max-width: 960px; margin: 0 auto; padding: 1rem; }
+	.hero { text-align: center; padding: 2.5rem 1rem 1rem; }
+	.hero h1 { margin: 0 0 0.6rem; }
+	.hero__sub { color: rgb(var(--gray, 96 115 159)); max-width: 640px; margin: 0 auto; }
+	.group { margin: 2.5rem 0; }
+	.group__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; }
+</style>
