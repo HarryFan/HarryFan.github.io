@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from 'astro:content';
+import StylePost from '../../layouts/StylePost.astro';
+
+export async function getStaticPaths() {
+	const styles = await getCollection('styles');
+	return styles.map((entry) => {
+		const related = (entry.data.related_styles || [])
+			.map((slug: string) => styles.find((s) => s.id === slug))
+			.filter(Boolean)
+			.slice(0, 6)
+			.map((s: any) => ({
+				slug: s.id,
+				title: s.data.title,
+				description: s.data.description,
+				cover_image: s.data.cover_image,
+			}));
+
+		const sameCat = styles
+			.filter((s) => s.data.category === entry.data.category)
+			.sort((a, b) => +a.data.pubDate - +b.data.pubDate);
+		const idx = sameCat.findIndex((s) => s.id === entry.id);
+		const prevEntry = idx > 0 ? sameCat[idx - 1] : undefined;
+		const nextEntry = idx >= 0 && idx < sameCat.length - 1 ? sameCat[idx + 1] : undefined;
+
+		return {
+			params: { slug: entry.id },
+			props: {
+				entry,
+				related,
+				prev: prevEntry ? { slug: prevEntry.id, title: prevEntry.data.title } : undefined,
+				next: nextEntry ? { slug: nextEntry.id, title: nextEntry.data.title } : undefined,
+			},
+		};
+	});
+}
+
+const { entry, related, prev, next } = Astro.props;
+const { Content } = await render(entry);
+---
+<StylePost data={entry.data} slug={entry.id} related={related} prev={prev} next={next}>
+	<Content />
+</StylePost>

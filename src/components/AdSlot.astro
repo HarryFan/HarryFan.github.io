@@ -1,0 +1,28 @@
+---
+interface Props {
+	slot: 'hero' | 'in-article' | 'article-end' | 'sidebar';
+}
+const { slot } = Astro.props;
+---
+<aside class="ad-slot" data-ad-slot={slot} aria-label="廣告版位">
+	<span class="ad-slot__note">廣告版位（AdSense 待接）· {slot}</span>
+	<!-- 上線 AdSense 時，替換此元件內部為 <ins class="adsbygoogle"> 程式碼 -->
+</aside>
+
+<style>
+	.ad-slot {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 90px;
+		margin: 2rem 0;
+		border: 1px dashed rgba(var(--gray, 96 115 159), 0.5);
+		border-radius: 8px;
+		background: rgba(var(--gray-light, 229 233 240), 0.4);
+	}
+	.ad-slot__note {
+		font-size: 0.8rem;
+		color: rgb(var(--gray, 96 115 159));
+		letter-spacing: 0.02em;
+	}
+</style>

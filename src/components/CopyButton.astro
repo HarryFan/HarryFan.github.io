@@ -1,0 +1,60 @@
+---
+interface Props {
+	text: string;
+	label?: string;
+}
+const { text, label = '複製' } = Astro.props;
+---
+<button class="copy-btn" type="button" data-copy={text} data-label={label}>
+	<span class="copy-label">{label}</span>
+</button>
+
+<style>
+	.copy-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		padding: 0.4em 0.9em;
+		font-size: 0.85rem;
+		border: 1px solid var(--accent, #2337ff);
+		border-radius: 6px;
+		background: transparent;
+		color: var(--accent, #2337ff);
+		cursor: pointer;
+		transition: background 0.15s, color 0.15s;
+	}
+	.copy-btn:hover { background: var(--accent, #2337ff); color: #fff; }
+	.copy-btn.copied { background: #1a7f37; border-color: #1a7f37; color: #fff; }
+</style>
+
+<script>
+	function initCopyButtons() {
+		document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach((btn) => {
+			if (btn.dataset.bound) return;
+			btn.dataset.bound = 'true';
+			const original = btn.dataset.label || '複製';
+			btn.addEventListener('click', async () => {
+				const text = btn.dataset.copy || '';
+				try {
+					await navigator.clipboard.writeText(text);
+				} catch {
+					const ta = document.createElement('textarea');
+					ta.value = text;
+					document.body.appendChild(ta);
+					ta.select();
+					document.execCommand('copy');
+					ta.remove();
+				}
+				const labelEl = btn.querySelector('.copy-label');
+				if (labelEl) labelEl.textContent = '已複製';
+				btn.classList.add('copied');
+				setTimeout(() => {
+					if (labelEl) labelEl.textContent = original;
+					btn.classList.remove('copied');
+				}, 1500);
+			});
+		});
+	}
+	initCopyButtons();
+	document.addEventListener('astro:page-load', initCopyButtons);
+</script>
