@@ -1,0 +1,45 @@
+---
+const tools = [
+	{ name: 'ChatGPT Plus', blurb: 'GPT Image 生圖、對話調 prompt 最順手', url: 'https://chat.openai.com/' },
+	{ name: 'Claude Pro', blurb: '長文 prompt 拆解與批量改寫的好幫手', url: 'https://claude.ai/' },
+	{ name: 'Midjourney', blurb: '藝術感與風格一致性的標竿生圖工具', url: 'https://www.midjourney.com/' },
+	{ name: 'Flux', blurb: '開源高品質生圖，細節與文字渲染強', url: 'https://blackforestlabs.ai/' },
+];
+---
+<section class="affiliate" aria-label="推薦工具">
+	<h2>推薦 AI 工具</h2>
+	<div class="affiliate__grid">
+		{tools.map((t) => (
+			<a class="affiliate__card" href={t.url} target="_blank" rel="sponsored nofollow noopener">
+				<span class="affiliate__name">{t.name}</span>
+				<span class="affiliate__blurb">{t.blurb}</span>
+				<span class="affiliate__cta">前往 →</span>
+			</a>
+		))}
+	</div>
+</section>
+
+<style>
+	.affiliate { margin: 2.5rem 0; }
+	.affiliate__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 1rem;
+	}
+	.affiliate__card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding: 1rem 1.1rem;
+		border: 1px solid rgba(var(--gray, 96 115 159), 0.3);
+		border-radius: 10px;
+		text-decoration: none;
+		color: inherit;
+		background: #fff;
+		transition: box-shadow 0.15s, transform 0.15s;
+	}
+	.affiliate__card:hover { box-shadow: var(--box-shadow, 0 2px 6px rgba(0,0,0,0.1)); transform: translateY(-2px); }
+	.affiliate__name { font-weight: 700; }
+	.affiliate__blurb { font-size: 0.85rem; color: rgb(var(--gray, 96 115 159)); }
+	.affiliate__cta { font-size: 0.85rem; color: var(--accent, #2337ff); }
+</style>
