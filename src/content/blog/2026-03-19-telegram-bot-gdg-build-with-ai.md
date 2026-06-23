@@ -2,7 +2,6 @@
 title: '3 分鐘串好 Telegram Bot：GDG Taipei「Build with AI」活動筆記'
 pubDate: 2026-03-19
 description: '從零到通：用 Gemini CLI＋MCP 打造自動摘要推播的 Telegram Bot，並把資安與成本控制編進工作流。'
-heroImage: '/blog-placeholder-4.jpg'
 ---
 
 我以為 Telegram Bot 是工程師才碰得到的東西。

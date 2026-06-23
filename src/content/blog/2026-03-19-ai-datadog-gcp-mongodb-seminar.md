@@ -2,7 +2,6 @@
 title: 'AI 驅動的次世代數位體驗平台：Datadog × Google Cloud × MongoDB × 17LIVE'
 pubDate: 2026-03-19
 description: '從可觀測性、資料平台到 Agentic AI 的實戰拼圖：三家廠商與 17LIVE 如何把 AI 應用「養大養穩」。'
-heroImage: '/blog-placeholder-2.jpg'
 ---
 
 台北萬豪的下午三點，窗外光線斜斜打進來，場內還在消化剛才的下午茶。這是一場三家廠商聯合辦的技術 Seminar，主題是「AI 驅動的次世代數位體驗平台」。Datadog、Google Cloud、MongoDB，加上壓軸的 17LIVE 實戰分享——聽起來像是各說各話的產品介紹場，但坐完整場下來，卻有種意外的完整感。

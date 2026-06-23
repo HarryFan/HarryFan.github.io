@@ -2,7 +2,6 @@
 title: '🧩 用 Vben Admin 做多層樹狀報表：我踩了七個坑'
 pubDate: 2026-03-19
 description: '從 API 改版到 AntDV Table 展開機制，再到大資料量效能：一篇把樹狀報表踩坑與優化全走完的實戰筆記。'
-heroImage: '/blog-placeholder-3.jpg'
 ---
 
 這兩週我在 Vben Admin 上做一張複雜的組織樹狀報表：節點可展開子層、可切換彙總口徑、底部有總計列。資料量大到「幾十個父節點 × 每個下面幾十個子節點」，需求看起來沒什麼，實作起來坑踩了一個又一個。

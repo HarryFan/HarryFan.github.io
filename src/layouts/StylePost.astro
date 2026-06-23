@@ -159,7 +159,7 @@ const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undef
 </html>
 
 <style>
-	.style-main { max-width: 760px; margin: 0 auto; padding: 1rem; }
+	.style-main { max-width: 760px; margin: 0 auto; padding: clamp(0.75rem, 3vw, 1rem); }
 	.breadcrumb { font-size: 0.85rem; color: rgb(var(--gray, 96 115 159)); margin-bottom: 1rem; }
 	.breadcrumb a { color: rgb(var(--gray, 96 115 159)); }
 	.tag-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; }
@@ -170,7 +170,8 @@ const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undef
 		font-size: 0.85rem;
 	}
 	.prompt-block { margin: 1.5rem 0; }
-	.prompt-block__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+	.prompt-block__head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; flex-wrap: wrap; }
+	.prompt-block__head h2 { font-size: clamp(1.15rem, 4.5vw, 1.5rem); }
 	.prompt-text {
 		white-space: pre-wrap;
 		word-break: break-word;
@@ -182,8 +183,8 @@ const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undef
 	}
 	.breakdown { width: 100%; border-collapse: collapse; }
 	.breakdown th, .breakdown td { text-align: left; padding: 0.5rem; border-bottom: 1px solid rgba(var(--gray,96 115 159),0.2); vertical-align: top; }
-	.related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
-	.adjacent { display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0; }
+	.related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 1rem; }
+	.adjacent { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 1rem; margin: 2rem 0; }
 	.adjacent__next { margin-left: auto; }
 	.faq details { border-bottom: 1px solid rgba(var(--gray,96 115 159),0.2); padding: 0.7rem 0; }
 	.faq summary { cursor: pointer; font-weight: 600; }

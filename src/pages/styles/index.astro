@@ -59,10 +59,12 @@ const seoDesc = '收錄數百種 AI 圖片生成風格提示詞，含中英文 P
 </html>
 
 <style>
-	.styles-main { max-width: 960px; margin: 0 auto; padding: 1rem; }
-	.hero { text-align: center; padding: 2.5rem 1rem 1rem; }
-	.hero h1 { margin: 0 0 0.6rem; }
-	.hero__sub { color: rgb(var(--gray, 96 115 159)); max-width: 640px; margin: 0 auto; }
-	.group { margin: 2.5rem 0; }
-	.group__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; }
+	.styles-main { max-width: 960px; margin: 0 auto; padding: clamp(0.75rem, 3vw, 1rem); }
+	.hero { text-align: center; padding: clamp(1.5rem, 6vw, 2.5rem) clamp(0.5rem, 3vw, 1rem) 1rem; }
+	.hero h1 { margin: 0 0 0.6rem; font-size: clamp(1.6rem, 6vw, 2.4rem); line-height: 1.2; }
+	.hero__sub { color: rgb(var(--gray, 96 115 159)); max-width: 640px; margin: 0 auto; font-size: clamp(0.9rem, 3.5vw, 1.05rem); }
+	.group { margin: clamp(1.75rem, 6vw, 2.5rem) 0; }
+	.group h2 { font-size: clamp(1.2rem, 4.5vw, 1.6rem); }
+	/* min(240px,100%) 避免 <240px 視窗水平溢出 */
+	.group__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: clamp(0.8rem, 3vw, 1.2rem); }
 </style>
