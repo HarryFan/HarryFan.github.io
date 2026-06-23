@@ -159,7 +159,9 @@ const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undef
 </html>
 
 <style>
-	.style-main { max-width: 760px; margin: 0 auto; padding: clamp(0.75rem, 3vw, 1rem); }
+	/* width:100% overrides global `main{width:720px}`; without it the page forces
+	   720px wide on phones and breaks RWD. box-sizing keeps padding inside width. */
+	.style-main { box-sizing: border-box; width: 100%; max-width: 760px; margin: 0 auto; padding: clamp(0.75rem, 3vw, 1rem); }
 	.breadcrumb { font-size: 0.85rem; color: rgb(var(--gray, 96 115 159)); margin-bottom: 1rem; }
 	.breadcrumb a { color: rgb(var(--gray, 96 115 159)); }
 	.tag-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; }

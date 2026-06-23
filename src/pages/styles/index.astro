@@ -59,7 +59,9 @@ const seoDesc = '收錄數百種 AI 圖片生成風格提示詞，含中英文 P
 </html>
 
 <style>
-	.styles-main { max-width: 960px; margin: 0 auto; padding: clamp(0.75rem, 3vw, 1rem); }
+	/* width:100% overrides global `main{width:720px}`; without it the page forces
+	   720px wide on phones and breaks RWD. box-sizing keeps padding inside width. */
+	.styles-main { box-sizing: border-box; width: 100%; max-width: 960px; margin: 0 auto; padding: clamp(0.75rem, 3vw, 1rem); }
 	.hero { text-align: center; padding: clamp(1.5rem, 6vw, 2.5rem) clamp(0.5rem, 3vw, 1rem) 1rem; }
 	.hero h1 { margin: 0 0 0.6rem; font-size: clamp(1.6rem, 6vw, 2.4rem); line-height: 1.2; }
 	.hero__sub { color: rgb(var(--gray, 96 115 159)); max-width: 640px; margin: 0 auto; font-size: clamp(0.9rem, 3.5vw, 1.05rem); }
