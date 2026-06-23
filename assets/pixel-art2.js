@@ -11,6 +11,7 @@ const frontmatter = {
   "negative_prompt": "blurry, anti-aliasing, smooth gradients, photorealistic, 3d render, soft edges, jpeg artifacts, low quality, extra fingers, text, watermark, painterly, high resolution noise",
   "seo_title": "像素風格提示詞｜ChatGPT、Midjourney、Flux 完整教學",
   "seo_description": "完整像素風格 AI 圖片提示詞教學，附中英文 Prompt、Negative Prompt、關鍵詞拆解與常見錯誤，教你用有限色盤、點陣抖色與無抗鋸齒做出復古遊戲感，適用 ChatGPT、Midjourney、Flux、SD。",
+  "cover_image": "/styles/pixel-art.webp",
   "related_styles": ["ghibli", "pixar", "makoto-shinkai", "watercolor", "cyberpunk", "anime"],
   "pubDate": "2026-06-23T00:00:00.000Z",
   "updated_at": "2026-06-23T00:00:00.000Z",

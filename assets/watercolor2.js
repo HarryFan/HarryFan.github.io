@@ -11,6 +11,7 @@ const frontmatter = {
   "negative_prompt": "3d render, photorealistic, digital art, hard edges, oversaturated, vector, low quality, blurry, extra fingers, deformed hands, text, watermark, heavy outlines",
   "seo_title": "水彩風格提示詞｜ChatGPT、Midjourney、Flux 完整教學",
   "seo_description": "完整水彩風格 AI 圖片提示詞教學，附中英文 Prompt、Negative Prompt、關鍵詞拆解與常見錯誤，教你用濕畫法、紙張紋理與暈染做出通透手繪感，適用 ChatGPT、Midjourney、Flux、Stable Diffusion。",
+  "cover_image": "/styles/watercolor.webp",
   "related_styles": ["ghibli", "pixar", "makoto-shinkai", "pixel-art", "oil-painting", "anime"],
   "pubDate": "2026-06-23T00:00:00.000Z",
   "updated_at": "2026-06-23T00:00:00.000Z",
