@@ -1,0 +1,191 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CopyButton from '../components/CopyButton.astro';
+import AdSlot from '../components/AdSlot.astro';
+import AffiliateBlock from '../components/AffiliateBlock.astro';
+import StyleCard from '../components/StyleCard.astro';
+import StyleJsonLd from '../components/StyleJsonLd.astro';
+
+interface RelatedEntry { slug: string; title: string; description: string; cover_image?: string; }
+interface AdjacentEntry { slug: string; title: string; }
+
+interface Props {
+	data: any;
+	slug: string;
+	related: RelatedEntry[];
+	prev?: AdjacentEntry;
+	next?: AdjacentEntry;
+}
+const { data, slug, related, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const pageUrl = new URL(`style/${slug}`, Astro.site ?? Astro.url).toString();
+const siteUrl = (Astro.site ?? new URL('/', Astro.url)).toString();
+const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undefined;
+---
+<!doctype html>
+<html lang="zh-Hant">
+	<head>
+		<BaseHead title={data.seo_title} description={data.seo_description} image={data.cover_image} />
+		<StyleJsonLd
+			title={data.title}
+			description={data.seo_description}
+			url={pageUrl}
+			image={data.cover_image}
+			datePublished={fmtDate(data.pubDate)!}
+			dateModified={fmtDate(data.updated_at)}
+			faq={data.faq}
+			siteUrl={siteUrl}
+		/>
+	</head>
+	<body>
+		<Header />
+		<main class="style-main">
+			<article>
+				<nav class="breadcrumb" aria-label="麵包屑">
+					<a href={base}>首頁</a> ›
+					<a href={`${base}styles`}>風格圖鑑</a> ›
+					<span>{data.title}</span>
+				</nav>
+
+				<h1>{data.title}</h1>
+
+				{data.use_cases.length > 0 && (
+					<section class="use-cases">
+						<h2>適合使用情境</h2>
+						<ul class="tag-list">
+							{data.use_cases.map((u: string) => <li>{u}</li>)}
+						</ul>
+					</section>
+				)}
+
+				<section class="intro">
+					<h2>風格介紹</h2>
+					<slot />
+				</section>
+
+				<AdSlot slot="in-article" />
+
+				<section class="prompt-block">
+					<div class="prompt-block__head">
+						<h2>中文 Prompt</h2>
+						<CopyButton text={data.prompt_zh} />
+					</div>
+					<pre class="prompt-text">{data.prompt_zh}</pre>
+				</section>
+
+				<section class="prompt-block">
+					<div class="prompt-block__head">
+						<h2>英文 Prompt</h2>
+						<CopyButton text={data.prompt_en} />
+					</div>
+					<pre class="prompt-text">{data.prompt_en}</pre>
+				</section>
+
+				{data.negative_prompt && (
+					<section class="prompt-block">
+						<div class="prompt-block__head">
+							<h2>Negative Prompt</h2>
+							<CopyButton text={data.negative_prompt} />
+						</div>
+						<pre class="prompt-text">{data.negative_prompt}</pre>
+					</section>
+				)}
+
+				{data.prompt_breakdown.length > 0 && (
+					<section>
+						<h2>Prompt 拆解教學</h2>
+						<table class="breakdown">
+							<thead><tr><th>關鍵詞</th><th>作用</th></tr></thead>
+							<tbody>
+								{data.prompt_breakdown.map((b: any) => (
+									<tr><td>{b.term}</td><td>{b.effect}</td></tr>
+								))}
+							</tbody>
+						</table>
+					</section>
+				)}
+
+				{data.mistakes.length > 0 && (
+					<section>
+						<h2>常見錯誤</h2>
+						<ul>{data.mistakes.map((m: string) => <li>{m}</li>)}</ul>
+					</section>
+				)}
+
+				{data.models.length > 0 && (
+					<section>
+						<h2>推薦模型</h2>
+						<ul class="tag-list">{data.models.map((m: string) => <li>{m}</li>)}</ul>
+					</section>
+				)}
+
+				<AffiliateBlock />
+
+				{related.length > 0 && (
+					<section>
+						<h2>相關風格</h2>
+						<div class="related-grid">
+							{related.map((r) => (
+								<StyleCard slug={r.slug} title={r.title} description={r.description} cover_image={r.cover_image} />
+							))}
+						</div>
+					</section>
+				)}
+
+				<nav class="adjacent" aria-label="同分類導覽">
+					{prev && <a href={`${base}style/${prev.slug}`}>← {prev.title}</a>}
+					{next && <a class="adjacent__next" href={`${base}style/${next.slug}`}>{next.title} →</a>}
+				</nav>
+
+				{data.faq.length > 0 && (
+					<section class="faq">
+						<h2>常見問題 FAQ</h2>
+						{data.faq.map((f: any) => (
+							<details>
+								<summary>{f.q}</summary>
+								<p>{f.a}</p>
+							</details>
+						))}
+					</section>
+				)}
+
+				<AdSlot slot="article-end" />
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.style-main { max-width: 760px; margin: 0 auto; padding: 1rem; }
+	.breadcrumb { font-size: 0.85rem; color: rgb(var(--gray, 96 115 159)); margin-bottom: 1rem; }
+	.breadcrumb a { color: rgb(var(--gray, 96 115 159)); }
+	.tag-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; }
+	.tag-list li {
+		padding: 0.3em 0.8em;
+		background: rgba(var(--gray-light, 229 233 240), 0.6);
+		border-radius: 999px;
+		font-size: 0.85rem;
+	}
+	.prompt-block { margin: 1.5rem 0; }
+	.prompt-block__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+	.prompt-text {
+		white-space: pre-wrap;
+		word-break: break-word;
+		background: rgba(var(--gray-light, 229 233 240), 0.5);
+		border-radius: 8px;
+		padding: 1rem;
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+	.breakdown { width: 100%; border-collapse: collapse; }
+	.breakdown th, .breakdown td { text-align: left; padding: 0.5rem; border-bottom: 1px solid rgba(var(--gray,96 115 159),0.2); vertical-align: top; }
+	.related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+	.adjacent { display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0; }
+	.adjacent__next { margin-left: auto; }
+	.faq details { border-bottom: 1px solid rgba(var(--gray,96 115 159),0.2); padding: 0.7rem 0; }
+	.faq summary { cursor: pointer; font-weight: 600; }
+	.faq p { margin: 0.6rem 0 0; color: rgb(var(--gray-dark, 34 41 57)); }
+</style>
