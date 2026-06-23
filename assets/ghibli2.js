@@ -1,0 +1,131 @@
+import { t as createVNode, S as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
+
+const frontmatter = {
+  "title": "吉卜力風格",
+  "description": "溫暖手繪、柔和光線與自然細節，宮崎駿動畫的療癒美學。",
+  "category": "anime",
+  "tags": ["吉卜力", "宮崎駿", "手繪", "動畫"],
+  "difficulty": "easy",
+  "prompt_zh": "吉卜力工作室風格，溫暖柔和的手繪動畫質感，細膩的自然光線，蓬鬆的雲朵與翠綠草原，懷舊溫馨的色調，水彩般的背景，柔焦景深，2D 賽璐珞上色",
+  "prompt_en": "Studio Ghibli style, warm hand-drawn animation, soft natural lighting, fluffy clouds over lush green meadows, nostalgic cozy color palette, watercolor-like backgrounds, soft depth of field, 2D cel shading, anime film aesthetic",
+  "negative_prompt": "3d render, photorealistic, low quality, blurry, extra fingers, deformed hands, text, watermark, oversaturated",
+  "seo_title": "吉卜力風格提示詞｜ChatGPT、Midjourney、Flux 完整教學",
+  "seo_description": "完整吉卜力風格 AI 圖片提示詞教學，附中文與英文 Prompt、Negative Prompt、關鍵詞拆解、常見錯誤與推薦模型，適用 ChatGPT、GPT Image、Midjourney、Flux、Stable Diffusion。",
+  "cover_image": "/blog-placeholder-1.jpg",
+  "related_styles": ["makoto-shinkai", "watercolor", "pixar", "pixel-art", "oil-painting", "anime"],
+  "pubDate": "2026-06-23T00:00:00.000Z",
+  "updated_at": "2026-06-23T00:00:00.000Z",
+  "featured": true,
+  "models": ["GPT Image", "Midjourney", "Flux", "Stable Diffusion"],
+  "use_cases": ["頭像", "桌布", "海報", "社群貼文", "YouTube Thumbnail"],
+  "mistakes": ["畫面太亂導致主體不明確", "顏色過度飽和失去溫潤感", "角色臉部崩壞或手指異常", "加入寫實光影破壞手繪質感"],
+  "prompt_breakdown": [{
+    "term": "Studio Ghibli style",
+    "effect": "鎖定整體吉卜力美術風格的核心關鍵詞"
+  }, {
+    "term": "soft natural lighting",
+    "effect": "營造柔和自然的光影，避免硬陰影"
+  }, {
+    "term": "watercolor-like backgrounds",
+    "effect": "讓背景呈現水彩暈染的手繪感"
+  }, {
+    "term": "2D cel shading",
+    "effect": "指定平塗賽璐珞上色，避免 3D 渲染"
+  }, {
+    "term": "nostalgic cozy color palette",
+    "effect": "控制成懷舊溫暖的色調"
+  }],
+  "faq": [{
+    "q": "吉卜力風格在哪個 AI 工具效果最好？",
+    "a": "Midjourney 與 Flux 對手繪動畫質感的還原最佳，GPT Image 則最容易用對話微調構圖。"
+  }, {
+    "q": "為什麼生出來的圖太寫實？",
+    "a": "在 prompt 強調 2D cel shading、hand-drawn，並把 photorealistic、3d render 放進 Negative Prompt。"
+  }, {
+    "q": "如何讓畫面更療癒？",
+    "a": "加入 warm lighting、cozy、pastoral 等詞，並降低飽和度關鍵詞。"
+  }, {
+    "q": "可以商用嗎？",
+    "a": "風格本身不受著作權保護，但請避免直接重現特定電影畫面或角色，並確認所用模型的授權條款。"
+  }, {
+    "q": "角色手指畫崩怎麼辦？",
+    "a": "加 deformed hands、extra fingers 到 Negative Prompt，並提高生成張數挑選。"
+  }, {
+    "q": "適合做 YouTube 縮圖嗎？",
+    "a": "適合，溫暖高辨識度的色調在縮圖中很吸睛，建議搭配大字標題。"
+  }, {
+    "q": "中文 prompt 和英文 prompt 哪個好？",
+    "a": "多數模型對英文理解更精準，建議以英文為主、中文輔助說明。"
+  }, {
+    "q": "要怎麼保持多張圖風格一致？",
+    "a": "固定同一組風格關鍵詞與 seed，或在 Midjourney 使用 style reference。"
+  }]
+};
+function getHeadings() {
+  return [];
+}
+function _createMdxContent(props) {
+  const _components = {
+    code: "code",
+    p: "p",
+    strong: "strong",
+    ...props.components
+  };
+  return createVNode(Fragment, {
+    children: [createVNode(_components.p, {
+      children: "吉卜力的美學並不是某一招技法，而是宮崎駿與高畑勳長年累積出來的一整套世界觀。它的根基是 1980 年代日本動畫仍以「手繪賽璐珞」為主流的年代——美術人員一張一張在透明賽璐珞片上平塗顏色，背景則由背景美術師用廣告顏料或水彩在紙上畫成。男鹿和雄那種把光線、空氣濕度、草葉層次都畫進背景的功力，正是吉卜力畫面之所以耐看的關鍵。理解這個來歷很重要，因為你在下提示詞時，本質上是在請 AI 模仿「手繪平塗角色 + 厚塗水彩背景」這兩套不同質感的疊合，而不是單純套一個濾鏡。"
+    }), "\n", createVNode(_components.p, {
+      children: ["在光影處理上，吉卜力很少使用銳利的高反差陰影。它偏好柔和的漫射光、清晨或黃昏的暖色逆光，以及天空中那種帶體積感卻不刺眼的雲。陰影通常只分兩到三階，邊界乾淨，這就是賽璐珞平塗的特徵。所以提示詞裡 ", createVNode(_components.code, {
+        children: "soft natural lighting"
+      }), "、", createVNode(_components.code, {
+        children: "2D cel shading"
+      }), " 這兩個詞幾乎是必備：前者控制光的柔度，後者鎖住平塗質感、避免模型自作主張地做出 3D 立體渲染。背景則靠 ", createVNode(_components.code, {
+        children: "watercolor-like backgrounds"
+      }), " 來爭取那種顏料在紙上暈開、邊緣略帶不均勻的手感。"]
+    }), "\n", createVNode(_components.p, {
+      children: "題材與情緒上，這個風格最適合「日常裡的小溫柔」：鄉間小路、灑滿陽光的廚房、雨後的車站、夏日午後的草原與電線桿。它擅長承載懷舊、寧靜、淡淡鄉愁這類情緒，而不太適合強烈的科幻金屬感或都會霓虹。如果你想做頭像、桌布、社群貼文或 YouTube 縮圖，吉卜力的高辨識度暖色調本身就很吸睛，記得讓主體單純、留白足夠，畫面才不會雜亂。"
+    }), "\n", createVNode(_components.p, {
+      children: ["各模型的實際表現差異相當明顯，值得分開講。", createVNode(_components.strong, {
+        children: "Midjourney"
+      }), " 對「藝術風格一致性」掌握最好，niji 模式尤其擅長動畫質感，通常不需要太長的 prompt 就能出味道；要保持多張一致時可搭配 style reference 與固定 ", createVNode(_components.code, {
+        children: "--seed"
+      }), "，並用 ", createVNode(_components.code, {
+        children: "--ar 16:9"
+      }), " 鎖縱橫比。", createVNode(_components.strong, {
+        children: "Flux"
+      }), " 是目前開源陣營裡細節與構圖最穩的，對長句自然語言理解佳，吉卜力那種草葉、雲層的層次它還原得很扎實，但有時會偏寫實，這時要把 ", createVNode(_components.code, {
+        children: "hand-drawn"
+      }), "、", createVNode(_components.code, {
+        children: "2D cel shading"
+      }), " 往前放、加重語氣。", createVNode(_components.strong, {
+        children: "Stable Diffusion"
+      }), "（尤其 SDXL 配上吉卜力 LoRA）可控性最高，能靠 LoRA 權重、CFG 與負面提示精細微調，但也最吃調參經驗，建議 CFG 抓 5～7、負面寫滿 ", createVNode(_components.code, {
+        children: "photorealistic, 3d render"
+      }), "。", createVNode(_components.strong, {
+        children: "ChatGPT 的 GPT Image"
+      }), " 強在「用對話迭代」——你可以先生一張，再用自然語言要求「光線再柔一點」「背景多一點水彩暈染」，對不熟參數的人最友善，但細膩度與一致性略遜於前三者。實務上我的做法是：先用 GPT Image 快速試構圖與情緒方向，定案後再拿到 Midjourney 或 Flux 量產出最終高品質版本，這樣兼顧效率與成品質感。"]
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? createVNode(MDXLayout, {
+    ...props,
+    children: createVNode(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+
+const url = "src/content/styles/ghibli.mdx";
+const file = "/Users/harry/Documents/Astro/harryfan.github.io/src/content/styles/ghibli.mdx";
+const Content = (props = {}) => MDXContent({
+  ...props,
+  components: { Fragment: Fragment, ...props.components, },
+});
+Content[Symbol.for('mdx-component')] = true;
+Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
+Content.moduleId = "/Users/harry/Documents/Astro/harryfan.github.io/src/content/styles/ghibli.mdx";
+__astro_tag_component__(Content, 'astro:jsx');
+
+export { Content, Content as default, file, frontmatter, getHeadings, url };
