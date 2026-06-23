@@ -16,13 +16,14 @@ const { slot } = Astro.props;
 		justify-content: center;
 		min-height: 90px;
 		margin: 2rem 0;
-		border: 1px dashed rgba(var(--gray, 96 115 159), 0.5);
-		border-radius: 8px;
-		background: rgba(var(--gray-light, 229 233 240), 0.4);
+		border: 2px dashed var(--soft-rule, rgba(31, 27, 23, 0.18));
+		border-radius: var(--radius, 6px);
+		background: rgba(var(--ink, 31 27 23), 0.02);
 	}
 	.ad-slot__note {
-		font-size: 0.8rem;
-		color: rgb(var(--gray, 96 115 159));
-		letter-spacing: 0.02em;
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: rgb(var(--gray, 104 87 70));
+		letter-spacing: 0.04em;
 	}
 </style>

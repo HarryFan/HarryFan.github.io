@@ -31,15 +31,15 @@ const tools = [
 		flex-direction: column;
 		gap: 0.4rem;
 		padding: 1rem 1.1rem;
-		border: 1px solid rgba(var(--gray, 96 115 159), 0.3);
-		border-radius: 10px;
+		border: 2px solid var(--rule);
+		border-radius: var(--radius, 6px);
 		text-decoration: none;
 		color: inherit;
-		background: #fff;
-		transition: box-shadow 0.15s, transform 0.15s;
+		background: var(--paper-soft);
+		transition: box-shadow 0.15s ease, transform 0.15s ease;
 	}
-	.affiliate__card:hover { box-shadow: var(--box-shadow, 0 2px 6px rgba(0,0,0,0.1)); transform: translateY(-2px); }
-	.affiliate__name { font-weight: 700; }
-	.affiliate__blurb { font-size: 0.85rem; color: rgb(var(--gray, 96 115 159)); }
-	.affiliate__cta { font-size: 0.85rem; color: var(--accent, #2337ff); }
+	.affiliate__card:hover { box-shadow: 6px 6px 0 var(--yellow); transform: translate(-2px, -2px); }
+	.affiliate__name { font-weight: 800; }
+	.affiliate__blurb { font-size: 0.85rem; line-height: 1.5; color: rgb(var(--gray-dark, 52 43 35)); }
+	.affiliate__cta { font-size: 0.85rem; font-weight: 700; color: var(--accent); }
 </style>

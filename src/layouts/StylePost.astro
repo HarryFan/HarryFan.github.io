@@ -7,6 +7,7 @@ import AdSlot from '../components/AdSlot.astro';
 import AffiliateBlock from '../components/AffiliateBlock.astro';
 import StyleCard from '../components/StyleCard.astro';
 import StyleJsonLd from '../components/StyleJsonLd.astro';
+import { coverSvgDataUri, resolveHeroSrc } from '../utils/contempoCover';
 
 interface RelatedEntry { slug: string; title: string; description: string; cover_image?: string; }
 interface AdjacentEntry { slug: string; title: string; }
@@ -23,6 +24,7 @@ const base = import.meta.env.BASE_URL;
 const pageUrl = new URL(`style/${slug}`, Astro.site ?? Astro.url).toString();
 const siteUrl = (Astro.site ?? new URL('/', Astro.url)).toString();
 const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undefined;
+const coverSrc = resolveHeroSrc(data.cover_image) ?? coverSvgDataUri(data.title);
 ---
 <!doctype html>
 <html lang="zh-Hant">
@@ -50,6 +52,11 @@ const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undef
 				</nav>
 
 				<h1>{data.title}</h1>
+				<p class="lede">{data.description}</p>
+
+				<div class="cover">
+					<img src={coverSrc} alt={`${data.title}封面`} width="1536" height="1024" />
+				</div>
 
 				{data.use_cases.length > 0 && (
 					<section class="use-cases">
@@ -110,7 +117,7 @@ const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undef
 				{data.mistakes.length > 0 && (
 					<section>
 						<h2>常見錯誤</h2>
-						<ul>{data.mistakes.map((m: string) => <li>{m}</li>)}</ul>
+						<ul class="mistakes">{data.mistakes.map((m: string) => <li>{m}</li>)}</ul>
 					</section>
 				)}
 
@@ -161,34 +168,130 @@ const fmtDate = (d?: Date) => d ? new Date(d).toISOString().slice(0, 10) : undef
 <style>
 	/* width:100% overrides global `main{width:720px}`; without it the page forces
 	   720px wide on phones and breaks RWD. box-sizing keeps padding inside width. */
-	.style-main { box-sizing: border-box; width: 100%; max-width: 760px; margin: 0 auto; padding: clamp(0.75rem, 3vw, 1rem); }
-	.breadcrumb { font-size: 0.85rem; color: rgb(var(--gray, 96 115 159)); margin-bottom: 1rem; }
-	.breadcrumb a { color: rgb(var(--gray, 96 115 159)); }
-	.tag-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; }
+	.style-main { box-sizing: border-box; width: 100%; max-width: 780px; margin: 0 auto; padding: clamp(0.85rem, 3vw, 1.25rem); }
+
+	.breadcrumb { font-size: 0.82rem; color: rgb(var(--gray, 104 87 70)); margin-bottom: 1.25rem; }
+	.breadcrumb a { color: rgb(var(--gray, 104 87 70)); text-underline-offset: 2px; }
+	.breadcrumb a:hover { color: var(--accent); }
+
+	.style-main h1 {
+		margin: 0 0 0.5rem;
+		font-size: clamp(1.9rem, 7vw, 2.9rem);
+		line-height: 1.12;
+		letter-spacing: -0.01em;
+	}
+	.lede {
+		margin: 0 0 1.4rem;
+		font-size: clamp(1rem, 3.6vw, 1.18rem);
+		line-height: 1.6;
+		color: rgb(var(--gray-dark, 52 43 35));
+	}
+
+	.cover {
+		margin: 0 0 2rem;
+		border: 3px solid var(--rule);
+		border-radius: var(--radius, 6px);
+		box-shadow: var(--box-shadow, 10px 10px 0 var(--yellow));
+		overflow: hidden;
+	}
+	.cover img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+
+	/* 區段標題：前置黃色方塊標記，呼應全站 brutalist 語彙 */
+	.style-main h2 {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		margin: 2.25rem 0 0.9rem;
+		font-size: clamp(1.25rem, 4.8vw, 1.6rem);
+	}
+	.style-main h2::before {
+		content: '';
+		flex: none;
+		width: 0.85em;
+		height: 0.85em;
+		background: var(--yellow);
+		border: 2px solid var(--rule);
+	}
+
+	.intro :global(p) { line-height: 1.85; margin: 0 0 1.1rem; }
+
+	.tag-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; }
 	.tag-list li {
-		padding: 0.3em 0.8em;
-		background: rgba(var(--gray-light, 229 233 240), 0.6);
+		padding: 0.32em 0.85em;
+		background: var(--paper-soft);
+		border: 2px solid var(--rule);
 		border-radius: 999px;
 		font-size: 0.85rem;
+		font-weight: 600;
 	}
-	.prompt-block { margin: 1.5rem 0; }
-	.prompt-block__head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; flex-wrap: wrap; }
-	.prompt-block__head h2 { font-size: clamp(1.15rem, 4.5vw, 1.5rem); }
+
+	.prompt-block {
+		margin: 1.25rem 0;
+		border: 2px solid var(--rule);
+		border-radius: var(--radius, 6px);
+		overflow: hidden;
+		background: var(--paper-soft);
+	}
+	.prompt-block__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1rem;
+		flex-wrap: wrap;
+		padding: 0.65rem 0.9rem;
+		background: var(--paper-deep);
+		border-bottom: 2px solid var(--rule);
+	}
+	.prompt-block__head h2 { margin: 0; font-size: 1.05rem; }
+	.prompt-block__head h2::before { display: none; }
 	.prompt-text {
 		white-space: pre-wrap;
 		word-break: break-word;
-		background: rgba(var(--gray-light, 229 233 240), 0.5);
-		border-radius: 8px;
+		margin: 0;
 		padding: 1rem;
-		font-size: 0.9rem;
-		line-height: 1.6;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.86rem;
+		line-height: 1.7;
+		color: rgb(var(--ink));
 	}
-	.breakdown { width: 100%; border-collapse: collapse; }
-	.breakdown th, .breakdown td { text-align: left; padding: 0.5rem; border-bottom: 1px solid rgba(var(--gray,96 115 159),0.2); vertical-align: top; }
+
+	.breakdown { width: 100%; border-collapse: collapse; border: 2px solid var(--rule); font-size: 0.92rem; }
+	.breakdown th, .breakdown td { text-align: left; padding: 0.6rem 0.7rem; border: 1px solid var(--soft-rule); vertical-align: top; }
+	.breakdown th { background: var(--paper-deep); font-weight: 800; }
+	.breakdown tbody tr:nth-child(even) { background: rgba(var(--ink), 0.03); }
+
+	.mistakes { padding-left: 0; list-style: none; display: grid; gap: 0.55rem; }
+	.mistakes li { position: relative; padding-left: 1.6rem; line-height: 1.6; }
+	.mistakes li::before { content: '✕'; position: absolute; left: 0; top: 0; color: var(--red); font-weight: 800; }
+
 	.related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 1rem; }
-	.adjacent { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 1rem; margin: 2rem 0; }
-	.adjacent__next { margin-left: auto; }
-	.faq details { border-bottom: 1px solid rgba(var(--gray,96 115 159),0.2); padding: 0.7rem 0; }
-	.faq summary { cursor: pointer; font-weight: 600; }
-	.faq p { margin: 0.6rem 0 0; color: rgb(var(--gray-dark, 34 41 57)); }
+
+	.adjacent { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 2.5rem 0 0; }
+	.adjacent a {
+		flex: 1 1 45%;
+		padding: 0.7rem 1rem;
+		border: 2px solid var(--rule);
+		border-radius: var(--radius, 6px);
+		background: var(--paper-soft);
+		text-decoration: none;
+		color: inherit;
+		font-weight: 700;
+		font-size: 0.9rem;
+		transition: transform 0.15s ease, box-shadow 0.15s ease;
+	}
+	.adjacent a:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--yellow); }
+	.adjacent__next { margin-left: auto; text-align: right; }
+
+	.faq details {
+		border: 2px solid var(--rule);
+		border-radius: var(--radius, 6px);
+		background: var(--paper-soft);
+		padding: 0.85rem 1rem;
+		margin-bottom: 0.7rem;
+	}
+	.faq summary { cursor: pointer; font-weight: 700; list-style: none; }
+	.faq summary::-webkit-details-marker { display: none; }
+	.faq summary::after { content: '＋'; float: right; color: var(--accent); font-weight: 800; }
+	.faq details[open] summary::after { content: '－'; }
+	.faq p { margin: 0.7rem 0 0; line-height: 1.7; color: rgb(var(--gray-dark, 52 43 35)); }
 </style>
