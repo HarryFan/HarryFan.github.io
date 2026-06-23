@@ -3,27 +3,22 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import AdSlot from '../../components/AdSlot.astro';
 import StyleCard from '../../components/StyleCard.astro';
 
+const CAT_LABEL: Record<string, string> = {
+	anime: '動漫',
+	illustration: '插畫',
+	realistic: '寫實',
+	game: '遊戲',
+};
+
 const styles = await getCollection('styles');
-const byDateDesc = [...styles].sort((a, b) => +b.data.pubDate - +a.data.pubDate);
-
-const toCard = (s: any) => ({
-	slug: s.id,
-	title: s.data.title,
-	description: s.data.description,
-	cover_image: s.data.cover_image,
-});
-
-const groups = [
-	{ key: 'featured', title: '熱門風格', items: styles.filter((s) => s.data.featured).map(toCard) },
-	{ key: 'latest', title: '最新風格', items: byDateDesc.slice(0, 8).map(toCard) },
-	{ key: 'anime', title: '動漫風格', items: styles.filter((s) => s.data.category === 'anime').map(toCard) },
-	{ key: 'illustration', title: '插畫風格', items: styles.filter((s) => s.data.category === 'illustration').map(toCard) },
-	{ key: 'realistic', title: '寫實風格', items: styles.filter((s) => s.data.category === 'realistic').map(toCard) },
-	{ key: 'game', title: '遊戲風格', items: styles.filter((s) => s.data.category === 'game').map(toCard) },
-].filter((g) => g.items.length > 0);
+// 每個風格只出現一次：featured 優先、其次依日期新到舊。不再硬切重複分組。
+const ordered = [...styles].sort(
+	(a, b) =>
+		Number(b.data.featured) - Number(a.data.featured) ||
+		+b.data.pubDate - +a.data.pubDate,
+);
 
 const seoTitle = 'AI 圖片風格提示詞圖鑑｜ChatGPT、Midjourney、Flux 提示詞大全';
 const seoDesc = '收錄數百種 AI 圖片生成風格提示詞，含中英文 Prompt、Negative Prompt 與教學，支援 ChatGPT、GPT Image、Midjourney、Flux、Stable Diffusion。';
@@ -37,36 +32,95 @@ const seoDesc = '收錄數百種 AI 圖片生成風格提示詞，含中英文 P
 		<Header />
 		<main class="styles-main">
 			<section class="hero">
+				<span class="hero__eyebrow">PROMPT 圖鑑</span>
 				<h1>AI 圖片風格提示詞圖鑑</h1>
-				<p class="hero__sub">收錄數百種 AI 圖片生成風格提示詞，支援 ChatGPT、GPT Image、Midjourney、Flux、Stable Diffusion</p>
+				<p class="hero__sub">收錄各種 AI 圖片生成風格的完整提示詞，含中英文 Prompt、Negative Prompt、關鍵詞拆解與常見錯誤。</p>
+				<p class="hero__meta">ChatGPT · GPT Image · Midjourney · Flux · Stable Diffusion</p>
 			</section>
 
-			<AdSlot slot="hero" />
-
-			{groups.map((g) => (
-				<section class="group">
-					<h2>{g.title}</h2>
-					<div class="group__grid">
-						{g.items.map((it) => (
-							<StyleCard slug={it.slug} title={it.title} description={it.description} cover_image={it.cover_image} />
-						))}
-					</div>
-				</section>
-			))}
+			<section class="catalog">
+				<div class="catalog__head">
+					<h2>全部風格</h2>
+					<span class="catalog__count">{styles.length} 種</span>
+				</div>
+				<div class="catalog__grid">
+					{ordered.map((s) => (
+						<StyleCard
+							slug={s.id}
+							title={s.data.title}
+							description={s.data.description}
+							cover_image={s.data.cover_image}
+							categoryLabel={CAT_LABEL[s.data.category]}
+							featured={s.data.featured}
+						/>
+					))}
+				</div>
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
 
 <style>
-	/* width:100% overrides global `main{width:720px}`; without it the page forces
-	   720px wide on phones and breaks RWD. box-sizing keeps padding inside width. */
-	.styles-main { box-sizing: border-box; width: 100%; max-width: 960px; margin: 0 auto; padding: clamp(0.75rem, 3vw, 1rem); }
-	.hero { text-align: center; padding: clamp(1.5rem, 6vw, 2.5rem) clamp(0.5rem, 3vw, 1rem) 1rem; }
-	.hero h1 { margin: 0 0 0.6rem; font-size: clamp(1.6rem, 6vw, 2.4rem); line-height: 1.2; }
-	.hero__sub { color: rgb(var(--gray, 96 115 159)); max-width: 640px; margin: 0 auto; font-size: clamp(0.9rem, 3.5vw, 1.05rem); }
-	.group { margin: clamp(1.75rem, 6vw, 2.5rem) 0; }
-	.group h2 { font-size: clamp(1.2rem, 4.5vw, 1.6rem); }
-	/* min(240px,100%) 避免 <240px 視窗水平溢出 */
-	.group__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: clamp(0.8rem, 3vw, 1.2rem); }
+	/* width:100% overrides global `main{width:720px}`; without it phones force a
+	   720px-wide page and break RWD. box-sizing keeps padding inside width. */
+	.styles-main { box-sizing: border-box; width: 100%; max-width: 1040px; margin: 0 auto; padding: clamp(0.85rem, 3vw, 1.25rem); }
+
+	.hero {
+		padding: clamp(1.75rem, 7vw, 3.5rem) 0 clamp(1.5rem, 5vw, 2.5rem);
+		border-bottom: 3px solid var(--rule);
+		margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
+	}
+	.hero__eyebrow {
+		display: inline-block;
+		margin-bottom: 0.9rem;
+		padding: 0.3rem 0.7rem;
+		font-size: 0.78rem;
+		font-weight: 800;
+		letter-spacing: 0.14em;
+		background: var(--yellow);
+		border: 2px solid var(--rule);
+		border-radius: 999px;
+		color: rgb(var(--ink));
+	}
+	.hero h1 {
+		margin: 0 0 0.7rem;
+		font-size: clamp(1.9rem, 8vw, 3.2rem);
+		line-height: 1.1;
+		letter-spacing: -0.01em;
+	}
+	.hero__sub {
+		max-width: 38ch;
+		margin: 0 0 0.9rem;
+		font-size: clamp(0.98rem, 3.5vw, 1.15rem);
+		line-height: 1.6;
+		color: rgb(var(--gray-dark, 52 43 35));
+	}
+	.hero__meta {
+		margin: 0;
+		font-size: clamp(0.8rem, 3vw, 0.9rem);
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		color: rgb(var(--gray, 104 87 70));
+	}
+
+	.catalog__head {
+		display: flex;
+		align-items: baseline;
+		gap: 0.75rem;
+		margin-bottom: clamp(1rem, 3vw, 1.4rem);
+	}
+	.catalog__head h2 { margin: 0; font-size: clamp(1.3rem, 5vw, 1.7rem); }
+	.catalog__count {
+		font-size: 0.85rem;
+		font-weight: 700;
+		color: rgb(var(--gray, 104 87 70));
+	}
+	/* 單一網格、每風格一張；featured 桌機跨兩欄（見 StyleCard）。
+	   min(280px,100%) 避免窄視窗水平溢出。 */
+	.catalog__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+		gap: clamp(0.9rem, 3vw, 1.4rem);
+	}
 </style>

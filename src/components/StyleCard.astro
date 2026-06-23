@@ -5,16 +5,23 @@ interface Props {
 	title: string;
 	description: string;
 	cover_image?: string;
+	categoryLabel?: string;
+	featured?: boolean;
 }
-const { slug, title, description, cover_image } = Astro.props;
-// 沿用全站封面策略：有真實圖才用，否則用標題生成的品牌封面（不是醜預設圖）
+const { slug, title, description, cover_image, categoryLabel, featured = false } = Astro.props;
+// 沿用全站封面策略：有真實圖才用，否則用標題生成的品牌封面
 const coverSrc = resolveHeroSrc(cover_image) ?? coverSvgDataUri(title);
 ---
-<a class="style-card" href={`${import.meta.env.BASE_URL}style/${slug}`}>
-	<img class="style-card__img" src={coverSrc} alt={title} loading="lazy" width="1440" height="720" />
+<a class:list={['style-card', { 'style-card--featured': featured }]} href={`${import.meta.env.BASE_URL}style/${slug}`}>
+	<div class="style-card__media">
+		<img class="style-card__img" src={coverSrc} alt={title} loading="lazy" width="1440" height="720" />
+		{categoryLabel && <span class="style-card__cat">{categoryLabel}</span>}
+		{featured && <span class="style-card__badge">熱門</span>}
+	</div>
 	<div class="style-card__body">
 		<h3 class="style-card__title">{title}</h3>
 		<p class="style-card__desc">{description}</p>
+		<span class="style-card__cta">看提示詞 →</span>
 	</div>
 </a>
 
@@ -22,17 +29,76 @@ const coverSrc = resolveHeroSrc(cover_image) ?? coverSvgDataUri(title);
 	.style-card {
 		display: flex;
 		flex-direction: column;
-		border: 1px solid rgba(var(--gray, 96 115 159), 0.25);
-		border-radius: 12px;
+		border: 2px solid var(--rule);
+		border-radius: var(--radius, 6px);
 		overflow: hidden;
 		text-decoration: none;
 		color: inherit;
-		background: #fff;
-		transition: box-shadow 0.15s, transform 0.15s;
+		background: var(--paper-soft);
+		transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 	}
-	.style-card:hover { box-shadow: var(--box-shadow, 0 2px 6px rgba(0,0,0,0.1)); transform: translateY(-2px); }
-	.style-card__img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
-	.style-card__body { padding: 0.9rem 1rem; }
-	.style-card__title { margin: 0 0 0.3rem; font-size: 1.1rem; }
-	.style-card__desc { margin: 0; font-size: 0.88rem; color: rgb(var(--gray, 96 115 159)); }
+	.style-card:hover,
+	.style-card:focus-visible {
+		transform: translate(-3px, -3px);
+		box-shadow: 8px 8px 0 var(--yellow);
+	}
+	.style-card__media { position: relative; }
+	.style-card__img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+		border-bottom: 2px solid var(--rule);
+	}
+	.style-card__cat {
+		position: absolute;
+		left: 0.6rem;
+		bottom: 0.6rem;
+		padding: 0.2rem 0.6rem;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		background: var(--paper-soft);
+		border: 1.5px solid var(--rule);
+		border-radius: 999px;
+		color: rgb(var(--ink));
+	}
+	.style-card__badge {
+		position: absolute;
+		right: 0.6rem;
+		top: 0.6rem;
+		padding: 0.2rem 0.6rem;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		background: var(--red);
+		color: var(--paper-soft);
+		border: 1.5px solid var(--rule);
+		border-radius: 999px;
+	}
+	.style-card__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		padding: 0.85rem 1rem 1rem;
+	}
+	.style-card__title { margin: 0; font-size: 1.15rem; font-weight: 800; line-height: 1.25; }
+	.style-card__desc { margin: 0; font-size: 0.9rem; line-height: 1.55; color: rgb(var(--gray-dark, 52 43 35)); }
+	.style-card__cta { margin-top: 0.2rem; font-size: 0.82rem; font-weight: 700; color: var(--accent); }
+
+	/* featured：大圖、桌機跨兩欄並橫向排版，打破等大網格的單調 */
+	.style-card--featured .style-card__img { aspect-ratio: 16 / 9; }
+	@media (min-width: 640px) {
+		.style-card--featured { grid-column: span 2; flex-direction: row; }
+		.style-card--featured .style-card__media { flex: 1 1 56%; }
+		.style-card--featured .style-card__img {
+			height: 100%;
+			aspect-ratio: auto;
+			border-bottom: none;
+			border-right: 2px solid var(--rule);
+		}
+		.style-card--featured .style-card__body { flex: 1 1 44%; justify-content: center; padding: 1.3rem 1.5rem; }
+		.style-card--featured .style-card__title { font-size: 1.55rem; }
+		.style-card--featured .style-card__desc { font-size: 0.95rem; }
+	}
 </style>
