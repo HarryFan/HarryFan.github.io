@@ -2,6 +2,7 @@
 title: '現在前端的價值：從「實作需求」到「參與決策」'
 description: '讀完一個 Senior Frontend Engineer 的職缺描述，我發呆了一下。現在的前端早就不是單純把畫面刻出來的人，而是參與決策、把 AI 變成產品靈魂的人。'
 pubDate: 2026-06-10
+heroImage: '/blog/2026-06-10-frontend-value-from-build-to-decide.webp'
 ---
 
 最近看到一個 Senior Frontend Engineer 的職缺，讀完描述後我發呆了一下，心裡想：「對，這就是現在前端的樣子。」

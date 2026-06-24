@@ -2,6 +2,7 @@
 title: '技術紀錄：解決 Ant Design Vue 表格寬度問題'
 description: 'Ant Design Vue 表格在視窗縮小後不會跟著縮回來，導致版面跑掉。其實只要把外層容器設 width:100% + overflow-x:auto 就解決了。'
 pubDate: 2024-08-08
+heroImage: '/blog/2024-08-08-antd-vue-table-width.webp'
 ---
 
 ## 響應式表格寬度調整

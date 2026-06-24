@@ -2,6 +2,7 @@
 title: '前端要不要碰後端？跨足後端，我建議先選 Node.js'
 description: '前端做久了難免會想「我是不是該碰點後端？」這不是焦慮，而是一種職涯癢。如果要跨足後端，身為前端出身，我真心建議首選 Node.js——原因沒別的，就是快。'
 pubDate: 2026-05-20
+heroImage: '/blog/2026-05-20-frontend-to-backend-pick-nodejs.webp'
 ---
 
 前端做久了，難免會想：「我是不是該碰點後端？」

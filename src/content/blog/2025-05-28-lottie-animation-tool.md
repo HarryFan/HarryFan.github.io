@@ -3,7 +3,7 @@ title: '原來如此！我居然錯過了這個動畫神器這麼久😳'
 pubDate: 2025-05-28
 description: '探索 Lottie 動畫工具如何簡化網頁動畫開發，從設計到實現的完整指南'
 tags: ['動畫神器', 'Lottie教學', 'Vue前端開發', '免費動畫', '網頁動效']
-heroImage: '/stagewise-full.BxTLA-IW.png'
+heroImage: '/blog/2025-05-28-lottie-animation-tool.webp'
 ---
 
 最近在做官網動畫時，無意間發現一個超像發現新大陸的寶藏工具 —— **Lottie**。
