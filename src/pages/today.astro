@@ -1,0 +1,496 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+
+const title = '如果只剩今天 — Harry';
+const description = '一個討論生命議題的互動自省作品。八個關於「為己而活」的抉擇，選了不可回頭。';
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body class="today-body">
+		<a class="exit" href={`${import.meta.env.BASE_URL}blog/`} aria-label="離開">×</a>
+
+		<main id="stage" class="stage">
+			<!-- 開場 -->
+			<section class="screen is-active" data-screen="intro">
+				<p class="kicker">一個討論生命的互動作品</p>
+				<h1 class="title">如果只剩今天</h1>
+				<p class="subtitle">If Today Were the Last</p>
+				<p class="lead">
+					接下來會有八個問題。<br />
+					每一個選擇，都<strong>無法收回</strong>。<br />
+					就像每一個真正過去的今天。
+				</p>
+				<button class="cta" data-action="start">開始</button>
+				<p class="warn">這是一個有點折磨身心的作品。準備好再開始。</p>
+			</section>
+
+			<!-- 題目（由 JS 注入） -->
+			<section class="screen" data-screen="question">
+				<p class="days" id="days"></p>
+				<p class="qcount" id="qcount"></p>
+				<h2 class="prompt" id="prompt"></h2>
+				<div class="choices" id="choices"></div>
+				<p class="passed" id="passed"></p>
+			</section>
+
+			<!-- 結語 -->
+			<section class="screen" data-screen="ending">
+				<p class="kicker">這就是你的今天</p>
+				<div class="card" id="card">
+					<p class="card-line" id="cardSelf"></p>
+					<p class="card-line" id="cardOther"></p>
+					<p class="verdict" id="verdict"></p>
+				</div>
+				<div class="ending-actions">
+					<button class="cta ghost" data-action="share">分享</button>
+					<a class="cta ghost" id="feedback" href="#">回饋想法</a>
+					<button class="cta ghost" data-action="restart">再活一次</button>
+				</div>
+				<p class="signoff">— Harry，《如果只剩今天》</p>
+			</section>
+		</main>
+
+		<script>
+			type Tag = 'self' | 'other';
+			interface Choice { label: string; tag: Tag; }
+			interface Question { prompt: string; choices: Choice[]; }
+
+			const QUESTIONS: Question[] = [
+				{
+					prompt: '今天醒來，你第一個想到的是——',
+					choices: [
+						{ label: '還沒回的工作訊息', tag: 'other' },
+						{ label: '昨晚沒做完、屬於自己的事', tag: 'self' },
+					],
+				},
+				{
+					prompt: '有句話，你已經想了很久。',
+					choices: [
+						{ label: '再忍著，時機還沒到', tag: 'other' },
+						{ label: '現在就說出口', tag: 'self' },
+					],
+				},
+				{
+					prompt: '一個你愧對的人，浮現出來。',
+					choices: [
+						{ label: '假裝沒想起，繼續過', tag: 'other' },
+						{ label: '記下他的名字，承認它', tag: 'self' },
+					],
+				},
+				{
+					prompt: '那個一直擱著的夢，又敲了門。',
+					choices: [
+						{ label: '等更穩定、更有餘裕再說', tag: 'other' },
+						{ label: '今天，先走出第一步', tag: 'self' },
+					],
+				},
+				{
+					prompt: '傍晚。有人需要你，你也想喘口氣。',
+					choices: [
+						{ label: '撐著，把他們顧好', tag: 'other' },
+						{ label: '誠實說：我需要休息', tag: 'self' },
+					],
+				},
+				{
+					prompt: '一段舊的傷，還沒放下。',
+					choices: [
+						{ label: '繼續記恨，這樣比較安全', tag: 'other' },
+						{ label: '為了自己，試著放手', tag: 'self' },
+					],
+				},
+				{
+					prompt: '如果現在回頭看，你最大的後悔是——',
+					choices: [
+						{ label: '太晚為自己活', tag: 'self' },
+						{ label: '讓太多人失望了', tag: 'other' },
+					],
+				},
+				{
+					prompt: '若這真的是最後一個今天，你會——',
+					choices: [
+						{ label: '把該交代的，交代完', tag: 'other' },
+						{ label: '做一件，只為自己的事', tag: 'self' },
+					],
+				},
+			];
+
+			const TOTAL = QUESTIONS.length;
+			const answers: Tag[] = [];
+			let idx = 0;
+
+			const stage = document.getElementById('stage')!;
+			const screens: Record<string, HTMLElement> = {};
+			document.querySelectorAll<HTMLElement>('.screen').forEach((el) => {
+				screens[el.dataset.screen!] = el;
+			});
+
+			function show(name: string) {
+				Object.values(screens).forEach((el) => el.classList.remove('is-active'));
+				screens[name].classList.add('is-active');
+				stage.scrollTop = 0;
+			}
+
+			const elDays = document.getElementById('days')!;
+			const elQcount = document.getElementById('qcount')!;
+			const elPrompt = document.getElementById('prompt')!;
+			const elChoices = document.getElementById('choices')!;
+			const elPassed = document.getElementById('passed')!;
+
+			function renderQuestion() {
+				const q = QUESTIONS[idx];
+				const remaining = TOTAL - idx;
+				elDays.textContent = remaining > 1 ? `你還剩 ${remaining} 個今天` : '這是最後一個今天';
+				elQcount.textContent = `${idx + 1} / ${TOTAL}`;
+				elPrompt.textContent = q.prompt;
+				elPassed.textContent = '';
+				elPassed.classList.remove('show');
+				elChoices.innerHTML = '';
+
+				q.choices.forEach((c) => {
+					const btn = document.createElement('button');
+					btn.className = 'choice';
+					btn.textContent = c.label;
+					btn.addEventListener('click', () => choose(c, btn), { once: true });
+					elChoices.appendChild(btn);
+				});
+			}
+
+			function choose(choice: Choice, btn: HTMLButtonElement) {
+				answers.push(choice.tag);
+				// 定格：其餘選項淡出、消失，選中的下沉
+				elChoices.querySelectorAll<HTMLButtonElement>('.choice').forEach((b) => {
+					b.disabled = true;
+					if (b !== btn) b.classList.add('faded');
+				});
+				btn.classList.add('chosen');
+				elPassed.textContent = '這一頁，已經過去。';
+				elPassed.classList.add('show');
+
+				window.setTimeout(() => {
+					idx += 1;
+					if (idx >= TOTAL) {
+						renderEnding();
+						show('ending');
+					} else {
+						renderQuestion();
+					}
+				}, 1600);
+			}
+
+			function renderEnding() {
+				const self = answers.filter((a) => a === 'self').length;
+				const other = TOTAL - self;
+
+				document.getElementById('cardSelf')!.textContent = `為自己，你選了 ${self} 次。`;
+				document.getElementById('cardOther')!.textContent = `為別人，你選了 ${other} 次。`;
+
+				let verdict: string;
+				if (self <= 2) {
+					verdict = '你幾乎沒有為自己活過。\n也許，明天可以留一格給自己。';
+				} else if (self >= 6) {
+					verdict = '你選擇了自己。\n這需要勇氣，也會留下一些空缺。';
+				} else {
+					verdict = '你在別人與自己之間，反覆。\n大多數人，都活在這裡。';
+				}
+				document.getElementById('verdict')!.textContent = verdict;
+
+				const url = 'https://harryfan.github.io/today';
+				const shareText = `《如果只剩今天》— 我為自己選了 ${self} 次，為別人選了 ${other} 次。\n你會怎麼選？ ${url}`;
+				(document.getElementById('card') as HTMLElement).dataset.share = shareText;
+
+				const subject = encodeURIComponent('《如果只剩今天》— 我的想法');
+				const body = encodeURIComponent(`我玩完了《如果只剩今天》。\n為自己 ${self} 次，為別人 ${other} 次。\n\n想跟你說：\n`);
+				(document.getElementById('feedback') as HTMLAnchorElement).href =
+					`mailto:harry750110@gmail.com?subject=${subject}&body=${body}`;
+			}
+
+			async function doShare() {
+				const text = (document.getElementById('card') as HTMLElement).dataset.share || '';
+				const btn = document.querySelector<HTMLButtonElement>('[data-action="share"]')!;
+				try {
+					if (navigator.share) {
+						await navigator.share({ title: '如果只剩今天', text });
+						return;
+					}
+					await navigator.clipboard.writeText(text);
+					btn.textContent = '已複製';
+					window.setTimeout(() => (btn.textContent = '分享'), 1800);
+				} catch {
+					/* 使用者取消或不支援，靜默 */
+				}
+			}
+
+			function restart() {
+				answers.length = 0;
+				idx = 0;
+				renderQuestion();
+				show('question');
+			}
+
+			document.querySelector('[data-action="start"]')!.addEventListener('click', () => {
+				renderQuestion();
+				show('question');
+			});
+			document.querySelector('[data-action="share"]')!.addEventListener('click', doShare);
+			document.querySelector('[data-action="restart"]')!.addEventListener('click', restart);
+		</script>
+
+		<style is:global>
+			/* 覆蓋主站 paper 風，整頁暗色沉浸 */
+			html,
+			body.today-body {
+				margin: 0;
+				padding: 0;
+				min-height: 100%;
+			}
+			body.today-body {
+				background: #0a0a0b;
+				color: #faf6ee;
+				font-family: 'Atkinson', ui-sans-serif, system-ui, -apple-system, 'Noto Serif TC', serif;
+				font-size: 25px;
+				line-height: 1.9;
+				-webkit-font-smoothing: antialiased;
+			}
+			body.today-body::before {
+				display: none;
+			}
+		</style>
+
+		<style>
+			.stage {
+				width: 100%;
+				min-height: 100vh;
+				min-height: 100dvh;
+				display: grid;
+				place-items: center;
+				padding: clamp(1.5rem, 6vw, 4rem) 1.25rem;
+				box-sizing: border-box;
+			}
+
+			.exit {
+				position: fixed;
+				top: 0.75rem;
+				right: 1rem;
+				z-index: 20;
+				color: #5a5a5e;
+				font-size: 1.6rem;
+				line-height: 1;
+				text-decoration: none;
+				transition: color 0.4s ease;
+			}
+			.exit:hover {
+				color: #ece7df;
+			}
+
+			.screen {
+				display: none;
+				max-width: 40rem;
+				width: 100%;
+				text-align: center;
+				animation: rise 1.1s ease both;
+			}
+			.screen.is-active {
+				display: block;
+			}
+
+			@keyframes rise {
+				from {
+					opacity: 0;
+					transform: translateY(14px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			/* 開場 */
+			.kicker {
+				color: #d2d2d7;
+				letter-spacing: 0.32em;
+				font-size: 0.92rem;
+				text-transform: uppercase;
+				margin: 0 0 1.6rem;
+			}
+			.title {
+				color: #fbf7ee;
+				font-size: clamp(2.8rem, 10vw, 4.6rem);
+				font-weight: 700;
+				letter-spacing: 0.06em;
+				margin: 0;
+			}
+			.subtitle {
+				color: #dcdce1;
+				letter-spacing: 0.18em;
+				font-size: 1.05rem;
+				margin: 0.6rem 0 2.6rem;
+			}
+			.lead {
+				color: #f2ede4;
+				margin: 0 0 2.8rem;
+			}
+			.lead strong {
+				color: #ffffff;
+				border-bottom: 1px solid #8a8a8e;
+			}
+			.warn {
+				color: #c4c4c9;
+				font-size: 0.9rem;
+				margin-top: 2rem;
+			}
+
+			/* 題目 */
+			.days {
+				color: #e2e2e7;
+				letter-spacing: 0.12em;
+				font-size: 1.15rem;
+				margin: 0 0 0.4rem;
+			}
+			.qcount {
+				color: #b0b0b5;
+				letter-spacing: 0.3em;
+				font-size: 0.92rem;
+				margin: 0 0 3rem;
+			}
+			.prompt {
+				color: #fbf7ee;
+				font-size: clamp(1.8rem, 5.5vw, 2.6rem);
+				font-weight: 700;
+				line-height: 1.5;
+				margin: 0 0 3.2rem;
+				min-height: 3em;
+			}
+			.choices {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+				align-items: stretch;
+			}
+
+			/* 結語卡片 */
+			.card {
+				border: 1px solid #2a2a2e;
+				border-radius: 10px;
+				padding: 2.4rem 1.6rem;
+				margin: 1.6rem 0 2.4rem;
+				background: linear-gradient(180deg, #121214, #0c0c0d);
+			}
+			.card-line {
+				margin: 0.2rem 0;
+				color: #f2ede4;
+			}
+			.verdict {
+				margin: 1.8rem 0 0;
+				color: #fbf7ee;
+				font-size: 1.35rem;
+				line-height: 1.7;
+				white-space: pre-line;
+			}
+			.ending-actions {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 0.75rem;
+			}
+			.signoff {
+				color: #c4c4c9;
+				font-size: 0.9rem;
+				margin-top: 2.4rem;
+				letter-spacing: 0.08em;
+			}
+
+			.passed {
+				margin-top: 2.4rem;
+				color: #cccccf;
+				font-size: 0.95rem;
+				letter-spacing: 0.1em;
+				opacity: 0;
+				transition: opacity 1s ease 0.3s;
+			}
+			.passed.show {
+				opacity: 1;
+			}
+
+			/* 按鈕 */
+			.cta {
+				display: inline-block;
+				background: #ece7df;
+				color: #0a0a0b;
+				border: none;
+				border-radius: 999px;
+				padding: 0.85rem 2.6rem;
+				font: inherit;
+				font-weight: 700;
+				letter-spacing: 0.1em;
+				cursor: pointer;
+				text-decoration: none;
+				transition: transform 0.3s ease, opacity 0.3s ease;
+			}
+			.cta:hover {
+				transform: translateY(-2px);
+			}
+			.cta.ghost {
+				background: transparent;
+				color: #f2ede4;
+				border: 1px solid #6c6c76;
+				padding: 0.7rem 1.6rem;
+				letter-spacing: 0.08em;
+			}
+			.cta.ghost:hover {
+				color: #ece7df;
+				border-color: #6a6a6e;
+			}
+
+			/* 選項按鈕由 JS 動態建立，拿不到 Astro scoped 屬性，必須用 :global */
+			:global(.choice) {
+				background: transparent;
+				color: #faf6ee;
+				border: 1px solid #5c5c66;
+				border-radius: 8px;
+				padding: 1.25rem 1.5rem;
+				font: inherit;
+				line-height: 1.5;
+				cursor: pointer;
+				transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease,
+					opacity 0.9s ease, transform 0.9s ease;
+			}
+			:global(.choice:hover:not(:disabled)) {
+				border-color: #7a7a7e;
+				color: #ece7df;
+				background: #131316;
+			}
+			:global(.choice:disabled) {
+				cursor: default;
+			}
+			:global(.choice.faded) {
+				opacity: 0;
+				transform: translateY(-6px);
+			}
+			:global(.choice.chosen) {
+				border-color: #4a4a4e;
+				color: #8a8a8f;
+				opacity: 0.55;
+				transform: translateY(8px);
+			}
+
+			@media (max-width: 480px) {
+				.cta {
+					width: 100%;
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				.screen,
+				.choice,
+				.passed {
+					animation: none !important;
+					transition: opacity 0.2s ease !important;
+				}
+			}
+		</style>
+	</body>
+</html>
