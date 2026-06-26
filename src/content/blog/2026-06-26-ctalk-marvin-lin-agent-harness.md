@@ -1,6 +1,7 @@
 ---
 title: '讓 AI 替你跑，你來決定跑什麼——從 Marvin Lin 的 Agent 實踐學到的事'
 pubDate: 2026-06-26
+heroImage: '/blog/2026-06-26-ctalk-marvin-lin-agent-harness.png'
 description: 'C Talk+ X TKUG #17 活動心得：Marvin Lin 分享 Agent = Harness + LLM 的核心框架，以及為什麼工程師的核心競爭力不是用了什麼模型，而是你想解決什麼問題。'
 ---
 

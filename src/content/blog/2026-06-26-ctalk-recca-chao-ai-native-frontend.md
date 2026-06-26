@@ -1,6 +1,7 @@
 ---
 title: '當 AI 成為你最勤奮的新人——從 Recca Chao 的分享，重新定義「寫程式」這件事'
 pubDate: 2026-06-26
+heroImage: '/blog/2026-06-26-ctalk-recca-chao-ai-native-frontend.png'
 description: 'C Talk+ X TKUG #17 活動心得：Recca Chao 談如何從「寫程式的人」升級成「設計流水線的人」，以及為什麼你的理解不能外包給 AI。'
 ---
 
