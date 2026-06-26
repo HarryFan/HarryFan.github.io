@@ -5,6 +5,8 @@ heroImage: '/blog/2026-06-26-ctalk-marvin-lin-ai-native.png'
 description: 'C Talk+ X TKUG #17 活動心得：Marvin Lin 談 Agent 時代基本功反而更重要、如何用 AI 建知識庫省掉重複溝通，以及「讓 AI 替你跑，你來決定跑什麼」這個工程師的新定位。'
 ---
 
+> 本文是 **[C Talk+ X TKUG #17 | AI-Native Frontend - 從 Prompt 到 Production 的工程實踐](https://www.accupass.com/event/2506030943501834300890)** 活動心得，記錄 Marvin Lin（CMoney 前端工程師）的演講重點與個人反思。活動於 2026.06.26（五）在新北市板橋區田明文化金融大樓舉辦，由 CMoney 全曜財經與 TKUG 共同主辦。
+
 Marvin 說他讓 Agent 跑了整晚，早上進辦公室時已有 28 個 task 完成。他只需要睡前把任務下好，機器自己跑。
 
 聽到這裡，台下一陣羨慕的氣氛。對一個前端工程師來說，這聽起來幾乎是夢寐以求的工作流。
