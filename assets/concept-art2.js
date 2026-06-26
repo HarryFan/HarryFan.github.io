@@ -1,0 +1,151 @@
+import { l as createVNode, H as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
+import 'clsx';
+
+const frontmatter = {
+  "title": "寫實概念美術",
+  "description": "電影與遊戲產業的視覺開發語言，氛圍營造、場景設計與寫實質感的概念設計。",
+  "category": "realistic",
+  "tags": ["概念美術", "場景設計", "視覺開發", "氛圍渲染", "數位繪景"],
+  "difficulty": "hard",
+  "prompt_zh": "寫實概念美術，電影級視覺開發，氛圍渲染，宏大的場景設計，戲劇性燈光，體積光與霧氣，精緻的環境細節，數位繪景，由 ArtStation 趨勢風格，廣角構圖，史詩感",
+  "prompt_en": "realistic concept art, cinematic visual development, atmospheric rendering, environment design, dramatic lighting, volumetric light and fog, matte painting, epic scale, intricate details, trending on ArtStation, key art, production design",
+  "negative_prompt": "flat illustration, cartoon, anime, low detail, amateur, oversaturated, cluttered composition, text, watermark, sketchy, deformed, bad anatomy",
+  "seo_title": "寫實概念美術風格提示詞｜ChatGPT、Midjourney、Flux 完整教學",
+  "seo_description": "完整寫實概念美術 AI 圖片提示詞教學，附中英文 Prompt、Negative Prompt、關鍵詞拆解與常見錯誤，教你用氛圍渲染、體積光、宏大場景與電影級燈光做出遊戲電影級概念圖，適用 ChatGPT、Midjourney、Flux、SD。",
+  "cover_image": "/styles/concept-art.webp",
+  "related_styles": ["cinematic", "dark-fantasy", "fantasy-rpg-art", "photorealistic", "hdr-landscape", "oil-painting"],
+  "pubDate": "2026-06-25T00:00:00.000Z",
+  "updated_at": "2026-06-25T00:00:00.000Z",
+  "featured": false,
+  "models": ["GPT Image", "Midjourney", "Flux", "Stable Diffusion"],
+  "use_cases": ["遊戲場景設計", "電影視覺開發", "環境繪景", "角色情境圖", "世界觀設定", "海報主視覺"],
+  "mistakes": ["缺少氛圍與大氣透視顯得扁平", "構圖沒有縱深與比例尺感", "燈光太平淡缺乏戲劇性", "細節堆砌過頭導致雜亂無焦點", "質感偏卡通失去寫實電影感"],
+  "prompt_breakdown": [{
+    "term": "realistic concept art",
+    "effect": "鎖定電影遊戲產業的寫實概念美術核心風格"
+  }, {
+    "term": "atmospheric rendering",
+    "effect": "強調大氣透視與氛圍營造，製造空間縱深"
+  }, {
+    "term": "environment design",
+    "effect": "指定環境與場景設計的視覺開發取向"
+  }, {
+    "term": "volumetric light and fog",
+    "effect": "加入體積光與霧氣，營造光束穿透的史詩氛圍"
+  }, {
+    "term": "dramatic lighting",
+    "effect": "用戲劇性燈光建立主次與情緒張力"
+  }, {
+    "term": "epic scale",
+    "effect": "強調宏大尺度與比例感，讓場景顯得壯闊"
+  }],
+  "faq": [{
+    "q": "寫實概念美術在哪個 AI 工具效果最好？",
+    "a": "Midjourney 對氛圍與史詩感最強，Flux 對構圖與細節最穩，GPT Image 適合對話迭代世界觀與場景設定。"
+  }, {
+    "q": "為什麼畫面扁平沒有空間感？",
+    "a": "加入 atmospheric rendering、aerial perspective、volumetric fog，用大氣透視讓遠景變淡、製造縱深。"
+  }, {
+    "q": "怎麼營造史詩般的尺度？",
+    "a": "用 epic scale 並放入比例尺參照，如渺小的人物站在巨大結構前，尺度對比立刻成立。"
+  }, {
+    "q": "為什麼燈光顯得平淡？",
+    "a": "用 dramatic lighting、volumetric light、key light，描述單一強光源與光束穿透霧氣的方向。"
+  }, {
+    "q": "trending on ArtStation 有用嗎？",
+    "a": "它能把畫面推向專業概念美術的審美傾向，但別只靠它，仍需具體描述場景、光線與氛圍。"
+  }, {
+    "q": "概念美術和插畫差在哪？",
+    "a": "概念美術服務於影視遊戲的視覺開發，重氛圍、設計與寫實質感，插畫則更偏裝飾與敘事表現。"
+  }, {
+    "q": "怎麼避免細節雜亂無焦點？",
+    "a": "把 cluttered composition 放進 Negative，並明確指定視覺焦點與留白區域，用燈光引導視線。"
+  }, {
+    "q": "中文還是英文 prompt 較好？",
+    "a": "英文對概念美術術語理解更準，建議英文為主、中文補充世界觀與情緒設定。"
+  }]
+};
+function getHeadings() {
+  return [];
+}
+function _createMdxContent(props) {
+  const _components = {
+    code: "code",
+    p: "p",
+    strong: "strong",
+    ...props.components
+  };
+  return createVNode(Fragment, {
+    children: [createVNode(_components.p, {
+      children: ["寫實概念美術（concept art）是電影與遊戲產業的視覺開發語言，它的任務不是畫一張漂亮成品，而是「先想清楚這個世界長什麼樣」。一張好的概念圖要同時回答氛圍、設計與尺度三個問題：這裡的光線與天氣如何？建築、地貌、載具的設計邏輯是什麼？人站在其中有多渺小？理解這點很重要，因為你下提示詞時，本質上是在請 AI 進行一次「視覺開發」，而不是生成裝飾性插畫。", createVNode(_components.code, {
+        children: "realistic concept art"
+      }), " 搭配 ", createVNode(_components.code, {
+        children: "cinematic visual development"
+      }), "、", createVNode(_components.code, {
+        children: "production design"
+      }), "，能把畫面導向產業級的設計思維。"]
+    }), "\n", createVNode(_components.p, {
+      children: ["技術核心有兩塊。第一是", createVNode(_components.strong, {
+        children: "氛圍與大氣透視"
+      }), "：概念美術最重視 ", createVNode(_components.code, {
+        children: "atmospheric rendering"
+      }), "——遠景因空氣中的水氣與粒子而變淡、偏冷，近景濃重，這層大氣透視是空間縱深的來源。配上 ", createVNode(_components.code, {
+        children: "volumetric light and fog"
+      }), "（體積光與霧氣），光束穿透霧氣灑下，史詩感立刻成形。第二是", createVNode(_components.strong, {
+        children: "燈光與尺度"
+      }), "：", createVNode(_components.code, {
+        children: "dramatic lighting"
+      }), " 用單一強光源建立明暗主次與情緒，而 ", createVNode(_components.code, {
+        children: "epic scale"
+      }), " 則靠比例對比——渺小的人物站在巨大的結構或地貌前——讓觀者直覺感受到壯闊。這套手法源自傳統的 ", createVNode(_components.code, {
+        children: "matte painting"
+      }), "（數位繪景），現在仍是場景概念的骨幹。"]
+    }), "\n", createVNode(_components.p, {
+      children: "題材與情緒上，這個風格最適合宏大、莊嚴、帶敘事懸念的世界觀：奇幻地貌、科幻都市、廢墟遺跡、戰場與航站。它能承載孤寂、敬畏與史詩冒險感，但因為偏寫實電影質感，並不適合可愛或扁平裝飾的主題。構圖時務必設定明確的視覺焦點與比例尺參照，用燈光引導視線，避免細節堆砌成一團沒有重點的雜訊。"
+    }), "\n", createVNode(_components.p, {
+      children: ["各模型實戰差異值得分開談。", createVNode(_components.strong, {
+        children: "Midjourney"
+      }), " 對氛圍、體積光與史詩感最強，常常短 prompt 就有電影海報的張力，建議 ", createVNode(_components.code, {
+        children: "--ar 16:9"
+      }), " 或 ", createVNode(_components.code, {
+        children: "--ar 21:9"
+      }), " 拍寬幅場景、加 ", createVNode(_components.code, {
+        children: "--stylize"
+      }), " 提升藝術性。", createVNode(_components.strong, {
+        children: "Flux"
+      }), " 在構圖邏輯與細節密度上最穩，自然語言描述「前景人物、中景結構、遠景大氣透視」的層次執行得準，偶爾偏寫實照片可加 ", createVNode(_components.code, {
+        children: "painterly"
+      }), "、", createVNode(_components.code, {
+        children: "concept art"
+      }), " 拉回繪畫感。", createVNode(_components.strong, {
+        children: "Stable Diffusion"
+      }), "（SDXL 配概念美術 LoRA）可控性最高，適合靠 ControlNet 鎖構圖與透視，CFG 抓 5～7、負面寫滿 ", createVNode(_components.code, {
+        children: "flat illustration, cartoon, cluttered composition"
+      }), "，並用較高張數挑選氛圍最對的一張。", createVNode(_components.strong, {
+        children: "ChatGPT 的 GPT Image"
+      }), " 強在對話迭代——先生一版，再用自然語言要「加體積光」「人物縮小強調尺度」「遠景再霧一點」，對發想世界觀最友善，但極致的氛圍質感與一致性略遜前三者。實務上我會先用 GPT Image 快速探索場景方向，再交給 Midjourney 或 Flux 量產高品質終稿。"]
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? createVNode(MDXLayout, {
+    ...props,
+    children: createVNode(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+
+const url = "src/content/styles/concept-art.mdx";
+const file = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/concept-art.mdx";
+const Content = (props = {}) => MDXContent({
+  ...props,
+  components: { Fragment: Fragment, ...props.components, },
+});
+Content[Symbol.for('mdx-component')] = true;
+Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
+Content.moduleId = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/concept-art.mdx";
+__astro_tag_component__(Content, 'astro:jsx');
+
+export { Content, Content as default, file, frontmatter, getHeadings, url };

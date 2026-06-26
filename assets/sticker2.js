@@ -1,0 +1,133 @@
+import { l as createVNode, H as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
+import 'clsx';
+
+const frontmatter = {
+  "title": "貼紙風",
+  "description": "粗白描邊、飽和平塗與光澤模切外框構成的可愛貼紙視覺風格。",
+  "category": "illustration",
+  "tags": ["貼紙", "描邊", "模切", "可愛"],
+  "difficulty": "easy",
+  "prompt_zh": "貼紙風格插畫，粗白色描邊外框，模切貼紙造型，飽和明亮的平塗色彩，簡單可愛的卡通造型，乾淨白底，輕微光澤高光，圓潤討喜的線條，置中單一主體，向量感插畫",
+  "prompt_en": "die-cut sticker design, thick white border outline, glossy vinyl sticker, bold flat saturated colors, cute kawaii cartoon, simple bold shapes, white background, subtle glossy highlight, clean vector illustration, centered single subject",
+  "negative_prompt": "photorealistic, complex background, gradient shading, realistic texture, painterly, busy composition, drop shadow clutter, blurry, watermark, text errors",
+  "seo_title": "貼紙風格提示詞｜ChatGPT、Midjourney、Flux 完整教學",
+  "seo_description": "完整貼紙風 AI 圖片提示詞教學，附中英文 Prompt、Negative Prompt、關鍵詞拆解與常見錯誤，教你用粗白描邊、模切外框與飽和平塗做出可愛貼紙質感，適用 ChatGPT、Midjourney、Flux、SD。",
+  "cover_image": "/styles/sticker.webp",
+  "related_styles": ["chibi", "flat-illustration", "pop-art", "childrens-book", "clay", "line-art"],
+  "pubDate": "2026-06-25T00:00:00.000Z",
+  "updated_at": "2026-06-25T00:00:00.000Z",
+  "featured": false,
+  "models": ["GPT Image", "Midjourney", "Flux", "Stable Diffusion"],
+  "use_cases": ["通訊軟體貼圖", "品牌吉祥物貼紙", "電商周邊", "社群表情包", "筆電裝飾貼", "LINE 與 Telegram 貼圖包"],
+  "mistakes": ["缺少粗白描邊失去貼紙感", "背景複雜無法模切去背", "主體太多無法當單一貼紙", "顏色不夠飽和顯得平淡", "線條太細失去可愛討喜感"],
+  "prompt_breakdown": [{
+    "term": "die-cut sticker design",
+    "effect": "鎖定模切貼紙的核心造型，主體單一可去背"
+  }, {
+    "term": "thick white border outline",
+    "effect": "加上粗白色描邊外框，這是貼紙最關鍵的辨識特徵"
+  }, {
+    "term": "bold flat saturated colors",
+    "effect": "用飽和明亮的平塗色彩，讓貼紙搶眼討喜"
+  }, {
+    "term": "cute kawaii cartoon",
+    "effect": "指定可愛卡通造型，貼紙最常見的親和風格"
+  }, {
+    "term": "subtle glossy highlight",
+    "effect": "加入輕微光澤高光，模擬亮面貼紙的塑膜質感"
+  }, {
+    "term": "white background",
+    "effect": "用乾淨白底方便後製去背與模切輸出"
+  }],
+  "faq": [{
+    "q": "貼紙風在哪個 AI 工具效果最好？",
+    "a": "GPT Image 對單一主體與白底去背最直覺，Midjourney 造型最討喜，Flux 對描邊粗細與配色控制較穩。"
+  }, {
+    "q": "為什麼看起來不像貼紙？",
+    "a": "通常少了粗白描邊。加入 thick white border outline、die-cut sticker design，並用乾淨白底方便去背。"
+  }, {
+    "q": "怎麼方便後製去背？",
+    "a": "明確寫 white background、isolated single subject，避免複雜背景與陰影，輸出後用去背工具即可乾淨切出。"
+  }, {
+    "q": "貼紙風可以商用嗎？",
+    "a": "風格本身不受著作權保護，但避免重現受保護的卡通角色，並確認所用模型授權條款。"
+  }, {
+    "q": "想做一整組表情包怎麼維持一致？",
+    "a": "固定同一角色造型與配色關鍵詞與 seed，Midjourney 用 cref 鎖角色，並逐張只改表情與動作。"
+  }, {
+    "q": "描邊要多粗才好看？",
+    "a": "中粗最討喜，太細失去貼紙感、太粗會吃掉細節。可寫 thick white border 並視主體大小微調。"
+  }, {
+    "q": "中文 prompt 和英文 prompt 哪個好？",
+    "a": "英文對 die-cut、kawaii、glossy sticker 等術語理解更精準，建議以英文為主、中文補充角色設定。"
+  }, {
+    "q": "怎麼讓貼紙在小尺寸仍清楚？",
+    "a": "用簡單造型、強對比配色與粗描邊，避免過多細節，確保縮到通訊軟體小圖仍辨識清楚。"
+  }]
+};
+function getHeadings() {
+  return [];
+}
+function _createMdxContent(props) {
+  const _components = {
+    code: "code",
+    p: "p",
+    strong: "strong",
+    ...props.components
+  };
+  return createVNode(Fragment, {
+    children: [createVNode(_components.p, {
+      children: "貼紙風（Sticker Style）是當代最普及的插畫應用之一，從通訊軟體貼圖、筆電裝飾貼到電商周邊都看得到它。它的設計哲學非常務實：在最小的尺寸、最雜的背景上，依然要一眼就能被認出。為此它演化出一套高效的視覺語言——單一主體、粗白描邊、飽和平塗、乾淨外框。理解這層「為可去背、可縮小而生」的邏輯很重要，因為你下提示詞時，本質上是在設計一個能被模切、能貼在任何地方的獨立圖案，而不是一張完整插畫。"
+    }), "\n", createVNode(_components.p, {
+      children: ["技術核心有兩塊。第一是外框：", createVNode(_components.code, {
+        children: "die-cut sticker design"
+      }), "（模切造型）與 ", createVNode(_components.code, {
+        children: "thick white border outline"
+      }), "（粗白描邊）是貼紙的靈魂，那圈白邊不只是裝飾，它在視覺上把貼紙與底層分離，模擬實體模切貼紙的物理邊界。第二是色彩與質感：", createVNode(_components.code, {
+        children: "bold flat saturated colors"
+      }), " 讓貼紙在任何背景上都夠搶眼，", createVNode(_components.code, {
+        children: "subtle glossy highlight"
+      }), " 則模擬亮面塑膜的反光。再配上 ", createVNode(_components.code, {
+        children: "white background"
+      }), "，後製去背與輸出 PNG 都會非常乾淨。"]
+    }), "\n", createVNode(_components.p, {
+      children: "題材與情緒上，這個風格最適合可愛、活潑、情緒鮮明的內容：吉祥物、表情符號、小動物、食物擬人。它擅長承載親和與趣味，但不適合需要細膩敘事或寫實氛圍的場景。做表情包或品牌貼紙時，務必讓主體單一、置中、背景留白，並用簡單造型確保縮到小圖仍清楚。"
+    }), "\n", createVNode(_components.p, {
+      children: ["各模型的實戰差異值得分開談。", createVNode(_components.strong, {
+        children: "ChatGPT 的 GPT Image"
+      }), " 對「單一主體＋白底＋粗白描邊」這套貼紙公式理解最到位，去背最乾淨，做一整套表情包時可逐句要「同一隻貓，改成生氣表情」，是最順手的選擇。", createVNode(_components.strong, {
+        children: "Midjourney"
+      }), " 造型最討喜、配色最有味，建議 ", createVNode(_components.code, {
+        children: "--ar 1:1"
+      }), " 並用 ", createVNode(_components.code, {
+        children: "--cref"
+      }), " 維持角色一致，但白底有時不夠純淨，需後製。", createVNode(_components.strong, {
+        children: "Flux"
+      }), " 在描邊粗細與平塗配色控制上最穩，對長句理解佳，要精確指定描邊與配色時表現出色。", createVNode(_components.strong, {
+        children: "Stable Diffusion"
+      }), "（SDXL 配 sticker LoRA）可控性最高，能靠 LoRA 與負面提示精調描邊與光澤，CFG 抓 5～7，並把 complex background 寫進負面避免雜亂。實務上我會先用 GPT Image 快速定角色與表情包，再視需要拿到 Midjourney 提升造型討喜度。"]
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? createVNode(MDXLayout, {
+    ...props,
+    children: createVNode(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+
+const url = "src/content/styles/sticker.mdx";
+const file = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/sticker.mdx";
+const Content = (props = {}) => MDXContent({
+  ...props,
+  components: { Fragment: Fragment, ...props.components, },
+});
+Content[Symbol.for('mdx-component')] = true;
+Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
+Content.moduleId = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/sticker.mdx";
+__astro_tag_component__(Content, 'astro:jsx');
+
+export { Content, Content as default, file, frontmatter, getHeadings, url };

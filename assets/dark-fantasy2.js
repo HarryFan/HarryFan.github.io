@@ -1,0 +1,153 @@
+import { l as createVNode, H as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
+import 'clsx';
+
+const frontmatter = {
+  "title": "魂系黑暗奇幻",
+  "description": "陰鬱壓抑的黑暗奇幻美學，腐朽的哥德建築與恐怖怪物，魂系遊戲那種絕望又莊嚴的氛圍。",
+  "category": "game",
+  "tags": ["黑暗奇幻", "魂系", "哥德", "恐怖", "氛圍"],
+  "difficulty": "hard",
+  "prompt_zh": "黑暗奇幻概念藝術，魂系遊戲風格，陰鬱壓抑的氛圍，腐朽的哥德式建築，恐怖的怪物設計，霧氣瀰漫的場景，低彩度暗沉色調，戲劇性的明暗對比，絕望而莊嚴的氣息，精緻的盔甲與骨骼細節，類似黑暗靈魂與血源詛咒",
+  "prompt_en": "dark fantasy concept art, Soulslike atmosphere, grim and oppressive mood, decayed gothic architecture, eldritch monster design, foggy environment, desaturated muted palette, dramatic chiaroscuro lighting, despair and grandeur, intricate armor and bone details, Bloodborne style, Dark Souls aesthetic, volumetric fog",
+  "negative_prompt": "bright cheerful colors, cute, anime, flat lighting, low detail, clean, photorealistic portrait, text, watermark, modern setting, saturated, happy",
+  "seo_title": "魂系黑暗奇幻風格提示詞｜ChatGPT、Midjourney、Flux 完整教學",
+  "seo_description": "完整魂系黑暗奇幻 AI 提示詞教學，附中英文 Prompt、Negative Prompt、關鍵詞拆解與常見錯誤，教你用低彩度色調、霧氣與明暗對比做出黑暗靈魂、血源詛咒式絕望氛圍，適用 ChatGPT、Midjourney、Flux、SD。",
+  "cover_image": "/styles/dark-fantasy.webp",
+  "related_styles": ["fantasy-rpg-art", "concept-art", "film-noir", "cinematic", "oil-painting", "ink-wash"],
+  "pubDate": "2026-06-25T00:00:00.000Z",
+  "updated_at": "2026-06-25T00:00:00.000Z",
+  "featured": false,
+  "models": ["GPT Image", "Midjourney", "Flux", "Stable Diffusion"],
+  "use_cases": ["Boss怪物設計", "場景概念圖", "遊戲主視覺", "卡牌插畫", "氛圍場景", "世界觀設定"],
+  "mistakes": ["色彩太鮮豔失去陰鬱感", "缺少霧氣顯得空洞單薄", "光照太平淡沒有絕望張力", "怪物設計流於可愛不夠恐怖", "細節堆砌過頭失去莊嚴感"],
+  "prompt_breakdown": [{
+    "term": "dark fantasy concept art",
+    "effect": "鎖定整體黑暗奇幻概念藝術的美術核心"
+  }, {
+    "term": "grim and oppressive mood",
+    "effect": "指定陰鬱壓抑的情緒基調，這是魂系的靈魂"
+  }, {
+    "term": "decayed gothic architecture",
+    "effect": "加入腐朽的哥德建築，營造衰敗的世界觀"
+  }, {
+    "term": "desaturated muted palette",
+    "effect": "壓低彩度與明度，避開明亮歡快的色彩"
+  }, {
+    "term": "dramatic chiaroscuro lighting",
+    "effect": "用強烈明暗對比製造戲劇性與絕望感"
+  }, {
+    "term": "volumetric fog",
+    "effect": "加入體積霧氣，賦予空間深度與不祥氛圍"
+  }],
+  "faq": [{
+    "q": "魂系黑暗奇幻在哪個 AI 工具效果最好？",
+    "a": "Midjourney 氛圍與明暗對比最強，Flux 怪物細節與構圖穩定，GPT Image 適合對話調整恐怖元素。"
+  }, {
+    "q": "怎麼做出黑暗靈魂那種絕望感？",
+    "a": "直接寫 Dark Souls aesthetic、Soulslike 搭配 desaturated palette、volumetric fog 與 chiaroscuro，氛圍會很到位。"
+  }, {
+    "q": "為什麼畫面太鮮豔不夠陰鬱？",
+    "a": "把 bright cheerful colors、saturated 放進 Negative Prompt，並在正向強調 desaturated muted palette、grim mood。"
+  }, {
+    "q": "怪物設計怎麼避免變可愛？",
+    "a": "把 cute 寫進負面，正向加 eldritch monster design、bone details、grotesque，並用低光與剪影增加威脅感。"
+  }, {
+    "q": "黑暗奇幻和一般奇幻原畫差在哪？",
+    "a": "一般奇幻原畫偏明亮史詩，黑暗奇幻刻意壓低彩度與情緒，強調腐朽、恐怖與絕望，氣質更沉重莊嚴。"
+  }, {
+    "q": "中文 prompt 還是英文好？",
+    "a": "英文對 Soulslike、chiaroscuro 等術語理解更準，建議英文為主、中文補充場景與情緒。"
+  }, {
+    "q": "適合做 Boss 怪物設計嗎？",
+    "a": "非常適合，魂系美學天生為宏大恐怖的 Boss 而生，建議用低視角與霧氣襯托體型壓迫感。"
+  }, {
+    "q": "為什麼場景顯得空洞單薄？",
+    "a": "多半缺少體積霧氣與明暗層次，加上 volumetric fog 與 chiaroscuro，並讓光從單一方向切入，空間立刻有重量。"
+  }]
+};
+function getHeadings() {
+  return [];
+}
+function _createMdxContent(props) {
+  const _components = {
+    code: "code",
+    p: "p",
+    strong: "strong",
+    ...props.components
+  };
+  return createVNode(Fragment, {
+    children: [createVNode(_components.p, {
+      children: ["魂系黑暗奇幻（Soulslike dark fantasy）是近十年最具影響力的遊戲美學之一，源頭是 ", createVNode(_components.code, {
+        children: "FromSoftware"
+      }), " 的黑暗靈魂、血源詛咒與艾爾登法環。它繼承了西方黑暗奇幻文學與哥德恐怖的血脈——衰敗的王國、被詛咒的騎士、不可名狀的克蘇魯怪物——但真正讓它成為一種視覺語言的，是那股「絕望中帶著莊嚴」的獨特氣質。理解這層哲學很重要：它不是單純的恐怖或黑暗，而是在腐朽與崇高之間取得平衡。下提示詞時，你要請 AI 模擬的不只是一個陰暗場景，而是一個「曾經輝煌、如今正在崩壞」的世界，每一處衰敗都還殘留著昔日的尊嚴。"]
+    }), "\n", createVNode(_components.p, {
+      children: ["技術核心有三塊撐起這個風格。第一是", createVNode(_components.strong, {
+        children: "低彩度色調"
+      }), "，", createVNode(_components.code, {
+        children: "desaturated muted palette"
+      }), " 把色彩往灰、褐、墨綠壓，刻意避開明亮歡快的飽和色——這是奠定陰鬱基調的第一步。第二是", createVNode(_components.strong, {
+        children: "戲劇性明暗對比"
+      }), "，", createVNode(_components.code, {
+        children: "dramatic chiaroscuro lighting"
+      }), " 借用古典繪畫的明暗法，讓大片陰影吞噬畫面、僅留少量光勾出主體輪廓，製造壓迫與不祥。第三是", createVNode(_components.strong, {
+        children: "體積霧氣"
+      }), "，", createVNode(_components.code, {
+        children: "volumetric fog"
+      }), " 不只是裝飾，它賦予空間深度、模糊遠景、營造「看不清前方有什麼」的恐懼。三者搭配 ", createVNode(_components.code, {
+        children: "decayed gothic architecture"
+      }), " 與 ", createVNode(_components.code, {
+        children: "eldritch monster design"
+      }), "，黑暗奇幻的世界觀就完整了。"]
+    }), "\n", createVNode(_components.p, {
+      children: "題材與情緒上，這個風格最適合沉重、莊嚴、帶恐怖感的內容：宏大的 Boss 怪物、腐朽的教堂遺跡、被詛咒的騎士、不祥的祭壇。它能承載絕望、孤獨與崇高交織的複雜情緒，但完全不適合輕快可愛的題材。做 Boss 設計時建議用低視角強化體型壓迫，用霧氣與剪影製造威脅，避免細節堆砌過頭反而失去莊嚴的留白。"
+    }), "\n", createVNode(_components.p, {
+      children: ["各模型的實戰差異值得分開談。", createVNode(_components.strong, {
+        children: "Midjourney"
+      }), " 對氛圍與明暗對比的還原最強，短 prompt 就能出 ", createVNode(_components.code, {
+        children: "Bloodborne"
+      }), " 那種沉重質感，鎖系列風格時固定 ", createVNode(_components.code, {
+        children: "--seed"
+      }), "、用 ", createVNode(_components.code, {
+        children: "--ar 16:9"
+      }), " 做場景、", createVNode(_components.code, {
+        children: "--ar 2:3"
+      }), " 做 Boss 立繪，並可拉高 ", createVNode(_components.code, {
+        children: "--stylize"
+      }), " 增加藝術陰鬱感。", createVNode(_components.strong, {
+        children: "Flux"
+      }), " 在開源陣營裡怪物細節與構圖最穩，對長句理解佳，適合精準描述哥德結構與骨骼裝甲，但偶爾彩度偏高，這時把 ", createVNode(_components.code, {
+        children: "desaturated"
+      }), "、", createVNode(_components.code, {
+        children: "grim"
+      }), " 往前放並加重。", createVNode(_components.strong, {
+        children: "Stable Diffusion"
+      }), "（SDXL 配 dark fantasy LoRA）可控性最高，能用 ControlNet 鎖怪物姿態、區域重繪強化恐怖細節，建議 CFG 抓 6～8、負面寫滿 ", createVNode(_components.code, {
+        children: "bright colors, cute, saturated"
+      }), "。", createVNode(_components.strong, {
+        children: "ChatGPT 的 GPT Image"
+      }), " 強在對話迭代，可以邊生邊要「再陰暗一點」「加更多霧」「怪物更扭曲」，發想階段最友善，但陰鬱質感與一致性略遜前三者。實務流程通常先用 Midjourney 定氛圍方向，再拿到 Flux 或 SD 精修怪物與場景細節做終稿。"]
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? createVNode(MDXLayout, {
+    ...props,
+    children: createVNode(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+
+const url = "src/content/styles/dark-fantasy.mdx";
+const file = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/dark-fantasy.mdx";
+const Content = (props = {}) => MDXContent({
+  ...props,
+  components: { Fragment: Fragment, ...props.components, },
+});
+Content[Symbol.for('mdx-component')] = true;
+Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
+Content.moduleId = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/dark-fantasy.mdx";
+__astro_tag_component__(Content, 'astro:jsx');
+
+export { Content, Content as default, file, frontmatter, getHeadings, url };

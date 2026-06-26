@@ -1,4 +1,5 @@
-import { e as createAstro, c as createComponent, a as renderComponent, b as renderHead, d as addAttribute, r as renderTemplate, g as renderSlot } from './astro/server.js';
+import { e as createAstro, c as createComponent, a as renderComponent, b as renderHead, d as addAttribute, f as renderSlot, r as renderTemplate } from './astro/server.js';
+import 'kleur/colors';
 import { $ as $$BaseHead } from './BaseHead.js';
 import { a as $$Header, $ as $$Footer } from './Footer.js';
 import { $ as $$FormattedDate } from './FormattedDate.js';
@@ -14,6 +15,6 @@ const $$BlogPost = createComponent(($$result, $$props, $$slots) => {
   const coverSrc = heroSrc ?? coverSvgDataUri(title);
   return renderTemplate`<html lang="en" data-astro-cid-bvzihdzo> <head>${renderComponent($$result, "BaseHead", $$BaseHead, { "title": title, "description": description, "data-astro-cid-bvzihdzo": true })}${renderHead()}</head> <body data-astro-cid-bvzihdzo> ${renderComponent($$result, "Header", $$Header, { "data-astro-cid-bvzihdzo": true })} <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img${addAttribute(1020, "width")}${addAttribute(510, "height")}${addAttribute(coverSrc, "src")} alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> ${renderComponent($$result, "FormattedDate", $$FormattedDate, { "date": pubDate, "data-astro-cid-bvzihdzo": true })} ${updatedDate && renderTemplate`<div class="last-updated-on" data-astro-cid-bvzihdzo>
 Last updated on ${renderComponent($$result, "FormattedDate", $$FormattedDate, { "date": updatedDate, "data-astro-cid-bvzihdzo": true })} </div>`} </div> <h1 data-astro-cid-bvzihdzo>${title}</h1> <hr data-astro-cid-bvzihdzo> </div> ${renderSlot($$result, $$slots["default"])} </div> </article> </main> ${renderComponent($$result, "Footer", $$Footer, { "data-astro-cid-bvzihdzo": true })} </body></html>`;
-}, "/Users/harry/Documents/Astro/harryfan.github.io/src/layouts/BlogPost.astro", void 0);
+}, "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/layouts/BlogPost.astro", void 0);
 
 export { $$BlogPost as $ };

@@ -1,0 +1,139 @@
+import { l as createVNode, H as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
+import 'clsx';
+
+const frontmatter = {
+  "title": "浮世繪風格",
+  "description": "木刻平塗、流動線條與和風配色，江戶浮世繪的東洋版畫美學。",
+  "category": "illustration",
+  "tags": ["浮世繪", "日本版畫", "木刻", "和風"],
+  "difficulty": "medium",
+  "prompt_zh": "日本浮世繪木刻版畫風格，平塗的色塊與粗黑輪廓線，流動的衣紋與波浪線條，傳統和風配色，富士山與海浪等江戶題材，木紋印刷質感，扁平無透視的構圖，雲母與漸層暈色，葛飾北齋與歌川廣重風格",
+  "prompt_en": "Japanese ukiyo-e woodblock print, flat color blocks with bold black outlines, flowing fabric and wave lines, traditional Japanese color palette, Edo period motifs like Mount Fuji and great waves, woodgrain print texture, flat non-perspective composition, bokashi gradient, Hokusai and Hiroshige style",
+  "negative_prompt": "photorealistic, 3d render, western perspective, oil painting, gradient mesh, modern, low quality, blurry, text, watermark, hyperdetailed, vibrant neon",
+  "seo_title": "浮世繪風格提示詞｜ChatGPT、Midjourney、Flux 完整教學",
+  "seo_description": "完整浮世繪木刻版畫風格 AI 提示詞教學，附中英文 Prompt、Negative Prompt、關鍵詞拆解與常見錯誤，教你用平塗色塊、粗黑輪廓與和風配色做出江戶版畫，適用 ChatGPT、Midjourney、Flux、SD。",
+  "cover_image": "/styles/ukiyo-e.webp",
+  "related_styles": ["ink-wash", "art-nouveau", "flat-illustration", "line-art", "retro-anime-80s", "pop-art"],
+  "pubDate": "2026-06-25T00:00:00.000Z",
+  "updated_at": "2026-06-25T00:00:00.000Z",
+  "featured": false,
+  "models": ["GPT Image", "Midjourney", "Flux", "Stable Diffusion"],
+  "use_cases": ["和風海報", "文創包裝", "書封設計", "T恤圖樣", "空間掛畫", "社群貼文"],
+  "mistakes": ["加入西式透視破壞平面構圖", "輪廓線太細失去木刻力道", "配色太現代不夠和風", "出現漸層光影破壞平塗", "缺少木紋印刷質感"],
+  "prompt_breakdown": [{
+    "term": "Japanese ukiyo-e woodblock print",
+    "effect": "鎖定浮世繪木刻版畫的核心美術風格關鍵詞"
+  }, {
+    "term": "flat color blocks with bold black outlines",
+    "effect": "平塗色塊配粗黑輪廓，是浮世繪的視覺骨架"
+  }, {
+    "term": "flowing fabric and wave lines",
+    "effect": "流動的衣紋與波浪線條，浮世繪標誌性的動感"
+  }, {
+    "term": "flat non-perspective composition",
+    "effect": "扁平無透視構圖，呼應東洋平面美學"
+  }, {
+    "term": "bokashi gradient",
+    "effect": "雲母漸層暈色，傳統版畫的天空與水面技法"
+  }, {
+    "term": "woodgrain print texture",
+    "effect": "木紋印刷質感，還原版畫的手工拓印痕跡"
+  }],
+  "faq": [{
+    "q": "浮世繪風格在哪個 AI 工具效果最好？",
+    "a": "Midjourney 對和風配色與構圖最有味道，Flux 線條穩定，GPT Image 最適合用對話調整題材與色塊。"
+  }, {
+    "q": "為什麼出現西式透視？",
+    "a": "浮世繪是平面構圖。把 western perspective、3d 放進負面，正向加 flat composition、non-perspective。"
+  }, {
+    "q": "如何做出木刻版畫的力道？",
+    "a": "強調 bold black outlines、woodblock print、woodgrain texture，避免細弱線條與柔光。"
+  }, {
+    "q": "浮世繪風格可以商用嗎？",
+    "a": "古典浮世繪多已進入公共領域，風格本身不受著作權保護，但建議確認所用模型授權條款。"
+  }, {
+    "q": "配色怎麼抓才地道？",
+    "a": "用 traditional Japanese palette，偏靛藍、赭紅、墨黑與米色，避免螢光與高彩度現代色。"
+  }, {
+    "q": "什麼是 bokashi？",
+    "a": "浮世繪的漸層暈染技法，常用於天空與水面，加入 bokashi gradient 可還原這種柔和過渡。"
+  }, {
+    "q": "適合做哪些題材？",
+    "a": "海浪、富士山、歌舞伎、美人、花鳥都很經典，現代物件也可以浮世繪化做出趣味反差。"
+  }, {
+    "q": "中文還是英文 prompt 比較好？",
+    "a": "英文模型理解較精準，建議以英文為主，並用 Hokusai、Hiroshige 等畫家名強化風格。"
+  }]
+};
+function getHeadings() {
+  return [];
+}
+function _createMdxContent(props) {
+  const _components = {
+    code: "code",
+    p: "p",
+    strong: "strong",
+    ...props.components
+  };
+  return createVNode(Fragment, {
+    children: [createVNode(_components.p, {
+      children: "浮世繪是江戶時代庶民文化的結晶，「浮世」意指當下流轉的現世享樂。這種木刻版畫透過量產讓藝術走入尋常百姓家，題材從歌舞伎演員、美人、相撲到風景名所無所不包。它最深遠的影響在於十九世紀傳入歐洲後催生的「日本主義」，直接啟發了梵谷、莫內與後來的新藝術運動。理解這層脈絡很重要——浮世繪的扁平構圖與大膽色塊，正是它顛覆西方透視傳統的革命性所在。當你下提示詞時，本質上是在請 AI 模擬「雕版師與摺師多次套色拓印」的版畫結果。"
+    }), "\n", createVNode(_components.p, {
+      children: ["技術核心在於平面性與輪廓。", createVNode(_components.code, {
+        children: "flat color blocks with bold black outlines"
+      }), " 是骨架——浮世繪先以墨線版定輪廓，再逐色套印，所以色塊乾淨、輪廓粗黑有力，這與西畫的漸層光影完全不同。構圖上 ", createVNode(_components.code, {
+        children: "flat non-perspective composition"
+      }), " 是關鍵，浮世繪刻意壓縮空間、用平面層疊取代焦點透視。動感則來自 ", createVNode(_components.code, {
+        children: "flowing fabric and wave lines"
+      }), "，北齋的《神奈川沖浪裏》正是線條韻律的巔峰。再加 ", createVNode(_components.code, {
+        children: "bokashi gradient"
+      }), " 的暈色技法與 ", createVNode(_components.code, {
+        children: "woodgrain print texture"
+      }), " 的木紋拓印感，地道度立刻提升。"]
+    }), "\n", createVNode(_components.p, {
+      children: ["題材上，浮世繪最適合風景名所、海浪、富士山、美人、花鳥等經典母題，也很適合把現代物件「浮世繪化」做出趣味反差。情緒上偏典雅、動態、帶裝飾性，配色應走 ", createVNode(_components.code, {
+        children: "traditional Japanese palette"
+      }), "——靛藍、赭紅、墨黑與米色，避免螢光與高彩度現代色。實作時記得維持平面構圖、輪廓粗黑有力，並善用波浪與衣紋線條製造流動感。"]
+    }), "\n", createVNode(_components.p, {
+      children: ["各模型實戰差異值得分開談。", createVNode(_components.strong, {
+        children: "Midjourney"
+      }), " 對和風配色與裝飾構圖最有靈氣，短 prompt 就有版畫味，但要把 ", createVNode(_components.code, {
+        children: "--no western perspective, 3d"
+      }), " 寫進負面，避免它加立體光影。", createVNode(_components.strong, {
+        children: "Flux"
+      }), " 對線條與色塊的乾淨度最穩，自然語言理解佳，適合複雜的場景敘事，但偶爾偏寫實，記得把 ", createVNode(_components.code, {
+        children: "woodblock print"
+      }), "、", createVNode(_components.code, {
+        children: "flat"
+      }), " 往前放。", createVNode(_components.strong, {
+        children: "Stable Diffusion"
+      }), "（SDXL 配 ukiyo-e LoRA）可控性最高，能精準還原木刻質感，建議 CFG 抓 5～7、負面寫滿 ", createVNode(_components.code, {
+        children: "photorealistic, perspective, oil painting"
+      }), "。", createVNode(_components.strong, {
+        children: "ChatGPT 的 GPT Image"
+      }), " 強在對話迭代，先生一版再要「輪廓更粗」「天空加 bokashi 漸層」，對不熟和風技法者最友善，但木紋質感的細膩度略遜前三者。我的流程是用 GPT Image 定題材與構圖，再到 Midjourney 或 SD 追求最地道的版畫終稿。"]
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? createVNode(MDXLayout, {
+    ...props,
+    children: createVNode(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+
+const url = "src/content/styles/ukiyo-e.mdx";
+const file = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/ukiyo-e.mdx";
+const Content = (props = {}) => MDXContent({
+  ...props,
+  components: { Fragment: Fragment, ...props.components, },
+});
+Content[Symbol.for('mdx-component')] = true;
+Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
+Content.moduleId = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/ukiyo-e.mdx";
+__astro_tag_component__(Content, 'astro:jsx');
+
+export { Content, Content as default, file, frontmatter, getHeadings, url };

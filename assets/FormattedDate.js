@@ -1,4 +1,6 @@
 import { e as createAstro, c as createComponent, m as maybeRenderHead, d as addAttribute, r as renderTemplate } from './astro/server.js';
+import 'kleur/colors';
+import 'clsx';
 
 const $$Astro = createAstro("https://harryfan.github.io");
 const $$FormattedDate = createComponent(($$result, $$props, $$slots) => {
@@ -10,6 +12,6 @@ const $$FormattedDate = createComponent(($$result, $$props, $$slots) => {
     month: "short",
     day: "numeric"
   })} </time>`;
-}, "/Users/harry/Documents/Astro/harryfan.github.io/src/components/FormattedDate.astro", void 0);
+}, "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/components/FormattedDate.astro", void 0);
 
 export { $$FormattedDate as $ };
