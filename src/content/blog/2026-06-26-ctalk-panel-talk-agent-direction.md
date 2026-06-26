@@ -5,7 +5,7 @@ heroImage: '/blog/2026-06-26-ctalk-panel-talk-agent-direction.png'
 description: 'C Talk+ X TKUG #17 活動心得：Panel Q&A 段落的碎片思考——從 Agent 介入時機、多 Agent 驗證機制，到「設計能力比打字能力更重要」這個核心結論。'
 ---
 
-> 這是 C Talk+ X TKUG #17 活動心得的第三篇。前兩篇分別記錄了 [Recca Chao 的分享——如何從「寫程式的人」升級成「設計流水線的人」](/blog/2026-06-26-ctalk-recca-chao-ai-native-frontend)，以及 [Marvin Lin 的 Agent 實踐——Agent = Harness + LLM 的核心框架](/blog/2026-06-26-ctalk-marvin-lin-ai-native)。如果你還沒讀過，建議先從那兩篇開始，這篇的脈絡會更清楚。
+> 這是 C Talk+ X TKUG #17 活動心得的第三篇。前兩篇分別記錄了 [Recca Chao 的分享——如何從「寫程式的人」升級成「設計流水線的人」](/blog/2026-06-26-ctalk-recca-chao-ai-native-frontend)，以及 [Marvin Lin 的 Agent 實踐——Agents 時代基本功反而更重要](/blog/2026-06-26-ctalk-marvin-lin-ai-native)。如果你還沒讀過，建議先從那兩篇開始，這篇的脈絡會更清楚。
 
 Panel 的 Q&A 段落通常是我最喜歡的部分。不是因為答案一定比演講更精彩，而是因為問題本身往往比答案更誠實——那是一整個場子的工程師，消化完前面的分享之後，心底真正想搞懂的事。
 
