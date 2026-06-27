@@ -2,7 +2,7 @@
 title: '開源新專案：台灣公共圖標選型顧問 AI Skill（CNS16282）'
 description: '剛上架一個 Windsurf & Claude Code 雙平台支援的 AI Skill：協助設計師、工程師、產品經理快速選型「CNS16282 台灣公共圖標」，自動判斷場景、推薦分類與代號。'
 pubDate: 2026-06-05
-heroImage: '/blog/2026-06-05-taiwan-public-icons-ai-skill.webp'
+heroImage: '/blog/2026-06-05-taiwan-public-icons-ai-skill.png'
 ---
 
 剛上架了一個 Windsurf & Claude Code 雙平台支援的 AI Skill，分享給大家。

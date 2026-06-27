@@ -2,7 +2,7 @@
 title: 'AI 跑得快，軟體工程讓它跑得對：聽 Denny Huang 講 Harness'
 description: 'GDG Taipei 六月月會，Denny Huang 用 SITCON Flickr Photo Finder 一個專案，講透 AI 時代的 Harness。十五年前端的我聽完鬆一口氣：軟體工程不只還需要，搞不好更需要。'
 pubDate: 2026-06-18
-heroImage: '/blog/2026-06-18-harness-engineering-denny-huang.webp'
+heroImage: '/blog/2026-06-18-harness-engineering-denny-huang.png'
 ---
 
 > 那天在天瓏聽 Denny 講 Harness，回家想了很久。

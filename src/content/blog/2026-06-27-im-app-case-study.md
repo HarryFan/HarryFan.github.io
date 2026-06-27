@@ -2,7 +2,8 @@
 title: '從零打造即時聊天室：用 Claude Code 完成 Vue 3 + WebSocket 全端專案'
 description: '記錄從 0 到可上線的即時聊天應用——Vue 3 前端、Fastify + WebSocket 後端、PostgreSQL + Redis、完整 E2E 測試、加群退群——以及途中遇到的每一個坑。'
 pubDate: 2026-06-27
-heroImage: '/blog/2026-06-27-im-app-case-study.webp'
+heroImage: '/blog/2026-06-27-im-app-case-study.png'
+draft: true
 ---
 
 ## TL;DR

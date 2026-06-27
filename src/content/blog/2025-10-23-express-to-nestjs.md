@@ -2,7 +2,7 @@
 title: '前端寫後端的真心話：從 Express 升級成 NestJS 心得'
 description: '用 Express 開 API 一開始很爽，專案變大就變痛苦。換成 NestJS 後，那種模組化、controller / service 分離的結構，根本就是給前端工程師設計的後端框架。'
 pubDate: 2025-10-23
-heroImage: '/blog/2025-10-23-express-to-nestjs.webp'
+heroImage: '/blog/2025-10-23-express-to-nestjs.png'
 ---
 
 ## 用 Express 開 API 一開始很爽，後來就變痛苦了

@@ -1,7 +1,7 @@
 ---
 title: '當後端變成樂高：一個前端工程師在 AWS × MongoDB 研討會的現場筆記'
 pubDate: 2026-03-19
-heroImage: '/blog/2026-03-19-aws-mongodb-seminar-notes.webp'
+heroImage: '/blog/2026-03-19-aws-mongodb-seminar-notes.png'
 description: '從規格驅動開發到容器化與向量搜尋：把「凌晨三點電話」變少的實戰做法。'
 ---
 

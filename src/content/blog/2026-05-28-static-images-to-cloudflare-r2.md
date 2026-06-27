@@ -2,7 +2,7 @@
 title: '把專案靜態圖片搬到 Cloudflare R2'
 description: '圖片塞在 src/assets，每次 deploy 都要連著幾 MB 的圖一起打包上傳——明明圖片根本沒動。選 R2 的理由只有一個：出口流量免費，CDN 還是內建的。'
 pubDate: 2026-05-28
-heroImage: '/blog/2026-05-28-static-images-to-cloudflare-r2.webp'
+heroImage: '/blog/2026-05-28-static-images-to-cloudflare-r2.png'
 ---
 
 最近把專案的靜態圖片搬到 Cloudflare R2，順手寫了一篇。

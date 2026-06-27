@@ -2,7 +2,7 @@
 title: 'Vue2 輸入元件優化實戰：讓使用者只能輸入整數'
 description: '管理系統常見需求：某些欄位只能填整數。與其新寫一個元件，不如在現有 editInput.vue 加個開關。分享我的 props 開關 + 驗證 + 即時提示做法。'
 pubDate: 2025-06-04
-heroImage: '/blog/2025-06-04-vue2-integer-only-input.webp'
+heroImage: '/blog/2025-06-04-vue2-integer-only-input.png'
 ---
 
 ## 遇到的問題

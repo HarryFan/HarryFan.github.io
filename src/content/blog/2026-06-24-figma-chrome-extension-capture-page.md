@@ -2,7 +2,7 @@
 title: '哇！Figma 的 Chrome 擴充套件也太強了吧'
 description: '只要點一下「Capture Page」再匯入 Figma，就能把整個網頁畫面抓下來，連所有元件都幫你整理好，完成度超高。實測 Figma 官方 Chrome 擴充套件，分享下載連結與使用心得。'
 pubDate: 2026-06-24
-heroImage: '/figma-capture-page-cover.webp'
+heroImage: '/blog/2026-06-24-figma-chrome-extension-capture-page.png'
 tags: ['Figma', 'Chrome擴充套件', '設計工具', '前端切版', 'Capture Page']
 ---
 
