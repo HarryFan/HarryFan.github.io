@@ -2,7 +2,7 @@
 title: '【實戰筆記】Vue SPA 下正確實作 GA4／Ads 追蹤'
 description: '業主問：為什麼 Google Ads 有點擊，GA 卻看不到，跳出率還 100%？問題出在 SPA 與 GA4 的相容性。分享一套模組化、支援 GA4 + Google Ads 的追蹤架構。'
 pubDate: 2025-05-13
-heroImage: '/blog/2025-05-13-vue-spa-ga4-ads-tracking.webp'
+heroImage: '/blog/2025-05-13-vue-spa-ga4-ads-tracking.png'
 ---
 
 ## 前言：為什麼這篇筆記值得一看？

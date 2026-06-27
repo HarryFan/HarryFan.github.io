@@ -2,7 +2,7 @@
 title: '《前端開發入門指南》'
 description: '想從事前端開發，該掌握哪些技術與工具？從 HTML / CSS / JavaScript 三寶，到編輯器、Git、框架、自動化工具，再到學習路徑與職涯規劃，一篇條列整理給入門者。'
 pubDate: 2024-03-01
-heroImage: '/blog/2024-03-01-frontend-beginner-guide.webp'
+heroImage: '/blog/2024-03-01-frontend-beginner-guide.png'
 ---
 
 ## 前端開發基礎知識

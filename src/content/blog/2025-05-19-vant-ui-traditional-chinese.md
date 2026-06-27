@@ -2,7 +2,7 @@
 title: '原來 Vant UI 的繁體中文是這樣設置的！告別簡體中文的困擾'
 description: 'Vant UI 預設顯示簡體中文「确认」「取消」，身為台灣開發者總覺得怪。其實只要幾行 Locale 設定就能切成正體中文，還能客製化按鈕文字。'
 pubDate: 2025-05-19
-heroImage: '/blog/2025-05-19-vant-ui-traditional-chinese.webp'
+heroImage: '/blog/2025-05-19-vant-ui-traditional-chinese.png'
 ---
 
 ## 前言：一個台灣開發者的小煩惱

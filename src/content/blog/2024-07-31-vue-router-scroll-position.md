@@ -2,7 +2,7 @@
 title: '解決 Vue.js 應用中返回首頁時滾動位置不對的問題'
 description: '從詳細頁返回首頁時，頁面總是跳到頂部，而不是回到原本的滾動位置。用 Vue Router 的 meta 保存 scroll position，再在首頁 onMounted 恢復就解決了。'
 pubDate: 2024-07-31
-heroImage: '/blog/2024-07-31-vue-router-scroll-position.webp'
+heroImage: '/blog/2024-07-31-vue-router-scroll-position.png'
 ---
 
 ## 滾動位置的問題

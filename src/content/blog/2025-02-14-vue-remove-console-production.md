@@ -2,7 +2,7 @@
 title: '在 Vue 2 & Vue 3 專案中自動移除 console 訊息，提升安全性與效能'
 description: '正式環境留著 console.log 會洩漏邏輯、增加檔案大小。教你用 Webpack（Vue 2）與 esbuild（Vue 3 + Vite）在 build 時自動清掉 console。'
 pubDate: 2025-02-14
-heroImage: '/blog/2025-02-14-vue-remove-console-production.webp'
+heroImage: '/blog/2025-02-14-vue-remove-console-production.png'
 ---
 
 > 註記：由於目前正在開發 Vue 2 專案，本文主要針對 Vue 2 + Webpack，並透過 `vue.config.js` 設定 Webpack 打包時移除 `console.log`。若你用的是 Vue 3 + Vite，請參考文末的 esbuild 方案。
