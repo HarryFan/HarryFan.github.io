@@ -12,6 +12,6 @@ const $$FormattedDate = createComponent(($$result, $$props, $$slots) => {
     month: "short",
     day: "numeric"
   })} </time>`;
-}, "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/components/FormattedDate.astro", void 0);
+}, "/Users/gangshuanfan/Documents/Astro/HarryFan.github.io/src/components/FormattedDate.astro", void 0);
 
 export { $$FormattedDate as $ };

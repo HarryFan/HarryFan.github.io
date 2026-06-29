@@ -140,14 +140,14 @@ function MDXContent(props = {}) {
 }
 
 const url = "src/content/styles/genshin-style.mdx";
-const file = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/genshin-style.mdx";
+const file = "/Users/gangshuanfan/Documents/Astro/HarryFan.github.io/src/content/styles/genshin-style.mdx";
 const Content = (props = {}) => MDXContent({
   ...props,
   components: { Fragment: Fragment, ...props.components, },
 });
 Content[Symbol.for('mdx-component')] = true;
 Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
-Content.moduleId = "C:/Users/GS/Documents/Astro/HarryFan.github.io/src/content/styles/genshin-style.mdx";
+Content.moduleId = "/Users/gangshuanfan/Documents/Astro/HarryFan.github.io/src/content/styles/genshin-style.mdx";
 __astro_tag_component__(Content, 'astro:jsx');
 
 export { Content, Content as default, file, frontmatter, getHeadings, url };

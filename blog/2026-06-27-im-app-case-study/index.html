@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-06-27-im-app-case-study/"><!-- Primary Meta Tags --><title>從零打造即時聊天室：用 Claude Code 完成 Vue 3 + WebSocket 全端專案</title><meta name="title" content="從零打造即時聊天室：用 Claude Code 完成 Vue 3 + WebSocket 全端專案"><meta name="description" content="記錄從 0 到可上線的即時聊天應用——Vue 3 前端、Fastify + WebSocket 後端、PostgreSQL + Redis、完整 E2E 測試、加群退群——以及途中遇到的每一個坑。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-06-27-im-app-case-study/"><meta property="og:title" content="從零打造即時聊天室：用 Claude Code 完成 Vue 3 + WebSocket 全端專案"><meta property="og:description" content="記錄從 0 到可上線的即時聊天應用——Vue 3 前端、Fastify + WebSocket 後端、PostgreSQL + Redis、完整 E2E 測試、加群退群——以及途中遇到的每一個坑。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-06-27-im-app-case-study.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-06-27-im-app-case-study/"><meta property="twitter:title" content="從零打造即時聊天室：用 Claude Code 完成 Vue 3 + WebSocket 全端專案"><meta property="twitter:description" content="記錄從 0 到可上線的即時聊天應用——Vue 3 前端、Fastify + WebSocket 後端、PostgreSQL + Redis、完整 E2E 測試、加群退群——以及途中遇到的每一個坑。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-06-27-im-app-case-study.png"><style>:root{--accent: #137f73;--accent-dark: #0c5149;--paper: #f4e6cf;--paper-soft: #fbf3e5;--paper-deep: #e9cfaa;--ink: 31, 27, 23;--black: 31, 27, 23;--muted: 104, 87, 70;--gray: 104, 87, 70;--gray-light: 226, 199, 161;--gray-dark: 52, 43, 35;--red: #df3f31;--yellow: #edbd37;--teal: #137f73;--clay: #a3543f;--rule: rgba(var(--ink), .9);--soft-rule: rgba(var(--ink), .18);--gray-gradient: color-mix(in srgb, var(--paper-deep) 42%, transparent), var(--paper);--box-shadow: 10px 10px 0 var(--yellow);--box-shadow-red: 10px 10px 0 var(--red);--content-width: 720px;--wide-width: 1080px;--radius: 6px}@font-face{font-family:Atkinson;src:url(../fonts/atkinson-regular.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:Atkinson;src:url(../fonts/atkinson-bold.woff) format("woff");font-weight:700;font-style:normal;font-display:swap}*{box-sizing:border-box}body{font-family:Atkinson,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;margin:0;padding:0;text-align:left;background:linear-gradient(90deg,rgba(var(--ink),.035) 1px,transparent 1px),linear-gradient(180deg,rgba(var(--ink),.025) 1px,transparent 1px),var(--paper);background-size:42px 42px,42px 42px,auto;word-wrap:break-word;overflow-wrap:break-word;color:rgb(var(--gray-dark));font-size:20px;line-height:1.72}body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 10% 8%,rgba(223,63,49,.12) 0 90px,transparent 92px),radial-gradient(circle at 92% 16%,rgba(19,127,115,.11) 0 120px,transparent 122px),linear-gradient(135deg,transparent 0 78%,rgba(237,189,55,.18) 78% 82%,transparent 82%)}main{width:var(--content-width);max-width:calc(100% - 2rem);margin:auto;padding:clamp(2rem,5vw,4.5rem) 0}h1,h2,h3,h4,h5,h6{margin:0 0 .5rem;color:rgb(var(--ink));line-height:1.08;font-weight:800}h1{font-size:clamp(2.4rem,6vw,4.2rem)}h2{font-size:clamp(1.9rem,4vw,3rem)}h3{font-size:clamp(1.45rem,3vw,2.2rem)}h4{font-size:clamp(1.15rem,2vw,1.55rem)}h5{font-size:1.15rem}strong,b{font-weight:700}a{color:var(--accent-dark);text-decoration-thickness:.08em;text-underline-offset:.18em}a:hover{color:#9f251d}a:focus-visible,button:focus-visible{outline:3px solid rgb(var(--ink));outline-offset:4px;box-shadow:0 0 0 7px var(--yellow)}p{margin:0 0 1em}.prose p{margin-bottom:1.65em}.prose{font-size:clamp(1.05rem,2vw,1.18rem)}textarea,input{width:100%;font:inherit}table{width:100%;border-collapse:collapse}.prose table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}img{max-width:100%;height:auto;border-radius:var(--radius)}code{padding:.12em .32em;background-color:var(--paper-soft);border:1px solid var(--soft-rule);border-radius:3px;color:rgb(var(--ink))}pre{padding:1.35em;border:2px solid var(--rule);border-radius:var(--radius);background:var(--paper-soft);box-shadow:6px 6px #137f7340;overflow-x:auto}pre>code{all:unset}blockquote{position:relative;border-left:8px solid var(--red);padding:.3rem 0 .3rem 1.2rem;margin:2rem 0;font-size:clamp(1.25rem,3vw,1.6rem);color:rgb(var(--ink))}blockquote:before{content:"";position:absolute;left:-8px;bottom:-10px;width:72px;height:10px;background:var(--yellow)}hr{border:none;border-top:3px solid var(--rule);margin:2rem 0}@media (max-width: 720px){body{font-size:18px}main{max-width:calc(100% - 1.25rem);padding:1.25rem 0 2.5rem}}.sr-only{border:0;padding:0;margin:0;position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);clip-path:inset(50%);white-space:nowrap}
+a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 720px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{display:block;width:100%;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動作品 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-06-27-im-app-case-study.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-06-27T00:00:00.000Z"> Jun 27, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>從零打造即時聊天室：用 Claude Code 完成 Vue 3 + WebSocket 全端專案</h1> <hr data-astro-cid-bvzihdzo> </div>  <h2 id="tldr">TL;DR</h2>
+<p>花了約兩週的時間，用 Claude Code 協作完成一個具備即時通訊、群組管理、歷史訊息、已讀回條的聊天應用。前後端從零開始，117 個測試全過，這篇記錄整個過程——包括踩到的坑跟解法。</p>
+<hr>
+<h2 id="為什麼做這個">為什麼做這個</h2>
+<p>我想親手驗證一件事：<strong>AI 協作開發（AI-assisted development）能不能真的從頭到尾完成一個有生產品質的專案</strong>，不是 CRUD demo，而是包含 WebSocket、Redis pub/sub、資料庫遷移、測試容器的真實架構。</p>
+<p>IM 應用是個好選擇——它幾乎覆蓋了全端工程的所有難點：即時性、持久化、認證、並發，還有一個需要細心設計的 UI。</p>
+<hr>
+<h2 id="技術選型">技術選型</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>monorepo（npm workspaces）</span></span>
+<span class="line"><span>├── packages/web      Vue 3 + Pinia + Vite + @tanstack/vue-virtual</span></span>
+<span class="line"><span>├── packages/server   Fastify + ws + pg + ioredis</span></span>
+<span class="line"><span>└── packages/shared   共用型別（Message、ServerEvent、ClientCommand）</span></span></code></pre>
+<p><strong>前端核心決策：</strong></p>
+<ul>
+<li><code>store.rows</code> 是唯一響應式介面。<code>messages</code> Map 用 <code>markRaw</code>，每次 mutation 結束做一次 shallowRef swap，驅動 virtualizer 重算，避免 Vue 做深層 diff。</li>
+<li>待發訊息（optimistic）用特殊 <code>sortKey</code> 排到最底，<code>message.ack</code> 回來後再依真實 <code>seq</code> 重排。</li>
+<li><code>useVirtualizer</code> 必須傳 <code>computed(() => ({ count, ... }))</code> 包住整個 options object，單獨 <code>count: computed(...)</code> 不會被追蹤——這是跟 <code>@tanstack/vue-virtual</code> 整合的最重要細節。</li>
+</ul>
+<p><strong>後端核心決策：</strong></p>
+<ul>
+<li>單一 HTTP server 同時掛 Fastify REST 和原生 <code>ws</code>，共用一個 pg Pool + Redis。</li>
+<li>WebSocket 握手先於第一個 client command——server 在 buffers 裡暫存訊息，握手完成（DB query）後 replay，避免 resync 被靜默丟棄。</li>
+<li><code>seq</code> 用 Redis <code>INCR</code>，冷啟動從 DB <code>MAX(seq)</code> 種進去。</li>
+<li>Broadcaster 透過 Redis pub/sub 跨節點廣播，用 <code>nodeId</code> 跳過自己已推過的 echo。</li>
+</ul>
+<hr>
+<h2 id="核心挑戰與解法">核心挑戰與解法</h2>
+<h3 id="挑戰-1websocket-成員資格快照過時">挑戰 1：WebSocket 成員資格快照過時</h3>
+<p><strong>問題：</strong> <code>ConnectionManager</code> 在握手時從 DB 快照使用者的會話清單，存進 <code>meta.convIds</code>。之後透過 REST API 加入的新群組不在快照裡，導致：</p>
+<ol>
+<li><code>history.load</code> 被拒（<code>isMember</code> 檢查失敗）</li>
+<li>廣播送不到該 socket（不在 <code>byConv[groupId]</code>）</li>
+</ol>
+<p><strong>解法：</strong> 新增 <code>checkAndJoinConv()</code> 方法，在 <code>isMember</code> 回傳 false 時做 DB fallback，確認成員身份後同步更新 <code>meta.convIds</code> 和 <code>byConv</code>。所有 handler（<code>onSend</code>、<code>onHistoryLoad</code>、<code>onReadAck</code>、<code>onRevoke</code>）都改用這個方法，等於把 membership cache 從「只在握手時建立」改成「lazy 更新」。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#E1E4E8">async </span><span style="color:#B392F0">checkAndJoinConv</span><span style="color:#E1E4E8">(ws: WebSocket, convId: string): </span><span style="color:#79B8FF">Promise</span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">boolean</span><span style="color:#F97583">></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  const m </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.meta.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(ws)</span></span>
+<span class="line"><span style="color:#B392F0">  if</span><span style="color:#E1E4E8"> (!</span><span style="color:#FFAB70">m</span><span style="color:#E1E4E8">) return false</span></span>
+<span class="line"><span style="color:#B392F0">  if</span><span style="color:#E1E4E8"> (m.convIds.has(</span><span style="color:#FFAB70">convId</span><span style="color:#E1E4E8">)) return true          </span><span style="color:#6A737D">// 快速路徑</span></span>
+<span class="line"><span style="color:#E1E4E8">  const r = await this.pool.</span><span style="color:#B392F0">query</span><span style="color:#E1E4E8">(                 </span><span style="color:#6A737D">// DB fallback</span></span>
+<span class="line"><span style="color:#9ECBFF">    `SELECT 1 FROM conversation_members WHERE conv_id=$1 AND user_id=$2`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    [</span><span style="color:#FFAB70">convId</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">m</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">userId</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"><span style="color:#B392F0">  if</span><span style="color:#E1E4E8"> (!r.rows.length) return false</span></span>
+<span class="line"><span style="color:#E1E4E8">  m.convIds.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">convId</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">  if</span><span style="color:#E1E4E8"> (!this.byConv.has(</span><span style="color:#FFAB70">convId</span><span style="color:#E1E4E8">)) this.byConv.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">convId</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">new</span><span style="color:#FFAB70"> Set</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">  this.byConv.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">convId</span><span style="color:#E1E4E8">)!.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">ws</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  return true</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="挑戰-2vue-模板存取不到-navigator">挑戰 2：Vue 模板存取不到 <code>navigator</code></h3>
+<p><strong>問題：</strong> 「複製群組 ID」按鈕直接在模板寫 <code>@click="navigator.clipboard.writeText(convId)"</code>，丟出 <code>TypeError: Cannot read properties of undefined (reading 'clipboard')</code>。</p>
+<p><strong>原因：</strong> Vue 3 的模板有一份 global allowlist（包含 <code>Math</code>、<code>Date</code>、<code>JSON</code> 等），但 <code>navigator</code> 不在其中。</p>
+<p><strong>解法：</strong> 把它移到 <code>&#x3C;script setup></code> 裡的 helper function，問題直接消失。</p>
+<h3 id="挑戰-3平行跑-testcontainers-超時">挑戰 3：平行跑 testcontainers 超時</h3>
+<p><strong>問題：</strong> Server 整合測試每個檔案各自起一個 PostgreSqlContainer + RedisContainer，用預設並發模式跑，大多數都在 120s 超時前搶不到 Docker 資源。</p>
+<p><strong>解法：</strong> <code>vitest.config.ts</code> 加 <code>pool: 'forks', poolOptions: { forks: { maxForks: 1 } }</code>，強制序列跑。速度變慢，但穩定。長期解法是讓所有測試共用同一對 container，但目前規模這樣夠用。</p>
+<h3 id="挑戰-4瀏覽器自動化被-windowconfirm-卡死">挑戰 4：瀏覽器自動化被 <code>window.confirm()</code> 卡死</h3>
+<p><strong>問題：</strong> 「退出群組」原本用 <code>window.confirm()</code> 做二次確認，這個瀏覽器原生 dialog 會阻塞所有 browser events，讓 Chrome 擴充功能的自動化工具完全無法繼續操作。</p>
+<p><strong>解法：</strong> 改成 stateful 兩段式確認——第一次點擊設 <code>leaveConfirm = true</code>，3 秒後自動重置；第二次點擊才真的執行退出。不用 dialog，完全用 Vue 響應式狀態驅動。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> leaveGroup</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">leaveConfirm.value) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    leaveConfirm.value </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { leaveConfirm.value </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8"> }, </span><span style="color:#79B8FF">3000</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">  leaving.value </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#F97583">  await</span><span style="color:#E1E4E8"> api.</span><span style="color:#B392F0">leaveGroup</span><span style="color:#E1E4E8">(props.convId)</span></span>
+<span class="line"><span style="color:#B392F0">  emit</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'left'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h2 id="功能清單">功能清單</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>功能</th><th>實作方式</th></tr></thead><tbody><tr><td>即時傳訊息</td><td>WebSocket <code>message.send</code> + 樂觀更新</td></tr><tr><td>歷史訊息</td><td><code>history.load</code> 分頁，往上捲觸發</td></tr><tr><td>已讀回條</td><td><code>IntersectionObserver</code> + <code>read.ack</code></td></tr><tr><td>打字狀態</td><td>Redis TTL + <code>presence.typing</code> broadcast</td></tr><tr><td>訊息撤回</td><td>任意自己的訊息，broadcast <code>message.patch</code></td></tr><tr><td>未讀計數</td><td>會話列表即時更新</td></tr><tr><td>建立群組</td><td>REST <code>POST /conversations</code></td></tr><tr><td>加入群組</td><td><code>POST /conversations/:id/join</code>（貼 UUID）</td></tr><tr><td>退出群組</td><td><code>POST /conversations/:id/leave</code>（兩段確認）</td></tr><tr><td>虛擬滾動</td><td><code>@tanstack/vue-virtual</code>，支援萬筆訊息</td></tr><tr><td>跨節點廣播</td><td>Redis pub/sub + <code>nodeId</code> dedup</td></tr><tr><td>Token 輪換</td><td>Rotating refresh token + reuse detection</td></tr></tbody></table>
+<hr>
+<h2 id="測試覆蓋">測試覆蓋</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>packages/web   (Vitest / jsdom)   58 tests ✅</span></span>
+<span class="line"><span>packages/server (Vitest / testcontainers) 59 tests ✅</span></span></code></pre>
+<p>Server 側包含：</p>
+<ul>
+<li>認證流程（register、login、refresh、logout、reuse detection）</li>
+<li>速率限制（Redis sliding window）</li>
+<li>WebSocket E2E（message send/recv、history、read ack、revoke、typing）</li>
+<li>多節點廣播（兩個 server 實例，共用 Redis）</li>
+<li>群組加入/退出（8 個 E2E 測試）</li>
+</ul>
+<hr>
+<h2 id="數字成果">數字成果</h2>
+<ul>
+<li><strong>開發時間</strong>：約兩週（利用下班和假日）</li>
+<li><strong>Commits</strong>：72 個</li>
+<li><strong>測試數</strong>：117（58 + 59）</li>
+<li><strong>程式行數</strong>：~6,000 行（不含測試）</li>
+<li><strong>Bug 修復</strong>：13 個（在完整 E2E 跑完後發現）</li>
+</ul>
+<hr>
+<h2 id="這個過程學到的事">這個過程學到的事</h2>
+<p><strong>AI 協作開發真的可以做到生產品質，但不是「說說就好」</strong>
+Claude Code 在架構設計、Debug、寫測試都很有幫助，但需要你自己清楚知道要做什麼、以及每一步的 trade-off。它是放大器，不是替代品。</p>
+<p><strong>測試先想清楚再動手</strong>
+這個專案後期才補 E2E，才發現 WS 成員資格的 bug、confirm dialog 阻塞等問題。如果測試更早，這些 bug 出現得更早、修起來更便宜。</p>
+<p><strong>WebSocket 的狀態管理比想像中複雜</strong>
+連線時快照、斷線重連、seq 同步、多視窗競爭——每一個都是潛在的 race condition。多畫一些 sequence diagram 值得。</p>
+<hr>
+<h2 id="source-code">Source Code</h2>
+<p>→ <a href="https://github.com/HarryFan/im-app">GitHub: HarryFan/im-app</a></p>
+<hr>
+<p><em>用 Claude Code 協作完成。</em></p>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>
