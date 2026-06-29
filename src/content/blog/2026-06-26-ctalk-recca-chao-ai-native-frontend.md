@@ -5,7 +5,7 @@ heroImage: '/blog/2026-06-26-ctalk-recca-chao-ai-native-frontend.png'
 description: 'C Talk+ X TKUG #17 活動心得：Recca Chao 談如何從「寫程式的人」升級成「設計流水線的人」，以及為什麼你的理解不能外包給 AI。'
 ---
 
-> 本文是 **[C Talk+ X TKUG #17 | AI-Native Frontend - 從 Prompt 到 Production 的工程實踐](https://www.accupass.com/event/2506030943501834300890)** 活動心得，記錄 Recca Chao（TKUG 講者）的演講重點與個人反思。活動於 2026.06.26（五）在新北市板橋區田明文化金融大樓舉辦，由 CMoney 全曜財經與 TKUG 共同主辦。
+> 本文是 **[C Talk+ X TKUG #17 | AI-Native Frontend - 從 Prompt 到 Production 的工程實踐](https://www.accupass.com/event/2606050847471680524503)** 活動心得，記錄 Recca Chao（TKUG 講者）的演講重點與個人反思。活動於 2026.06.26（五）在新北市板橋區田明文化金融大樓舉辦，由 CMoney 全曜財經與 TKUG 共同主辦。
 
 坐在板橋的會議室裡，我手機桌面上還躺著十幾個想做的 side project，眼睛卻快張不開了。昨晚又為了一個 AI 幫我生出來的功能 debug 到凌晨兩點。
 
