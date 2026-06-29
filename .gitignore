@@ -26,3 +26,5 @@ pnpm-debug.log*
 
 # local secrets (never commit)
 .openai_key.local
+
+.gemini_key.local

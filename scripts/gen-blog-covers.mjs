@@ -1,18 +1,42 @@
 #!/usr/bin/env node
-// Generate Pixar-style cover images for blog posts via OpenAI gpt-image-1.
-// API key: env OPENAI_API_KEY or .openai_key.local (gitignored).
+// Generate Pixar-style cover images for blog posts.
+// Providers (auto-fallback on 401/403/429): OpenAI gpt-image-1, Google nano
+// banana (gemini-2.5-flash-image). Set IMAGE_PROVIDER=openai|gemini to pick
+// which is tried first (default: openai).
+// Keys: env OPENAI_API_KEY / GEMINI_API_KEY, or .openai_key.local /
+//       .gemini_key.local (gitignored).
 // Output: public/blog/<slug>.png  +  updates heroImage in each .md frontmatter.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const keyFile = path.join(root, '.openai_key.local');
-const apiKey =
-  process.env.OPENAI_API_KEY ||
-  (fs.existsSync(keyFile) ? fs.readFileSync(keyFile, 'utf8').trim() : '');
+const readKey = (f, env) =>
+  process.env[env] ||
+  (fs.existsSync(path.join(root, f)) ? fs.readFileSync(path.join(root, f), 'utf8').trim() : '');
 
-// Uses Pollinations.ai — no API key required
+const GEMINI_MODEL = 'gemini-2.5-flash-image';
+
+const geminiKey = readKey('.gemini_key.local', 'GEMINI_API_KEY');
+const openaiKey = readKey('.openai_key.local', 'OPENAI_API_KEY');
+
+// Available providers (only those with a key). Generation tries them in order
+// and falls back to the next one on auth failure (401/403) or quota (429).
+// IMAGE_PROVIDER sets which one is tried FIRST (default: openai).
+const PREFERRED = (process.env.IMAGE_PROVIDER || 'openai').toLowerCase();
+const ALL_PROVIDERS = [
+  { name: 'openai', key: openaiKey, gen: generateOpenAI },
+  { name: 'gemini', key: geminiKey, gen: generateGemini },
+];
+const providers = ALL_PROVIDERS
+  .filter((p) => p.key)
+  .sort((a, b) => (a.name === PREFERRED ? -1 : b.name === PREFERRED ? 1 : 0));
+
+if (!providers.length) {
+  console.error('No API key found. Set OPENAI_API_KEY / GEMINI_API_KEY (env or .*_key.local)');
+  process.exit(1);
+}
+console.log(`providers: ${providers.map((p) => p.name).join(' -> ')}`);
 
 const outDir = path.join(root, 'public', 'blog');
 fs.mkdirSync(outDir, { recursive: true });
@@ -166,14 +190,102 @@ const posts = [
     scene:
       'A developer character and a glowing Claude AI robot co-build a real-time chat application together, WebSocket lightning bolts arc between a browser window and a server rack, Vue 3 logo and chat bubbles float around them in a cozy futuristic workspace',
   },
+  {
+    slug: '2026-06-30-zeabur-openclaw-web-search-tavily',
+    scene:
+      'A friendly AI chatbot robot stands on a floating Zeabur cloud server platform and inserts a glowing golden Tavily API key into a giant magnifying-glass search portal, the portal opens to pull in live weather, news, and globe icons from the internet, sparkles of real-time data stream toward the happy robot in a cozy futuristic sky',
+  },
 ];
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// HttpError carries the status code so the orchestrator can decide whether to
+// retry the same provider (429) or fall back to the next (401/403).
+class HttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
+
+// Try each provider in order. Within a provider, retry up to RETRIES times on
+// 429 (rate limit). On auth failure (401/403) or exhausted retries, fall back
+// to the next provider. Throws only if every provider fails.
 async function generateImage(scene) {
-  const prompt = encodeURIComponent(`${scene}, ${PIXAR_SUFFIX}`);
-  const url = `https://image.pollinations.ai/prompt/${prompt}?width=1536&height=1024&nologo=true&model=flux&seed=${Math.floor(Math.random()*99999)}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Pollinations ${res.status}`);
-  return Buffer.from(await res.arrayBuffer());
+  const RETRIES = 3;
+  let lastErr;
+  for (const provider of providers) {
+    for (let attempt = 1; attempt <= RETRIES; attempt++) {
+      try {
+        const buf = await provider.gen(scene, provider.key);
+        if (provider !== providers[0] || attempt > 1)
+          console.log(`  [via ${provider.name}${attempt > 1 ? ` attempt ${attempt}` : ''}]`);
+        return buf;
+      } catch (err) {
+        lastErr = err;
+        const status = err.status;
+        if (status === 429 && attempt < RETRIES) {
+          console.warn(`  ${provider.name} 429, retry ${attempt + 1}/${RETRIES} in 8s`);
+          await sleep(8000);
+          continue;
+        }
+        // 429 exhausted, or auth/other error -> fall back to next provider
+        console.warn(`  ${provider.name} failed (${status || 'err'}): falling back`);
+        break;
+      }
+    }
+  }
+  throw lastErr || new Error('all providers failed');
+}
+
+async function generateOpenAI(scene, key) {
+  const prompt = `${scene}, ${PIXAR_SUFFIX}`;
+  const res = await fetch('https://api.openai.com/v1/images/generations', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-image-1',
+      prompt,
+      size: '1536x1024',
+      n: 1,
+    }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '');
+    throw new HttpError(res.status, `OpenAI ${res.status}: ${detail.slice(0, 200)}`);
+  }
+  const json = await res.json();
+  const b64 = json?.data?.[0]?.b64_json;
+  if (!b64) throw new Error(`OpenAI no image: ${JSON.stringify(json).slice(0, 200)}`);
+  return Buffer.from(b64, 'base64');
+}
+
+async function generateGemini(scene, key) {
+  const prompt = `${scene}, ${PIXAR_SUFFIX}, 16:9 wide aspect ratio`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseModalities: ['IMAGE'] },
+    }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '');
+    throw new HttpError(res.status, `nano banana ${res.status}: ${detail.slice(0, 200)}`);
+  }
+  const json = await res.json();
+  const parts = json?.candidates?.[0]?.content?.parts || [];
+  const imgPart = parts.find((p) => p.inlineData?.data);
+  if (!imgPart) {
+    const textPart = parts.find((p) => p.text)?.text || JSON.stringify(json).slice(0, 200);
+    throw new Error(`nano banana no image: ${textPart}`);
+  }
+  return Buffer.from(imgPart.inlineData.data, 'base64');
 }
 
 function updateFrontmatter(mdPath, slug) {
