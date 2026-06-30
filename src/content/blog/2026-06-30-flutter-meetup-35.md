@@ -46,7 +46,7 @@ heroImage: '/blog/2026-06-30-flutter-meetup-35.png'
 
 **讓我眼睛一亮的 Flutter Go**：LeanCode 的 Sebastian Konowrocki 介紹的工具。開發中的 App，一行指令（build + 上傳輕量 UI bundle）就生出即時預覽連結加 QR code，PM、設計師、QA 掃一下就能在真機玩活生生的 App，不用等開 PR、等跑完整 CI。身為常卡在「等部署、等驗收」的人，這種把跨部門驗證瓶頸打掉的工具真的有戳到我。
 
-**SoFi 的案例最震撼**：美國金融超級 App SoFi（1500 萬會員）把原本 iOS/Android 兩套 Native 合併成單一 Flutter codebase，**砍掉了 100 萬行 Native 程式碼、整體 codebase 縮減 60%**。雙平台重複開發維護的痛，這個數字講得很清楚。
+**SoFi 的案例最震撼**：美國金融超級 App SoFi（1500 萬會員）把原本 iOS/Android 兩套 Native 合併成單一 Flutter codebase，**砍掉了約百萬行 Native 程式碼**（簡報並提到整體 codebase 大幅縮減）。雙平台重複開發維護的痛，這個數字講得很清楚。
 
 官方近期影片也推了幾部必看，包括 Google I/O 新功能、Toyota 車載資訊系統用 Flutter 重新設計，還有 AI Vibe Coding 熱門題「Develop with Google Antigravity and Flutter」。
 
