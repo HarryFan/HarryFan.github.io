@@ -13,7 +13,7 @@ heroImage: '/blog/2026-06-30-flutter-meetup-35.png'
 
 ## 六月 Flutter 大小事
 
-開場 warm-up 把這陣子的社群動態掃了一輪。
+開場 warm-up 把這陣子的社群動態掃了一輪。這段的開場簡報講者也大方公開了，想自己翻一遍的，投影片在這裡：[chyiiiiiiiiiiii/flutter-meetup-35](https://github.com/chyiiiiiiiiiiii/flutter-meetup-35)（單檔 HTML，瀏覽器直接打開 `slides.html` 就能看）。
 
 **研討會雷達**：下半年兩場大的。瑞典斯德哥爾摩的 Flutter & Friends（09/03-05），還有東京的 FlutterKaigi 2026（10/29-30）。後者今年跟 Flutter Ninjas 合併，主題叫「Assemble」，CFP 7/12 截止。
 
