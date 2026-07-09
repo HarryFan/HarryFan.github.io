@@ -10,6 +10,10 @@ tags: ['WebGL', '流體模擬', '互動網頁', 'Canvas', '前端筆記']
 
 這篇不談「我做了什麼」，只把這個效果拆開來講怎麼做。整個 demo 是單一 HTML 檔，一顆 `<canvas>` 加一段 WebGL。重點有四個：canvas 怎麼同時當背景又不擋你捲動、指標事件怎麼路由、墨為什麼看起來像墨、以及最有意思的——**捲動怎麼變成攪動流體的力**。
 
+先看效果（就是這頁活動頁本身：`墨流` 掛軸可以直接落墨，往下捲動時，捲動的位移會被灌進流體當成一股水流，把墨攪散、往上帶）：
+
+<video src="/blog/2026-07-09-ink-scroll-fluid-backdrop.mp4" poster="/blog/2026-07-09-ink-scroll-fluid-backdrop.png" autoplay muted loop playsinline preload="metadata" style="width:100%;height:auto;display:block;margin:1.5rem 0;border:3px solid #2a2620;">你的瀏覽器不支援內嵌影片，<a href="/blog/2026-07-09-ink-scroll-fluid-backdrop.mp4">點這裡直接觀看</a>。</video>
+
 ## 一、canvas 當固定背景，內容浮在上面
 
 第一個決定是版面分層。墨要當「背景」，內容要能正常捲動，兩者不能打架。做法是把 canvas 釘死成一張全螢幕的固定背景：
