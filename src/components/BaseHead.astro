@@ -2,7 +2,7 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, GA_MEASUREMENT_ID } from '../consts';
 
 interface Props {
 	title: string;
@@ -58,3 +58,16 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 -->
+{GA_MEASUREMENT_ID && !import.meta.env.DEV && (
+	<>
+		<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+		<script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		</script>
+	</>
+)}
