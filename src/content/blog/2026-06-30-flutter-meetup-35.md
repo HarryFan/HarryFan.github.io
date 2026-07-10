@@ -2,6 +2,7 @@
 title: 'Flutter 3.44、AI 進工作流、純 Dart 3D 引擎：六月 Flutter Meetup 重點整理'
 description: '有人用純 Dart 刻了一個 3D 引擎、渲 50 萬三角形還超輕量；SoFi 換 Flutter 砍掉一百萬行 Native。六月 Flutter Meetup #35 的重點一次整理：3.44 新版、AI 進工作流、SoFi 案例，還有麥克熊的 macbear_3d。'
 pubDate: 2026-06-30
+category: 'events'
 heroImage: '/blog/2026-06-30-flutter-meetup-35.png'
 ---
 

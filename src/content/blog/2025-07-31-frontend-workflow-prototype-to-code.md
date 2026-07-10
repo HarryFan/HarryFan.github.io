@@ -2,6 +2,7 @@
 title: '優化前端開發工程流程：從原型到代碼的完整工作流程'
 description: '把「原型 → 需求 → 規劃 → 開發 → 測試」串成一條清楚的流程，並附上三組可直接用的 AI 提示詞模板（產 BDD 文件、設計系統規範、開發 TODO 清單），讓 AI 真正接得住你的需求。'
 pubDate: 2025-07-31
+category: 'frontend'
 heroImage: '/blog/2025-07-31-frontend-workflow-prototype-to-code.png'
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: '原來如此！我居然錯過了這個動畫神器這麼久😳'
 pubDate: 2025-05-28
+category: 'frontend'
 description: '探索 Lottie 動畫工具如何簡化網頁動畫開發，從設計到實現的完整指南'
 tags: ['動畫神器', 'Lottie教學', 'Vue前端開發', '免費動畫', '網頁動效']
 heroImage: '/blog/2025-05-28-lottie-animation-tool.png'

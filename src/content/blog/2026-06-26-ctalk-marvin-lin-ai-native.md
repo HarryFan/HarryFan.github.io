@@ -1,6 +1,7 @@
 ---
 title: '讓 AI 替你跑，你來決定跑什麼——從 Marvin Lin 的 Agent 實踐學到的事'
 pubDate: 2026-06-26
+category: 'events'
 heroImage: '/blog/2026-06-26-ctalk-marvin-lin-ai-native.png'
 description: 'C Talk+ X TKUG #17 活動心得：Marvin Lin 談 Agent 時代基本功反而更重要、如何用 AI 建知識庫省掉重複溝通，以及「讓 AI 替你跑，你來決定跑什麼」這個工程師的新定位。'
 ---

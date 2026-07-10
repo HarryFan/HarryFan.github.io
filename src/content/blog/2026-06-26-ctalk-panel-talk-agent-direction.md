@@ -1,6 +1,7 @@
 ---
 title: 'Agent 在跑，但誰在決定方向？——Panel Q&A 給我的碎片反思'
 pubDate: 2026-06-26
+category: 'events'
 heroImage: '/blog/2026-06-26-ctalk-panel-talk-agent-direction.png'
 description: 'C Talk+ X TKUG #17 活動心得：Panel Q&A 段落的碎片思考——從 Agent 介入時機、多 Agent 驗證機制，到「設計能力比打字能力更重要」這個核心結論。'
 ---

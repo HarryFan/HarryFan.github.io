@@ -1,0 +1,70 @@
+---
+import { CATEGORIES } from '../consts';
+
+interface Props {
+	active?: string;
+	counts?: Record<string, number>;
+}
+
+const { active, counts = {} } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<nav class="category-nav" aria-label="文章分類">
+	<a class:list={['category-chip', { 'is-active': !active }]} href={`${base}blog/`}>全部</a>
+	{
+		Object.entries(CATEGORIES).map(([slug, label]) => (
+			<a
+				class:list={['category-chip', { 'is-active': active === slug }]}
+				href={`${base}blog/category/${slug}/`}
+			>
+				{label}
+				{counts[slug] != null && <span class="category-count">{counts[slug]}</span>}
+			</a>
+		))
+	}
+</nav>
+
+<style>
+	.category-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin: 0 0 1.5rem;
+	}
+
+	.category-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.4rem 0.7rem;
+		background: var(--paper);
+		border: 2px solid var(--rule);
+		color: rgb(var(--ink));
+		font-size: 0.9rem;
+		font-weight: 700;
+		line-height: 1;
+		text-decoration: none;
+		transition: transform 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.category-chip:hover,
+	.category-chip:focus-visible {
+		color: rgb(var(--ink));
+		box-shadow: var(--box-shadow-red);
+		transform: translate(-2px, -2px);
+	}
+
+	.category-chip.is-active {
+		background: var(--teal);
+		color: var(--paper-soft);
+	}
+
+	.category-count {
+		padding: 0.1rem 0.35rem;
+		background: var(--yellow);
+		border: 1px solid var(--rule);
+		color: rgb(var(--ink));
+		font-size: 0.75rem;
+	}
+</style>

@@ -2,6 +2,7 @@
 title: '平面設計師轉網頁設計師應該知道的前端技術與 RWD 設計規範'
 description: '從平面跨到網頁，需要補哪些前端基礎？整理 HTML / CSS / JavaScript、前端框架、RWD 設計原則與常見 breakpoint，以及為什麼該用 Figma。'
 pubDate: 2024-06-02
+category: 'frontend'
 heroImage: '/blog/2024-06-02-designer-to-frontend-rwd.png'
 ---
 

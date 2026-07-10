@@ -2,14 +2,22 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, CATEGORIES } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
 import { coverSvgDataUri, resolveHeroSrc } from '../../utils/contempoCover';
 
 const posts = (await getCollection('blog'))
 	.filter((post) => !post.data.draft)
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const counts = Object.fromEntries(
+	Object.keys(CATEGORIES).map((slug) => [
+		slug,
+		posts.filter((p) => p.data.category === slug).length,
+	])
+);
 ---
 
 <!doctype html>
@@ -341,6 +349,7 @@ const posts = (await getCollection('blog'))
 			
 			<section class="posts-section" aria-labelledby="posts-heading">
 				<h2 id="posts-heading" class="posts-heading">Latest notes</h2>
+				<CategoryNav counts={counts} />
 				<ul class="post-list">
 					{
 						posts.map((post) => (

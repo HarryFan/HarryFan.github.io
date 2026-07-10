@@ -2,6 +2,7 @@
 title: '在 Zeabur 上讓 OpenClaw 支援聯網：5 分鐘搞定 web_search'
 description: 'OpenClaw 部署到 Zeabur 後問天氣、新聞都失敗，跳出 web_search is disabled。原因不是 OpenAI Key，而是少了搜尋供應商。實測用 Tavily 免費方案，三步驟開啟 OpenClaw 的網路搜尋功能。'
 pubDate: 2026-06-30
+category: 'ai'
 heroImage: '/blog/2026-06-30-zeabur-openclaw-web-search-tavily.png'
 tags: ['OpenClaw', 'Zeabur', 'Tavily', 'AI部署', '網路搜尋']
 ---

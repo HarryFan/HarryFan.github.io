@@ -1,6 +1,7 @@
 ---
 title: '把協作當成系統設計：我們的 CLAUDE.md 與最小改動原則'
 pubDate: 2026-03-19
+category: 'ai'
 heroImage: '/blog/2026-03-19-claude-md-collaboration.png'
 description: '重來一次比寫程式更耗力。用 CLAUDE.md 把規則寫到專案根目錄，讓人與 AI 都在同一套框架下協作。'
 ---

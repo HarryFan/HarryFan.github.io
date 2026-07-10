@@ -2,6 +2,7 @@
 title: '讓 Claude Code 接手你正在用的 Chrome，當你的瀏覽器自動化助手'
 description: '透過 chrome-cdp-skill 這個 Claude Code Skill，Claude 可以接手你「現在正開著、已經登入好」的那個 Chrome，幫你彙整分頁資訊、抓 DOM、截圖、填表單、做前端除錯。安裝一行指令，啟用撥一個開關，不到五分鐘。'
 pubDate: 2026-06-19
+category: 'ai'
 heroImage: '/blog/2026-06-19-chrome-cdp-skill-claude-code.png'
 ---
 

@@ -1,0 +1,141 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import CategoryNav from '../../../components/CategoryNav.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import { SITE_TITLE, CATEGORIES, type CategorySlug } from '../../../consts';
+import { getCollection } from 'astro:content';
+import { coverSvgDataUri, resolveHeroSrc } from '../../../utils/contempoCover';
+
+export async function getStaticPaths() {
+	return Object.keys(CATEGORIES).map((category) => ({ params: { category } }));
+}
+
+const { category } = Astro.params;
+const label = CATEGORIES[category as CategorySlug];
+
+const allPosts = (await getCollection('blog')).filter((post) => !post.data.draft);
+const counts = Object.fromEntries(
+	Object.keys(CATEGORIES).map((slug) => [
+		slug,
+		allPosts.filter((p) => p.data.category === slug).length,
+	])
+);
+const posts = allPosts
+	.filter((post) => post.data.category === category)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+	<head>
+		<BaseHead title={`${label}｜${SITE_TITLE}`} description={`${SITE_TITLE} 的「${label}」分類文章，共 ${posts.length} 篇。`} />
+		<style>
+			main {
+				width: var(--wide-width);
+			}
+
+			.category-heading {
+				display: inline-flex;
+				margin: 0 0 1rem;
+				padding: 0.35rem 0.6rem;
+				background: var(--teal);
+				border: 2px solid var(--rule);
+				color: var(--paper-soft);
+				font-size: 0.9rem;
+				font-weight: 700;
+				letter-spacing: 0.12em;
+				line-height: 1;
+				text-transform: uppercase;
+			}
+
+			.post-list {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: clamp(1rem, 3vw, 2rem);
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.post-card {
+				display: grid;
+				height: 100%;
+				color: rgb(var(--ink));
+				background: var(--paper-soft);
+				border: 3px solid var(--rule);
+				text-decoration: none;
+				transition: transform 0.18s ease, box-shadow 0.18s ease;
+			}
+
+			.post-card:hover,
+			.post-card:focus-visible {
+				color: rgb(var(--ink));
+				box-shadow: var(--box-shadow-red);
+				transform: translate(-3px, -3px) rotate(-0.4deg);
+			}
+
+			.post-card img {
+				width: 100%;
+				aspect-ratio: 2 / 1;
+				object-fit: cover;
+				border-radius: 0;
+				border-bottom: 3px solid var(--rule);
+			}
+
+			.post-card__body {
+				padding: clamp(0.9rem, 2vw, 1.35rem);
+			}
+
+			.title {
+				margin: 0;
+				color: rgb(var(--ink));
+				line-height: 1.05;
+			}
+
+			.date {
+				margin: 0.8rem 0 0;
+				color: rgb(var(--muted));
+				font-size: 0.95rem;
+				font-weight: 700;
+			}
+
+			@media (max-width: 720px) {
+				.post-list {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1 class="category-heading">{label}（{posts.length} 篇）</h1>
+			<CategoryNav active={category} counts={counts} />
+			<ul class="post-list">
+				{
+					posts.map((post) => (
+						<li>
+							<a class="post-card" href={`${import.meta.env.BASE_URL}blog/${post.id}/`}>
+								<img
+									width={720}
+									height={360}
+									src={resolveHeroSrc(post.data.heroImage) ?? coverSvgDataUri(post.data.title)}
+									alt=""
+								/>
+								<div class="post-card__body">
+									<h2 class="title">{post.data.title}</h2>
+									<p class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</div>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>

@@ -2,6 +2,7 @@
 title: 'AI 裁員潮反思：55% 高管承認裁錯人，福特、IBM 為何又把人請回來？'
 description: '調查顯示超過半數企業主管承認「裁員換 AI」是錯誤決定，三分之一人資主管重新聘回被 AI 取代的職位。從福特、IBM、澳洲聯邦銀行的案例，拆解 AI 自動化為什麼沒有想像中省錢，以及企業人才策略正在如何轉向。'
 pubDate: 2026-07-10
+category: 'career'
 heroImage: '/blog/2026-07-10-ai-layoff-rehiring-reflection.png'
 tags: ['AI', '裁員潮', '職涯', '企業轉型', '人才策略']
 ---

@@ -2,6 +2,7 @@
 title: '2026 下半年，給焦慮前端工程師的職涯建議'
 description: '寫給已經感覺到壓力的前端工程師：別把目標放在「不要被 AI 取代」，而是讓自己變成會指揮 AI、檢查 AI、最後能把產品交出去的人。從工作流、基本功、測試、產品思維到逐月安排，一份實際的下半年計畫。'
 pubDate: 2026-06-20
+category: 'career'
 heroImage: '/blog/2026-06-20-frontend-career-advice-h2-2026.png'
 ---
 

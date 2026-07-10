@@ -2,6 +2,7 @@
 title: '讓列表渲染不再重複！用 Lodash 的 uniqueId 解決 Vue 的 key 衝突'
 description: 'v-for 的 key 重複時，Vue 會跳 Duplicate keys detected，刪除項目後畫面還會亂動。用 Lodash 的 uniqueId 給每個元素一個真正唯一的 key 就解決了。'
 pubDate: 2024-12-04
+category: 'frontend'
 heroImage: '/blog/2024-12-04-vue-key-lodash-uniqueid.png'
 ---
 

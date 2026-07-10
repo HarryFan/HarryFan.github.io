@@ -1,6 +1,7 @@
 ---
 title: '大資料量的多層樹狀報表，我踩了七個坑（Vben Admin 實戰）'
 pubDate: 2026-03-19
+category: 'frontend'
 heroImage: '/blog/2026-03-19-vben-admin-tree-report.png'
 description: '從 API 改版到 AntDV Table 展開機制，再到大資料量效能：一篇把樹狀報表踩坑與優化全走完的實戰筆記。'
 ---

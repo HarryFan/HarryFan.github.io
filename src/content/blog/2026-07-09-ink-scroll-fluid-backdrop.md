@@ -2,6 +2,7 @@
 title: '拆解一個 demo：讓水墨背景「被捲動攪動」的互動頁'
 description: '我做了一頁水墨舞劇的活動頁，整片背景是日式墨流し（suminagashi），而且你往下捲動的時候，墨會被你攪動、跟著漂。這篇把這個效果拆開講：canvas 怎麼當固定背景又不擋捲動、指標事件怎麼路由、以及最關鍵的——捲動的位移怎麼變成注入流體的速度。'
 pubDate: 2026-07-09
+category: 'frontend'
 heroImage: '/blog/2026-07-09-ink-scroll-fluid-backdrop.png'
 tags: ['WebGL', '流體模擬', '互動網頁', 'Canvas', '前端筆記']
 ---
