@@ -16,7 +16,7 @@ heroImage: '/blog/2025-05-28-lottie-animation-tool.png'
 👉 **原來 Lottie 不只是給設計師用的，它根本就是動畫界的 CDN 啊！**
 
 <video width="100%" controls>
-  <source src="/videos/螢幕錄影_2025-05-22_上午8.51.25.mov" type="video/mp4">
+  <source src="/videos/lottie-demo-2025-05-22.mp4" type="video/mp4">
   您的瀏覽器不支援 video 標籤。
 </video>
 
