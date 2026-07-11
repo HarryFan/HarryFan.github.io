@@ -28,3 +28,4 @@ pnpm-debug.log*
 .openai_key.local
 
 .gemini_key.local
+.gstack/
