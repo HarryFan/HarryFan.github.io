@@ -9,7 +9,12 @@ tags: ['Three.js', 'GSAP', 'ScrollTrigger', '3D', '前端筆記']
 
 上週手癢做了一頁 AirPods Pro 的概念旗艦官網：滾動時鏡頭在耳機周圍連續運鏡，六幕一鏡到底，白色塑料透著蘋果那種光。做完最爽的一點：**整支耳機、整個充電盒，沒有任何一個 `.glb` 模型檔**，全部用 Three.js 的基礎幾何體即時算出來。
 
-這篇把三件我覺得最值得講的事拆開：用幾何基元拼產品、滾動怎麼驅動相機、以及一個踩到會很痛的中文斷字坑。
+這篇把三件我覺得最值得講的事拆開：用幾何基元拼產品、滾動怎麼驅動相機、以及一個踩到會很痛的中文斷字坑。先看一段成品，往下捲的六幕運鏡就是這個樣子：
+
+<video controls autoplay muted loop playsinline width="100%">
+  <source src="/videos/apple-hero-scroll-demo.mp4" type="video/mp4">
+  您的瀏覽器不支援 video 標籤。
+</video>
 
 ## 一、零 GLB：用國中幾何拼一支 AirPods
 
