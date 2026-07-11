@@ -7,7 +7,7 @@ heroImage: '/blog/2026-07-11-threejs-airpods-pro-flagship-3d.png'
 tags: ['Three.js', 'GSAP', 'ScrollTrigger', '3D', '前端筆記']
 ---
 
-上週手癢做了一頁 AirPods Pro 的概念旗艦官網：滾動時鏡頭在耳機周圍連續運鏡，六幕一鏡到底，白色塑料透著蘋果那種光。做完最爽的一點：**整支耳機、整個充電盒，沒有任何一個 `.glb` 模型檔**，全部用 Three.js 的基礎幾何體即時算出來。
+本週手癢做了一頁 AirPods Pro 的概念旗艦官網：滾動時鏡頭在耳機周圍連續運鏡，六幕一鏡到底，白色塑膠透著蘋果那種光。做完最爽的一點：**整支耳機、整個充電盒，沒有任何一個 `.glb` 模型檔**，全部用 Three.js 的基礎幾何體即時算出來。
 
 這篇把三件我覺得最值得講的事拆開：用幾何基元拼產品、滾動怎麼驅動相機、以及一個踩到會很痛的中文斷字坑。先看一段成品，往下捲的六幕運鏡就是這個樣子：
 
@@ -63,7 +63,7 @@ function roundedBox(w, h, d, r) {
 
 ### 反光不是靠加燈，是靠環境貼圖
 
-白色塑料要有蘋果那種「透亮感」，我一開始的直覺是狂加點光源，結果越加越假。真正的解法是 IBL（影像照明）：用 `RoomEnvironment` 生一個程序化環境，經 `PMREMGenerator` 預過濾成環境貼圖，餵給 `scene.environment` 當全場景的反射來源。材質用 `MeshPhysicalMaterial` 開清漆層（clearcoat）：
+白色塑膠要有蘋果那種「透亮感」，我一開始的直覺是狂加點光源，結果越加越假。真正的解法是 IBL（影像照明）：用 `RoomEnvironment` 生一個程序化環境，經 `PMREMGenerator` 預過濾成環境貼圖，餵給 `scene.environment` 當全場景的反射來源。材質用 `MeshPhysicalMaterial` 開清漆層（clearcoat）：
 
 ```javascript
 const pmrem = new THREE.PMREMGenerator(renderer);
@@ -77,7 +77,7 @@ const whiteMat = new THREE.MeshPhysicalMaterial({
 });
 ```
 
-塑料看起來假，通常不是燈不夠，是「表面沒有東西可以反射」。給它一個環境，它自己就亮了。
+塑膠看起來假，通常不是燈不夠，是「表面沒有東西可以反射」。給它一個環境，它自己就亮了。
 
 ## 二、滾動敘事：一條被刮擦的時間軸
 
