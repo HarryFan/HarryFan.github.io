@@ -5,7 +5,6 @@ pubDate: 2026-07-13
 category: 'frontend'
 heroImage: '/blog/2026-07-13-scroll-world-video-scrub.png'
 tags: ['滾動動畫', 'AI 生成', '前端筆記', '影片刷放', 'scroll-driven']
-draft: true
 ---
 
 做滾動網站，大家第一個想到的多半是 Three.js：真的在瀏覽器裡跑一個 3D 場景，捲動去驅動相機。這條路我走過，效果好，但代價也真實：建模、材質、光照、效能預算，每一項都是時間。
