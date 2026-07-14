@@ -13,12 +13,17 @@ const works = (await getCollection('works')).sort(
 const title = `作品集 | ${SITE_TITLE}`;
 const description =
 	'自主開發的前端作品：Three.js 3D 產品頁、滾動敘事、互動配置器。每件皆為個人練習，非接案成果。';
+
+// 第一張卡的封面就是 LCP 元素，preload 讓它跟字型同時被發現
+const lcpImage = works[0]?.data.cover
+	? `${import.meta.env.BASE_URL}${works[0].data.cover.replace(/^\//, '')}`
+	: undefined;
 ---
 
 <!doctype html>
 <html lang="zh-Hant">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} preloadImage={lcpImage} />
 	</head>
 	<body>
 		<Header />

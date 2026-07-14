@@ -8,11 +8,20 @@ interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	/**
+	 * 頁面 LCP 圖片的路徑。給了就在 <head> preload。
+	 *
+	 * 為什麼需要：下面兩個字型 preload 在 HTML 解析時就被發現，優先權高；
+	 * LCP 圖要等瀏覽器解析到 <img> 才開始抓，於是排在字型後面。
+	 * <img fetchpriority="high"> 只能提升「被發現之後」的優先權，改不了發現得太晚。
+	 * 實測 /works/：不 preload 時線上 LCP 3.8s，preload 後大幅下降。
+	 */
+	preloadImage?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { title, description, image = '/blog-placeholder-1.jpg', preloadImage } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -31,6 +40,11 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <!-- Font preloads -->
 <link rel="preload" href={`${import.meta.env.BASE_URL}fonts/atkinson-regular.woff`} as="font" type="font/woff" crossorigin />
 <link rel="preload" href={`${import.meta.env.BASE_URL}fonts/atkinson-bold.woff`} as="font" type="font/woff" crossorigin />
+
+<!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 -->
+{preloadImage && (
+	<link rel="preload" href={preloadImage} as="image" fetchpriority="high" />
+)}
 
 <!-- 開發環境的 base URL 處理 -->
 {import.meta.env.DEV && (
