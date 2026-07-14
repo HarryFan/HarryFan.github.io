@@ -1,0 +1,321 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import WorkJsonLd from '../../components/WorkJsonLd.astro';
+import { coverSvgDataUri, resolveHeroSrc } from '../../utils/contempoCover';
+
+export async function getStaticPaths() {
+	const works = await getCollection('works');
+	return works.map((work) => ({ params: { slug: work.id }, props: { work } }));
+}
+
+const { work } = Astro.props;
+const { Content } = await render(work);
+const d = work.data;
+
+const coverSrc = resolveHeroSrc(d.cover) ?? coverSvgDataUri(d.title);
+const videoSrc = resolveHeroSrc(d.video);
+
+// blog_post 交叉連結：只有該篇真的存在才掛連結，避免死連結
+const linkedPost = d.blog_post ? await getEntry('blog', d.blog_post) : undefined;
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+	<head>
+		<BaseHead title={d.seo_title} description={d.seo_description} image={d.cover} />
+		<WorkJsonLd
+			slug={work.id}
+			title={d.title}
+			description={d.description}
+			pubDate={d.pubDate}
+			cover={d.cover}
+			repo={d.repo}
+			tech={d.tech}
+			brandBasis={d.brand_basis}
+			disclaimer={d.disclaimer}
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<nav class="crumb">
+				<a href={`${import.meta.env.BASE_URL}works/`}>← 作品集</a>
+			</nav>
+
+			<article>
+				<header class="work-head">
+					<p class="work-kicker">{d.subtitle}</p>
+					<h1 class="work-title">{d.title}</h1>
+					<p class="work-desc">{d.description}</p>
+
+					<div class="work-badges">
+						<span class="badge badge--origin">自主練習</span>
+						<span class="badge">{d.year}</span>
+						<FormattedDate date={d.pubDate} />
+					</div>
+
+					{
+						d.brand_basis === 'unofficial-concept' && d.disclaimer && (
+							<p class="work-disclaimer">
+								<strong>聲明：</strong>
+								{d.disclaimer}
+							</p>
+						)
+					}
+				</header>
+
+				<div class="work-media">
+					{
+						videoSrc ? (
+							<video
+								src={videoSrc}
+								poster={coverSrc}
+								controls
+								muted
+								loop
+								playsinline
+								preload="metadata"
+								width="1440"
+								height="720"
+							/>
+						) : (
+							<img src={coverSrc} alt={d.title} width="1440" height="720" />
+						)
+					}
+				</div>
+
+				<section class="work-facts">
+					<div class="fact">
+						<h2>我的角色</h2>
+						<p>{d.role}</p>
+					</div>
+					<div class="fact">
+						<h2>技術挑戰</h2>
+						<p>{d.challenge}</p>
+					</div>
+					<div class="fact">
+						<h2>成果</h2>
+						<p>{d.outcome}</p>
+					</div>
+				</section>
+
+				<section class="work-meta">
+					<div class="meta-block">
+						<h3>技術棧</h3>
+						<ul class="tech-list">
+							{d.tech.map((t) => <li>{t}</li>)}
+						</ul>
+					</div>
+					<div class="meta-block">
+						<h3>原始碼</h3>
+						{
+							d.repo ? (
+								<a class="repo-link" href={d.repo} target="_blank" rel="noopener noreferrer">
+									{d.repo.replace('https://github.com/', '')} ↗
+								</a>
+							) : d.repo_private ? (
+								<p class="repo-private">程式碼未公開</p>
+							) : (
+								<p class="repo-private">—</p>
+							)
+						}
+					</div>
+					{
+						linkedPost && (
+							<div class="meta-block">
+								<h3>技術拆解</h3>
+								<a class="repo-link" href={`${import.meta.env.BASE_URL}blog/${linkedPost.id}/`}>
+									{linkedPost.data.title} →
+								</a>
+							</div>
+						)
+					}
+				</section>
+
+				<div class="prose">
+					<Content />
+				</div>
+
+				{
+					d.subworks.length > 0 && (
+						<section class="subworks">
+							<h2>收錄的 {d.subworks.length} 個子作品</h2>
+							<ol class="subworks-list">
+								{d.subworks.map((s) => (
+									<li>
+										<strong>{s.name}</strong>
+										<span>{s.note}</span>
+									</li>
+								))}
+							</ol>
+						</section>
+					)
+				}
+			</article>
+		</main>
+		<Footer />
+		<style>
+			main {
+				width: min(100% - 2rem, var(--content-width, 720px));
+				margin-inline: auto;
+				padding-block: 1.5rem 4rem;
+			}
+			.crumb {
+				margin-bottom: 1.5rem;
+				font-size: 0.9rem;
+				font-weight: 700;
+			}
+			.crumb a {
+				color: var(--accent);
+			}
+			.work-kicker {
+				margin: 0;
+				font-size: 0.85rem;
+				font-weight: 700;
+				letter-spacing: 0.2em;
+				color: var(--accent);
+			}
+			.work-title {
+				margin: 0.3rem 0 0.7rem;
+				font-size: clamp(2rem, 5vw, 2.8rem);
+				line-height: 1.1;
+			}
+			.work-desc {
+				margin: 0 0 1rem;
+				font-size: 1.05rem;
+				line-height: 1.7;
+			}
+			.work-badges {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 0.5rem;
+				font-size: 0.85rem;
+				color: rgb(var(--gray-dark, 52 43 35));
+			}
+			.badge {
+				padding: 0.2rem 0.6rem;
+				font-size: 0.75rem;
+				font-weight: 700;
+				border: 1.5px solid var(--rule);
+				border-radius: 999px;
+			}
+			.badge--origin {
+				background: var(--yellow);
+			}
+			.work-disclaimer {
+				margin: 1rem 0 0;
+				padding: 0.7rem 0.9rem;
+				font-size: 0.9rem;
+				line-height: 1.6;
+				background: var(--paper-soft);
+				border-left: 4px solid var(--clay, #a3543f);
+			}
+			.work-media {
+				margin: 1.8rem 0;
+				border: 2px solid var(--rule);
+				border-radius: var(--radius, 6px);
+				overflow: hidden;
+			}
+			.work-media img,
+			.work-media video {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+			.work-facts {
+				display: grid;
+				gap: 1.1rem;
+				margin: 2rem 0;
+				padding: 1.2rem 1.3rem;
+				background: var(--paper-soft);
+				border: 2px solid var(--rule);
+				border-radius: var(--radius, 6px);
+			}
+			.fact h2 {
+				margin: 0 0 0.3rem;
+				font-size: 0.8rem;
+				font-weight: 700;
+				letter-spacing: 0.15em;
+				color: var(--accent);
+			}
+			.fact p {
+				margin: 0;
+				font-size: 0.95rem;
+				line-height: 1.7;
+			}
+			.work-meta {
+				display: grid;
+				gap: 1.2rem;
+				margin: 2rem 0;
+			}
+			@media (min-width: 640px) {
+				.work-meta {
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+			.meta-block h3 {
+				margin: 0 0 0.45rem;
+				font-size: 0.78rem;
+				font-weight: 700;
+				letter-spacing: 0.15em;
+				color: rgb(var(--gray-dark, 52 43 35));
+			}
+			.tech-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.35rem;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.tech-list li {
+				padding: 0.15rem 0.5rem;
+				font-size: 0.78rem;
+				font-weight: 600;
+				border: 1.5px solid var(--soft-rule, #d8c9b0);
+				border-radius: 4px;
+			}
+			.repo-link {
+				font-size: 0.9rem;
+				font-weight: 700;
+				color: var(--accent);
+				word-break: break-word;
+			}
+			.repo-private {
+				margin: 0;
+				font-size: 0.9rem;
+				color: rgb(var(--gray, 96 82 68));
+			}
+			.subworks {
+				margin-top: 2.5rem;
+				padding-top: 1.5rem;
+				border-top: 2px solid var(--rule);
+			}
+			.subworks h2 {
+				font-size: 1.3rem;
+			}
+			.subworks-list {
+				display: grid;
+				gap: 0.7rem;
+				margin: 1rem 0 0;
+				padding-left: 1.2rem;
+			}
+			.subworks-list li {
+				line-height: 1.6;
+			}
+			.subworks-list strong {
+				display: block;
+				font-size: 0.95rem;
+			}
+			.subworks-list span {
+				font-size: 0.88rem;
+				color: rgb(var(--gray-dark, 52 43 35));
+			}
+		</style>
+	</body>
+</html>

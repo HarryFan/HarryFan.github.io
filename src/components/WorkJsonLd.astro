@@ -1,0 +1,56 @@
+---
+import { SITE_TITLE } from '../consts';
+
+interface Props {
+	slug: string;
+	title: string;
+	description: string;
+	pubDate: Date;
+	cover?: string;
+	repo?: string;
+	tech: string[];
+	brandBasis: 'fictional' | 'unofficial-concept';
+	disclaimer?: string;
+}
+
+const { slug, title, description, pubDate, cover, repo, tech, brandBasis, disclaimer } =
+	Astro.props;
+
+const site = Astro.site?.href.replace(/\/$/, '') ?? '';
+const workUrl = `${site}/works/${slug}/`;
+
+// CreativeWork：作品本身。isAccessibleForFree 為 true（純展示），
+// creditText 帶上自主練習與非官方聲明，讓結構化資料跟畫面上的標示一致。
+const creativeWork = {
+	'@context': 'https://schema.org',
+	'@type': 'CreativeWork',
+	name: title,
+	description,
+	url: workUrl,
+	datePublished: pubDate.toISOString().split('T')[0],
+	author: { '@type': 'Person', name: 'Harry Fan' },
+	creator: { '@type': 'Person', name: 'Harry Fan' },
+	isAccessibleForFree: true,
+	genre: 'Web Development',
+	keywords: tech.join(', '),
+	creditText:
+		brandBasis === 'unofficial-concept'
+			? `自主練習作品。${disclaimer ?? ''}`
+			: '自主練習作品，品牌為虛構。',
+	...(cover ? { image: `${site}${cover}` } : {}),
+	...(repo ? { codeRepository: repo } : {}),
+};
+
+const breadcrumb = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: SITE_TITLE, item: `${site}/` },
+		{ '@type': 'ListItem', position: 2, name: '作品集', item: `${site}/works/` },
+		{ '@type': 'ListItem', position: 3, name: title, item: workUrl },
+	],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(creativeWork)} />
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />

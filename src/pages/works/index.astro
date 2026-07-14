@@ -1,0 +1,120 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import { SITE_TITLE } from '../../consts';
+
+const works = (await getCollection('works')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const title = `作品集 | ${SITE_TITLE}`;
+const description =
+	'自主開發的前端作品：Three.js 3D 產品頁、滾動敘事、互動配置器。每件皆為個人練習，非接案成果。';
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="works-intro">
+				<p class="works-kicker">WORKS</p>
+				<h1 class="works-title">作品集</h1>
+				<p class="works-lede">
+					{works.length} 件自主開發的前端作品，集中在 2026 年 7 月完成。多數是 Three.js 3D
+					產品頁，用程序化幾何而非外部模型；少數是框架實作。
+				</p>
+				<p class="works-honesty">
+					這裡每一件都是<strong>自主練習</strong>，不是接案或職務成果。品牌多為虛構；少數以真實對象為題的，皆標明非官方。真實業界專案列在 <a
+						href={`${import.meta.env.BASE_URL}resume/`}>履歷</a
+					>。原始碼目前皆未公開，每件作品以實機錄影呈現。
+				</p>
+			</section>
+
+			<section class="works-grid">
+				{
+					works.map((work, i) => (
+						<WorkCard
+							priority={i === 0}
+							slug={work.id}
+							title={work.data.title}
+							subtitle={work.data.subtitle}
+							description={work.data.description}
+							cover={work.data.cover}
+							videoLoop={work.data.video_loop}
+							tech={work.data.tech}
+							brandBasis={work.data.brand_basis}
+							disclaimer={work.data.disclaimer}
+							featured={work.data.featured}
+						/>
+					))
+				}
+			</section>
+		</main>
+		<Footer />
+		<style>
+			main {
+				width: min(100% - 2rem, var(--wide-width, 1080px));
+				margin-inline: auto;
+				padding-block: 2.5rem 4rem;
+			}
+			.works-intro {
+				margin-bottom: 2.5rem;
+			}
+			.works-kicker {
+				margin: 0;
+				font-size: 0.78rem;
+				font-weight: 700;
+				letter-spacing: 0.35em;
+				color: var(--accent);
+			}
+			.works-title {
+				margin: 0.3rem 0 0.9rem;
+				font-size: clamp(2.2rem, 6vw, 3.2rem);
+				line-height: 1.05;
+			}
+			.works-lede {
+				margin: 0 0 0.9rem;
+				max-width: 46rem;
+				font-size: 1.05rem;
+				line-height: 1.7;
+			}
+			.works-honesty {
+				margin: 0;
+				max-width: 46rem;
+				padding: 0.7rem 0.9rem;
+				font-size: 0.9rem;
+				line-height: 1.65;
+				background: var(--paper-soft);
+				border: 2px solid var(--rule);
+				border-radius: var(--radius, 6px);
+			}
+			.works-grid {
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 1.25rem;
+			}
+			@media (min-width: 640px) {
+				.works-grid {
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+			@media (min-width: 960px) {
+				.works-grid {
+					grid-template-columns: repeat(3, 1fr);
+					/* featured 跨兩欄會在 auto-placement 留洞，dense 讓後面的卡回填 */
+					grid-auto-flow: dense;
+				}
+				.works-grid :global(.work-card--featured) {
+					grid-column: span 2;
+				}
+			}
+		</style>
+	</body>
+</html>
