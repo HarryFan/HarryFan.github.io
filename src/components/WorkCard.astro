@@ -1,0 +1,267 @@
+---
+import { coverSvgDataUri, resolveHeroSrc } from '../utils/contempoCover';
+interface Props {
+	slug: string;
+	title: string;
+	subtitle: string;
+	description: string;
+	cover?: string;
+	videoLoop?: string;
+	tech: string[];
+	brandBasis: 'fictional' | 'unofficial-concept';
+	disclaimer?: string;
+	featured?: boolean;
+	/** 第一張卡是 LCP 元素：lazy-load 它會拖慢 LCP，必須 eager + high priority */
+	priority?: boolean;
+}
+const {
+	slug,
+	title,
+	subtitle,
+	description,
+	cover,
+	videoLoop,
+	tech,
+	brandBasis,
+	disclaimer,
+	featured = false,
+	priority = false,
+} = Astro.props;
+// 沿用全站封面策略：有真實圖才用，否則用標題生成的品牌封面
+const coverSrc = resolveHeroSrc(cover) ?? coverSvgDataUri(title);
+// 影片來源同樣要驗證檔案存在，避免 brag 還沒跑就掛出 404 的 <video>
+const loopSrc = resolveHeroSrc(videoLoop);
+---
+
+<a
+	class:list={['work-card', { 'work-card--featured': featured }]}
+	href={`${import.meta.env.BASE_URL}works/${slug}/`}
+	data-work-card
+>
+	<div class="work-card__media">
+		<img
+			class="work-card__img"
+			src={coverSrc}
+			alt={title}
+			loading={priority ? 'eager' : 'lazy'}
+			fetchpriority={priority ? 'high' : 'auto'}
+			decoding={priority ? 'sync' : 'async'}
+			width="1440"
+			height="720"
+		/>
+		{
+			loopSrc && (
+				<video
+					class="work-card__video"
+					data-loop-src={loopSrc}
+					muted
+					loop
+					playsinline
+					preload="none"
+					aria-hidden="true"
+					tabindex="-1"
+				/>
+			)
+		}
+		<span class="work-card__origin">自主練習</span>
+		{/*
+			不在卡片上標「程式碼未公開」：目前 11 件全部如此，重複 11 次是雜訊。
+			這個普遍事實在列表頁的說明區講一次即可；內頁仍會逐件標示。
+			若日後有作品開源，這裡再依 repoPrivate 分流。
+		*/}
+	</div>
+	<div class="work-card__body">
+		<h3 class="work-card__title">{title}</h3>
+		<p class="work-card__subtitle">{subtitle}</p>
+		<p class="work-card__desc">{description}</p>
+		{
+			brandBasis === 'unofficial-concept' && disclaimer && (
+				<p class="work-card__disclaimer">{disclaimer}</p>
+			)
+		}
+		<ul class="work-card__tech">
+			{tech.slice(0, 4).map((t) => <li class="work-card__tag">{t}</li>)}
+		</ul>
+		<span class="work-card__cta">看作品 →</span>
+	</div>
+</a>
+
+<style>
+	.work-card {
+		display: flex;
+		flex-direction: column;
+		border: 2px solid var(--rule);
+		border-radius: var(--radius, 6px);
+		overflow: hidden;
+		text-decoration: none;
+		color: inherit;
+		background: var(--paper-soft);
+		transition:
+			transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	.work-card:hover,
+	.work-card:focus-visible {
+		transform: translate(-3px, -3px);
+		box-shadow: 8px 8px 0 var(--yellow);
+	}
+	.work-card__media {
+		position: relative;
+		background: var(--paper-deep);
+	}
+	/* 2:1 對齊 coverSvgDataUri() 與 brag 抽格封面的 1440x720，避免 object-fit 把左右切掉 */
+	.work-card__img,
+	.work-card__video {
+		display: block;
+		width: 100%;
+		aspect-ratio: 2 / 1;
+		object-fit: cover;
+		border-bottom: 2px solid var(--rule);
+	}
+	.work-card__video {
+		position: absolute;
+		inset: 0;
+		height: 100%;
+		opacity: 0;
+		transition: opacity 0.25s ease;
+		pointer-events: none;
+	}
+	.work-card__video.is-playing {
+		opacity: 1;
+	}
+	.work-card__origin {
+		position: absolute;
+		left: 0.6rem;
+		bottom: 0.6rem;
+		padding: 0.2rem 0.6rem;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		background: var(--paper-soft);
+		border: 1.5px solid var(--rule);
+		border-radius: 999px;
+		color: rgb(var(--ink));
+	}
+	.work-card__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		padding: 0.85rem 1rem 1rem;
+	}
+	.work-card__title {
+		margin: 0;
+		font-size: 1.15rem;
+		font-weight: 800;
+		line-height: 1.25;
+	}
+	.work-card__subtitle {
+		margin: 0;
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.03em;
+		color: var(--accent);
+	}
+	.work-card__desc {
+		margin: 0.15rem 0 0;
+		font-size: 0.9rem;
+		line-height: 1.55;
+		color: rgb(var(--gray-dark, 52 43 35));
+	}
+	.work-card__disclaimer {
+		margin: 0.3rem 0 0;
+		padding: 0.35rem 0.5rem;
+		font-size: 0.75rem;
+		line-height: 1.45;
+		color: rgb(var(--ink));
+		background: var(--paper-deep);
+		border-left: 3px solid var(--clay, #a3543f);
+	}
+	.work-card__tech {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem;
+		margin: 0.45rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.work-card__tag {
+		padding: 0.12rem 0.45rem;
+		font-size: 0.7rem;
+		font-weight: 600;
+		border: 1.5px solid var(--soft-rule, #d8c9b0);
+		border-radius: 4px;
+		color: rgb(var(--gray-dark, 52 43 35));
+	}
+	.work-card__cta {
+		margin-top: 0.5rem;
+		font-size: 0.82rem;
+		font-weight: 700;
+		color: var(--accent);
+	}
+
+	/* featured：跨兩欄，但維持圖上文下。
+	   曾試過左右排版，媒體區被壓成窄高比例，object-fit: cover 會把 2:1 封面的
+	   左右兩側切掉（Fable 5 的大標整句被裁）。跨欄本身已經讓圖變大，不需要再改版型。 */
+	@media (min-width: 960px) {
+		.work-card--featured .work-card__title {
+			font-size: 1.5rem;
+		}
+		.work-card--featured .work-card__desc {
+			font-size: 0.95rem;
+		}
+		.work-card--featured .work-card__body {
+			padding: 1.1rem 1.3rem 1.2rem;
+		}
+	}
+</style>
+
+<script>
+	// 列表頁預設不下載任何 mp4：preload="none" 且 src 直到需要時才掛上。
+	// 觸控裝置沒有 hover，掛了也只是白下載，直接不啟用。
+	const canHover = window.matchMedia('(hover: hover)').matches;
+	if (canHover) {
+		const cards = document.querySelectorAll<HTMLElement>('[data-work-card]');
+		const armed = new WeakSet<HTMLVideoElement>();
+
+		// 進視窗才 attach src，避免頁面一載入就替 9+ 支影片建立連線
+		const io = new IntersectionObserver((entries) => {
+			for (const entry of entries) {
+				if (!entry.isIntersecting) continue;
+				const video = entry.target.querySelector<HTMLVideoElement>('.work-card__video');
+				if (video && !armed.has(video)) {
+					const src = video.dataset.loopSrc;
+					if (src) {
+						video.src = src;
+						armed.add(video);
+					}
+				}
+				io.unobserve(entry.target);
+			}
+		});
+
+		for (const card of cards) {
+			const video = card.querySelector<HTMLVideoElement>('.work-card__video');
+			if (!video) continue;
+			io.observe(card);
+
+			const play = () => {
+				if (!video.src) return;
+				video.classList.add('is-playing');
+				void video.play().catch(() => {
+					// 自動播放被擋掉就退回靜態封面，不干擾使用者
+					video.classList.remove('is-playing');
+				});
+			};
+			const stop = () => {
+				video.classList.remove('is-playing');
+				video.pause();
+				video.currentTime = 0;
+			};
+
+			card.addEventListener('mouseenter', play);
+			card.addEventListener('focus', play);
+			card.addEventListener('mouseleave', stop);
+			card.addEventListener('blur', stop);
+		}
+	}
+</script>
