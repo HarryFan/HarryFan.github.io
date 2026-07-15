@@ -114,7 +114,7 @@
   <span class="brand">Meridian Roasters<small>製作指南</small></span>
   <nav>
     <a href="../index.html">看 Demo ↗</a>
-    <a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/examples/scroll-world-coffee/README.zh-TW.md" target="_blank" rel="noopener noreferrer">README</a>
+    <a href="/blog/2026-07-13-scroll-world-video-scrub/">技術拆解</a>
   </nav>
 </header>
 
@@ -151,7 +151,7 @@
   <section id="scenes">
     <p class="eyebrow">五個場景</p>
     <h2>從果實到杯中</h2>
-    <p class="muted">縮圖為每個場景的靜態圖（<code>../assets/*.jpg</code>，git 內帶，同時當引擎 fallback poster）。刷放影片 <code>*.mp4</code> 被 gitignore。</p>
+    <p class="muted">縮圖為每個場景的靜態圖（<code>../assets/*.jpg</code>，同時當引擎的 fallback poster）；刷放時載入對應的 <code>*.mp4</code>。</p>
     <div class="scenes">
       <article class="scene" style="--sc:var(--estate)">
         <img src="../assets/estate.jpg" alt="The Estate 靜態圖" loading="lazy" />
@@ -256,22 +256,16 @@ Smooth, graceful, slow motion, subtle parallax. No text, no captions.</pre>
       <dt>linger:</dt><dd>0..1，讓鏡頭在場景中段（文案高峰處）沉下來、兩端移動較快（roastery 0.4、shop 0.45），保持 ≤ 0.6</dd>
       <dt>accent:</dt><dd>各段主色，執行期覆寫 <code>--sw-accent</code></dd>
     </dl>
-    <h3>本機執行</h3>
-    <pre>cd examples/scroll-world-coffee
-python3 -m http.server 8000
-# 開 http://localhost:8000 → 捲動即飛入</pre>
     <p class="note">手機：coarse-pointer／≤860px 時載入 <code>clipMobile</code>、合併 seek、首幀前用靜態圖當 poster、拿掉飄浮粒子；無 <code>-m</code> 版則 fallback 桌機 <code>clip</code>。</p>
     <div class="cta-row">
       <a class="btn primary" href="../index.html">開啟 Demo</a>
-      <a class="btn ghost" href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/skills/scroll-world/references/pipeline.md" target="_blank" rel="noopener noreferrer">pipeline.md（生成腳本）</a>
+      <a class="btn ghost" href="/blog/2026-07-13-scroll-world-video-scrub/">閱讀技術拆解</a>
     </div>
   </section>
 
   <footer>
-    <p>scroll-world-coffee · <code>examples/scroll-world-coffee/guide/</code> ·
-    路由：<a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/skills/skill-router/SKILL.md" target="_blank" rel="noopener noreferrer">skill-router</a> →
-    <a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/skills/scroll-world/SKILL.md" target="_blank" rel="noopener noreferrer">scroll-world</a> ·
-    完整說明：<a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/examples/scroll-world-coffee/README.zh-TW.md" target="_blank" rel="noopener noreferrer">中文 README</a> / <a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/examples/scroll-world-coffee/README.md" target="_blank" rel="noopener noreferrer">English</a></p>
+    <p>scroll-world-coffee · Meridian Roasters（虛構品牌）· 路由：skill-router → scroll-world ·
+    <a href="/blog/2026-07-13-scroll-world-video-scrub/">技術拆解全文</a></p>
   </footer>
 
 </main>
