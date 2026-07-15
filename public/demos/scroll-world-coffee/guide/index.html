@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>scroll-world-coffee · 製作指南</title>
+<meta name="description" content="Meridian Roasters 影片刷放捲動站的製作指南——路由、三次反覆修正、提示詞配方、寫法與用法。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#F4ECE2; --panel:#FBF6EE; --ink:#2B1D14; --ink-soft:#6a5a49; --line:#E3D6C6;
+    --accent:#B5794E; --estate:#6F7D5A; --mill:#C79A4A; --roastery:#C2551F; --bar:#B5794E; --shop:#8a5a2f;
+    --serif:"Cormorant Garamond",Georgia,serif;
+    --sans:"Noto Sans TC",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --maxw:920px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.72;
+    -webkit-font-smoothing:antialiased;font-size:16px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code,pre{font-family:var(--mono)}
+
+  /* top bar */
+  header.bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:1rem;
+    padding:.7rem clamp(1rem,4vw,2.2rem);background:rgba(244,236,226,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .bar .brand{font-family:var(--serif);font-size:1.35rem;font-weight:600;letter-spacing:.01em}
+  .bar .brand small{font-family:var(--sans);font-weight:500;color:var(--ink-soft);font-size:.72rem;
+    letter-spacing:.16em;text-transform:uppercase;margin-left:.55rem}
+  .bar nav{margin-left:auto;display:flex;gap:1.1rem;font-size:.9rem}
+
+  main{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1rem,4vw,2.2rem)}
+
+  /* hero */
+  .hero{padding:clamp(3rem,9vw,6rem) 0 2.5rem;border-bottom:1px solid var(--line)}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(2.4rem,6.5vw,4rem);
+    line-height:1.06;margin:.2rem 0 .6rem;letter-spacing:-.01em}
+  .hero p.lead{font-size:1.12rem;color:var(--ink-soft);max-width:44ch;margin:0 0 1.6rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.5rem}
+  .chip{font-size:.78rem;letter-spacing:.02em;padding:.32rem .7rem;border-radius:999px;
+    background:var(--panel);border:1px solid var(--line);color:var(--ink-soft)}
+  .chip b{color:var(--ink);font-weight:600}
+
+  section{padding:2.8rem 0;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);
+    font-weight:700;margin:0 0 .5rem}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.4rem);margin:.1rem 0 1rem;letter-spacing:-.005em}
+  h3{font-size:1.02rem;font-weight:700;margin:1.8rem 0 .5rem}
+  p{margin:.7rem 0}
+  .muted{color:var(--ink-soft)}
+
+  /* provenance steps */
+  ol.steps{list-style:none;counter-reset:s;margin:1rem 0 0;padding:0}
+  ol.steps li{counter-increment:s;position:relative;padding:.2rem 0 1.1rem 3rem}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:2rem;height:2rem;
+    border-radius:50%;background:var(--accent);color:#fff;font-family:var(--serif);font-size:1.1rem;
+    display:grid;place-items:center;font-weight:600}
+  ol.steps li b{font-weight:700}
+
+  /* scene grid */
+  .scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-top:1.4rem}
+  .scene{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    border-top:3px solid var(--sc,var(--accent))}
+  .scene img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--bg)}
+  .scene .body{padding:.85rem 1rem 1.1rem}
+  .scene .num{font-family:var(--serif);font-size:.95rem;color:var(--sc);font-weight:600}
+  .scene h4{margin:.1rem 0 .15rem;font-size:1.05rem;font-weight:700}
+  .scene .zh{font-size:.82rem;color:var(--ink-soft);margin:0 0 .5rem}
+  .scene .focal{font-size:.8rem;color:var(--ink-soft);line-height:1.5}
+  .scene .focal b{color:var(--ink);font-weight:600}
+
+  /* code + tables */
+  pre{background:#2B1D14;color:#F4ECE2;padding:1rem 1.1rem;border-radius:10px;overflow-x:auto;
+    font-size:.82rem;line-height:1.6;margin:.9rem 0}
+  pre .fill{color:#E6B486}
+  .note{font-size:.86rem;color:var(--ink-soft);margin:.4rem 0}
+  .tablewrap{overflow-x:auto;margin:1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:520px}
+  th,td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+  td code{font-size:.82rem;background:var(--panel);padding:.1rem .35rem;border-radius:5px}
+  td.id code{color:var(--accent)}
+
+  /* rules list */
+  ul.rules{margin:1rem 0;padding:0;list-style:none}
+  ul.rules li{padding:.55rem 0 .55rem 1.5rem;position:relative;border-bottom:1px solid var(--line)}
+  ul.rules li:last-child{border-bottom:0}
+  ul.rules li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
+  ul.rules b{font-weight:700}
+
+  dl.knobs{margin:1rem 0;display:grid;grid-template-columns:auto 1fr;gap:.3rem 1rem}
+  dl.knobs dt{font-family:var(--mono);font-size:.82rem;color:var(--accent);font-weight:600}
+  dl.knobs dd{margin:0;font-size:.9rem;color:var(--ink-soft)}
+
+  .cta-row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.4rem}
+  .btn{display:inline-block;padding:.6rem 1.2rem;border-radius:999px;font-size:.92rem;font-weight:500}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{text-decoration:none;filter:brightness(1.05)}
+  .btn.ghost{border:1px solid var(--line);color:var(--ink)}
+  .btn.ghost:hover{text-decoration:none;background:var(--panel)}
+
+  footer{padding:2.4rem 0 4rem;color:var(--ink-soft);font-size:.85rem}
+  footer a{color:var(--ink-soft);text-decoration:underline}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <span class="brand">Meridian Roasters<small>製作指南</small></span>
+  <nav>
+    <a href="../index.html">看 Demo ↗</a>
+    <a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/examples/scroll-world-coffee/README.zh-TW.md" target="_blank" rel="noopener noreferrer">README</a>
+  </nav>
+</header>
+
+<main>
+
+  <div class="hero">
+    <p class="eyebrow">scroll-world · 影片刷放範例</p>
+    <h1>捲動，就是<br>駕駛鏡頭飛行。</h1>
+    <p class="lead">五個共用同一段美術指令的黏土場景，從咖啡果一路飛到成品咖啡。這頁記錄它怎麼被做出來——路由、修正、提示詞配方、寫法與用法。</p>
+    <div class="chips">
+      <span class="chip">路由 · <b>/guide → scroll-world</b></span>
+      <span class="chip">架構 · <b>A（legs 即旅程）</b></span>
+      <span class="chip">修正 · <b>三次反覆</b></span>
+      <span class="chip">技術 · <b>video-scrub，無 live 3D</b></span>
+    </div>
+    <div class="cta-row">
+      <a class="btn primary" href="../index.html">開啟 Demo</a>
+      <a class="btn ghost" href="#recipe">直接看提示詞</a>
+    </div>
+  </div>
+
+  <section id="about">
+    <p class="eyebrow">定位</p>
+    <h2>為何這是參考基準（goal）</h2>
+    <p>這不是隨手做的 demo，而是 <code>scroll-world</code> 技能的<b>目標範本</b>：新生成的世界要達到的標竿。它經過完整流程才收斂——</p>
+    <ol class="steps">
+      <li><b>經由 <code>/guide</code>（<code>skills/skill-router</code>）路由至此。</b>「fly through the world／把一門生意變成可捲動電影」的 brief，會在 router 的「建置型態」步驟落到 <code>scroll-world</code>，而不是 <code>three-scroll-hero-creator</code>——因為訪客驅動的是<b>時間</b>，不是場景本身。</li>
+      <li><b>經過三次反覆修正。</b>提示詞/靜態圖 → 影片鏡頭連續性 → 刷放手感＋手機，每一輪修正上一輪暴露出的問題。</li>
+      <li><b>配方定案。</b>下方記錄的提示詞是三輪之後收斂的結果，能直接重現這個效果。</li>
+    </ol>
+    <p class="muted">要做新世界時把它當參考：先對齊這種一致性與刷放手感，再抽換品牌／文案／場景主體。</p>
+  </section>
+
+  <section id="scenes">
+    <p class="eyebrow">五個場景</p>
+    <h2>從果實到杯中</h2>
+    <p class="muted">縮圖為每個場景的靜態圖（<code>../assets/*.jpg</code>，git 內帶，同時當引擎 fallback poster）。刷放影片 <code>*.mp4</code> 被 gitignore。</p>
+    <div class="scenes">
+      <article class="scene" style="--sc:var(--estate)">
+        <img src="../assets/estate.jpg" alt="The Estate 靜態圖" loading="lazy" />
+        <div class="body"><div class="num">01</div><h4>The Estate</h4><p class="zh">山坡莊園 · From cherry to cup</p>
+        <p class="focal">飛入焦點：<b>the pickers on the terraces</b>（無屋頂可掀 → 低空掠過梯田）</p></div>
+      </article>
+      <article class="scene" style="--sc:var(--mill)">
+        <img src="../assets/mill.jpg" alt="The Mill 靜態圖" loading="lazy" />
+        <div class="body"><div class="num">02</div><h4>The Mill</h4><p class="zh">水洗處理廠 · Wash &amp; dry</p>
+        <p class="focal">飛入焦點：<b>the raised drying beds</b></p></div>
+      </article>
+      <article class="scene" style="--sc:var(--roastery)">
+        <img src="../assets/roastery.jpg" alt="The Roastery 靜態圖" loading="lazy" />
+        <div class="body"><div class="num">03</div><h4>The Roastery</h4><p class="zh">烘焙室 · Fire &amp; time</p>
+        <p class="focal">飛入焦點：<b>the glowing drum roaster</b></p></div>
+      </article>
+      <article class="scene" style="--sc:var(--bar)">
+        <img src="../assets/bar.jpg" alt="The Bar 靜態圖" loading="lazy" />
+        <div class="body"><div class="num">04</div><h4>The Bar</h4><p class="zh">手沖吧台 · Water &amp; care</p>
+        <p class="focal">飛入焦點：<b>the gooseneck pour landing in the dripper</b></p></div>
+      </article>
+      <article class="scene" style="--sc:var(--shop)">
+        <img src="../assets/shop.jpg" alt="The Café 靜態圖" loading="lazy" />
+        <div class="body"><div class="num">05</div><h4>The Café</h4><p class="zh">咖啡館 · 結尾 + CTA</p>
+        <p class="focal">飛入焦點：<b>the giant cup</b>（結尾 → 世界溶接到巨杯前）</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="recipe">
+    <p class="eyebrow">提示詞配方</p>
+    <h2>兩道 AI · 每個場景</h2>
+    <p>先做<b>靜態圖</b>（<code>gpt_image_2</code>，3:2、2k），再做<b>刷放影片</b>（<code>seedance_2_0</code>，16:9、1080p、8 秒、無音軌），影片的 <code>--start-image</code> 就是那張靜態圖。全部重生成用 <code>skills/scroll-world/references/pipeline.md</code>。</p>
+
+    <h3>① 共用美術前綴（五張靜態圖一字不差、完全相同）</h3>
+    <p class="note">最關鍵的訣竅——這段一字不差重用，就是讓五個各自生成的場景讀起來像「同一個地方」的原因。只換方括號裡的品牌部分，場景之間絕不改寫。</p>
+    <pre>Isometric low-poly 3D diorama floating as a small rounded island on a plain solid
+<span class="fill">#F4ECE2</span> cream background with a soft contact shadow beneath it. Soft matte clay 3D render,
+rounded toy-model shapes, gentle warm studio lighting, soft long shadows, tilt-shift
+miniature look. Cohesive color palette of <span class="fill">cream #F4ECE2, espresso #2B1D14, olive #6F7D5A,
+gold #C79A4A, burnt-orange #C2551F, caramel #B5794E</span>. Highly detailed, centered
+composition, absolutely no text, no letters, no numbers, no logos.</pre>
+    <p class="note"><code>#F4ECE2</code> 同時是 <code>index.html</code> 的 <code>--sw-bg</code>：頁面底色＝場景底色＝海報無縫接合。</p>
+
+    <h3>② 各場景主體（接在前綴後 → 靜態圖提示詞）</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>id</th><th>接在前綴之後的 <code>Subject:</code> 句</th></tr></thead>
+        <tbody>
+          <tr><td class="id"><code>estate</code></td><td><code>a hillside coffee estate — stepped green terraces of coffee shrubs heavy with ripe red cherries, two pickers with shoulder baskets, a small wooden drying hut, catching low morning sun.</code></td></tr>
+          <tr><td class="id"><code>mill</code></td><td><code>a wet-mill washing station — concrete water channels carrying coffee cherries, raised mesh beds of drying beans, a worker raking them level, jute sacks stacked to one side.</code></td></tr>
+          <tr><td class="id"><code>roastery</code></td><td><code>a small-batch roastery — a rounded drum roaster glowing warm, a roaster tending the drum, a cooling tray of dark beans, hessian sacks and a stack of tins, thin steam curling up.</code></td></tr>
+          <tr><td class="id"><code>bar</code></td><td><code>a pour-over coffee bar — a barista pouring from a gooseneck kettle over a dripper sitting on a scale, fresh grounds, a row of brewers along a wooden counter, warm pendant light.</code></td></tr>
+          <tr><td class="id"><code>shop</code></td><td><b>拿掉浮島框架。</b><code>one giant clay cup of coffee floating centred on the cream background, gentle rising steam, a few small orbiting props — a single bean, a saucer, a coffee leaf.</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>③ 刷放影片提示詞（每場景一段，<code>--start-image</code> = 該場景靜態圖）</h3>
+    <p class="note">每段都是一鏡到底、往前推進、8 秒、無剪接——正是這種連續性讓引擎能刷成平滑飛行。<code>[FOCAL]</code> 依下表填入。</p>
+    <pre>Single continuous cinematic camera move, no cuts. Begin high and far, looking down at the
+whole scene like a tiny model. The camera slowly glides forward and descends toward it,
+sweeping in toward <span class="fill">[FOCAL]</span>, as if flying inside. As the camera pushes in, the roof and upper
+structure gently lift and open away to reveal the warm interior. Soft matte clay diorama,
+tilt-shift miniature, warm light, cream #F4ECE2 / espresso #2B1D14 / caramel #B5794E palette.
+Smooth, graceful, slow motion, subtle parallax. No text, no captions.</pre>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>id</th><th><code>[FOCAL]</code></th><th>備註</th></tr></thead>
+        <tbody>
+          <tr><td class="id"><code>estate</code></td><td>the pickers on the terraces</td><td>無屋頂 → roof 子句換成 <code>the camera flies low across the terraces toward the pickers.</code></td></tr>
+          <tr><td class="id"><code>mill</code></td><td>the raised drying beds</td><td>—</td></tr>
+          <tr><td class="id"><code>roastery</code></td><td>the glowing drum roaster</td><td>—</td></tr>
+          <tr><td class="id"><code>bar</code></td><td>the gooseneck pour landing in the dripper</td><td>—</td></tr>
+          <tr><td class="id"><code>shop</code></td><td>the giant cup</td><td>結尾 → roof 子句換成 <code>the world dissolves toward the single giant cup, arriving in front of it.</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">影片參數：<code>--mode std --resolution 1080p --aspect_ratio 16:9 --duration 8</code>（無音軌）。手機版 <code>*-m.mp4</code> 同提示詞、重編碼更小（~720p、<code>-g 4</code>）以利手機 seek。</p>
+  </section>
+
+  <section id="write">
+    <p class="eyebrow">寫法</p>
+    <h2>提示詞怎麼寫</h2>
+    <ul class="rules">
+      <li><b>一段前綴，一字不差，處處相同。</b>一致性靠相同區塊重用，不靠各場景各自打磨。改寫它是打破「同一個世界」錯覺的頭號原因。</li>
+      <li><b>每個場景只改 <code>Subject:</code> 一句。</b>用具體道具點名（梯田、乾燥床、鼓式烘豆機、鵝頸壺、咖啡杯）——道具錨定故事階段。</li>
+      <li><b>影片是一鏡到底往前滑推</b>，<code>--start-image</code>=該場景靜態圖，不給 <code>--end-image</code>（架構 A）。刷放把 <code>currentTime</code> 從 0 推到尾，中途倒退或剪接刷起來會很糟。</li>
+      <li><b>為中央構圖。</b>每段影片 <code>object-fit:cover</code>；直式手機裁到中央約一半。焦點置中留頭部空間，重要物件別放最左右緣。</li>
+      <li><b>尾巴 <code>absolutely no text/letters/logos</code>。</b>生成器很愛幻覺出招牌文字。</li>
+      <li><b>結尾刻意打破慣例：</b>英雄產品（那杯咖啡）、沒有浮島、鏡頭溶接<b>到</b>它，而非飛<b>進</b>建築。</li>
+    </ul>
+  </section>
+
+  <section id="use">
+    <p class="eyebrow">用法</p>
+    <h2>引擎怎麼用這些素材</h2>
+    <p><code>index.html</code> 把每個場景對到一段影片與一塊文案；其餘交給 <code>scrub-engine.js</code>：影片以 <b>Blob</b> 載入（永遠可 seek），捲動偏移映射到影片 <code>currentTime</code>——是刷放，不是自動播放。</p>
+    <h3>各場景停留旋鈕（在 <code>index.html</code> 設）</h3>
+    <dl class="knobs">
+      <dt>scroll:</dt><dd>這個場景花掉的捲動高度（越大＝越慢越久；estate／roastery／shop 拉到 1.5–1.6）</dd>
+      <dt>linger:</dt><dd>0..1，讓鏡頭在場景中段（文案高峰處）沉下來、兩端移動較快（roastery 0.4、shop 0.45），保持 ≤ 0.6</dd>
+      <dt>accent:</dt><dd>各段主色，執行期覆寫 <code>--sw-accent</code></dd>
+    </dl>
+    <h3>本機執行</h3>
+    <pre>cd examples/scroll-world-coffee
+python3 -m http.server 8000
+# 開 http://localhost:8000 → 捲動即飛入</pre>
+    <p class="note">手機：coarse-pointer／≤860px 時載入 <code>clipMobile</code>、合併 seek、首幀前用靜態圖當 poster、拿掉飄浮粒子；無 <code>-m</code> 版則 fallback 桌機 <code>clip</code>。</p>
+    <div class="cta-row">
+      <a class="btn primary" href="../index.html">開啟 Demo</a>
+      <a class="btn ghost" href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/skills/scroll-world/references/pipeline.md" target="_blank" rel="noopener noreferrer">pipeline.md（生成腳本）</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>scroll-world-coffee · <code>examples/scroll-world-coffee/guide/</code> ·
+    路由：<a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/skills/skill-router/SKILL.md" target="_blank" rel="noopener noreferrer">skill-router</a> →
+    <a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/skills/scroll-world/SKILL.md" target="_blank" rel="noopener noreferrer">scroll-world</a> ·
+    完整說明：<a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/examples/scroll-world-coffee/README.zh-TW.md" target="_blank" rel="noopener noreferrer">中文 README</a> / <a href="https://github.com/HarryFan/three-interactive-web-skills/blob/main/examples/scroll-world-coffee/README.md" target="_blank" rel="noopener noreferrer">English</a></p>
+  </footer>
+
+</main>
+</body>
+</html>

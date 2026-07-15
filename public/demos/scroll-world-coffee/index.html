@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Meridian Roasters — fly through the world of coffee</title>
+  <meta name="description" content="Scroll to fly through the world of Meridian Roasters, from cherry to cup." />
+  <style>
+    :root, .sw-root {
+      --sw-bg: #F4ECE2;          /* == the clay-scene background colour */
+      --sw-ink: #2B1D14;
+      --sw-ink-soft: #6a5a49;
+      --sw-accent: #B5794E;      /* per-section accents override at runtime */
+      --sw-font-display: "Cormorant Garamond", Georgia, serif;
+      --sw-font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="top"></div>
+  <div id="world"></div>
+
+  <script src="scrub-engine.js"></script>
+  <script>
+    mountScrollWorld(document.getElementById('world'), {
+      brand: { name: 'Meridian Roasters', href: '#top' },
+      cta: { label: 'Find our café', href: '#shop' },
+      hint: 'scroll to fly in',
+      nav: true,
+      atmosphere: true,
+      diveScroll: 1.35,
+      sections: [
+        {
+          id: 'estate', label: 'The Estate',
+          still: 'assets/estate.jpg',
+          clip: 'assets/vid/estate.mp4', clipMobile: 'assets/vid/estate-m.mp4',
+          accent: '#6F7D5A',
+          scroll: 1.5,
+          eyebrow: 'From cherry to cup',
+          title: 'It starts on the hillside.',
+          body: 'Coffee begins as fruit — hand-picked, ripe and red, on terraces that catch the morning sun.',
+          tags: ['Single-origin', 'Hand-picked'],
+        },
+        {
+          id: 'mill', label: 'The Mill',
+          still: 'assets/mill.jpg',
+          clip: 'assets/vid/mill.mp4', clipMobile: 'assets/vid/mill-m.mp4',
+          accent: '#C79A4A',
+          eyebrow: 'Wash & dry',
+          title: 'The cherry gives up its bean.',
+          body: 'Washed clean, then laid out on raised beds to dry slowly under the sun until the flavour sets.',
+          tags: ['Washed process', 'Sun-dried'],
+        },
+        {
+          id: 'roastery', label: 'The Roastery',
+          still: 'assets/roastery.jpg',
+          clip: 'assets/vid/roastery.mp4', clipMobile: 'assets/vid/roastery-m.mp4',
+          accent: '#C2551F',
+          scroll: 1.5, linger: 0.4,
+          eyebrow: 'Fire & time',
+          title: 'Green turns to gold.',
+          body: 'In the drum the bean darkens, cracks, and finds its aroma — roasted in small batches, by feel.',
+          tags: ['Small-batch', 'Roasted to order'],
+        },
+        {
+          id: 'bar', label: 'The Bar',
+          still: 'assets/bar.jpg',
+          clip: 'assets/vid/bar.mp4', clipMobile: 'assets/vid/bar-m.mp4',
+          accent: '#B5794E',
+          eyebrow: 'Water & care',
+          title: 'Poured, not rushed.',
+          body: 'Ground fresh, weighed to the gram, and brewed slow over a gooseneck kettle at the pour-over bar.',
+          tags: ['Pour-over', 'Weighed & timed'],
+        },
+        {
+          id: 'shop', label: 'The Café',
+          still: 'assets/shop.jpg',
+          clip: 'assets/vid/shop.mp4', clipMobile: 'assets/vid/shop-m.mp4',
+          accent: '#8a5a2f',
+          scroll: 1.6, linger: 0.45,
+          eyebrow: 'And it all pours into',
+          title: 'One perfect cup.',
+          body: 'The whole journey — hillside to counter — in the cup in front of you. Come taste where it lands.',
+          tags: [],
+          cta: {
+            primary: { label: 'Find our café', href: '#top' },
+            secondary: { label: 'Shop the beans', href: '#top' },
+          },
+        },
+      ],
+      connectors: [],          // architecture A — the legs ARE the journey (no connectors)
+      connectorsMobile: [],
+    });
+  </script>
+</body>
+</html>
