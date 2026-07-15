@@ -4,21 +4,15 @@ description: '不寫一行 WebGL，也能做出電影感的滾動飛行。這篇
 pubDate: 2026-07-13
 category: 'frontend'
 heroImage: '/blog/2026-07-13-scroll-world-video-scrub.png'
+heroVideo: '/works/scroll-world-coffee-demo.mp4'
 tags: ['滾動動畫', 'AI 生成', '前端筆記', '影片 scrub', 'scroll-driven']
 ---
 
+↑ 這是成品的實際捲動錄影：一個叫 Meridian Roasters 的咖啡品牌站，往下捲就從山坡上的咖啡果，一路飛到手上那杯咖啡。整段沒有一個 WebGL context，訪客能駕駛的只有一件事：時間。
+
 做滾動網站，大家第一個想到的多半是 Three.js：真的在瀏覽器裡跑一個 3D 場景，捲動去驅動相機。這條路我走過，效果好，但代價也真實：建模、材質、光照、效能預算，每一項都是時間。
 
-這次我試了另一條路，做出來的東西反而更「電影」：不跑任何即時 3D，改用預先算好的影片，讓捲動去刷影片的播放進度。捲多少，鏡頭就飛多少。畫質是離線算圖等級的，瀏覽器只負責 seek 一支影片。
-
-先看成品，一個叫 Meridian Roasters 的咖啡品牌站，往下捲就從山坡上的咖啡果，一路飛到手上那杯咖啡：
-
-<video controls autoplay muted loop playsinline width="100%" poster="/blog/2026-07-13-scroll-world-video-scrub/poster.png">
-  <source src="/videos/2026-07-13-scroll-world-video-scrub-demo.mp4" type="video/mp4">
-  您的瀏覽器不支援 video 標籤。
-</video>
-
-整段沒有一個 WebGL context。訪客能駕駛的只有一件事：時間。這篇就把這套做法拆開講。
+這次我試了另一條路，做出來的東西反而更「電影」：不跑任何即時 3D，改用預先算好的影片，讓捲動去刷影片的播放進度。捲多少，鏡頭就飛多少。畫質是離線算圖等級的，瀏覽器只負責 seek 一支影片。這篇就把這套做法拆開講。
 
 ## 先講取捨：什麼時候該用影片 scrub，什麼時候不該
 

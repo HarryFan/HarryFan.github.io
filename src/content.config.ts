@@ -9,6 +9,7 @@ const blog = defineCollection({
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
+		heroVideo: z.string().optional(),
 		category: z.enum(['frontend', 'ai', 'events', 'career']).default('frontend'),
 		draft: z.boolean().optional().default(false),
 	}),
@@ -56,6 +57,8 @@ const works = defineCollection({
 			cover: z.string().optional(),
 			video: z.string().optional(),
 			video_loop: z.string().optional(),
+			// 部署在 Vercel，公開可訪問；原始碼 repo 仍為 private。
+			demo: z.string().url().optional(),
 			repo: z.string().url().optional(),
 			repo_private: z.boolean().default(false),
 			blog_post: z.string().optional(),
