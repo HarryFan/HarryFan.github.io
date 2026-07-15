@@ -1,4 +1,4 @@
-import { e as createAstro, c as createComponent, a as renderComponent, b as renderHead, d as addAttribute, f as renderSlot, r as renderTemplate } from './astro/server.js';
+import { e as createAstro, c as createComponent, a as renderComponent, b as renderHead, f as renderSlot, d as addAttribute, r as renderTemplate } from './astro/server.js';
 import 'kleur/colors';
 import { $ as $$BaseHead } from './BaseHead.js';
 import { a as $$Header, $ as $$Footer } from './Footer.js';
@@ -10,10 +10,10 @@ const $$Astro = createAstro("https://harryfan.github.io");
 const $$BlogPost = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$BlogPost;
-  const { title, description, pubDate, updatedDate, heroImage } = Astro2.props;
+  const { title, description, pubDate, updatedDate, heroImage, heroVideo } = Astro2.props;
   const heroSrc = resolveHeroSrc(heroImage);
   const coverSrc = heroSrc ?? coverSvgDataUri(title);
-  return renderTemplate`<html lang="en" data-astro-cid-bvzihdzo> <head>${renderComponent($$result, "BaseHead", $$BaseHead, { "title": title, "description": description, "image": heroSrc, "data-astro-cid-bvzihdzo": true })}${renderHead()}</head> <body data-astro-cid-bvzihdzo> ${renderComponent($$result, "Header", $$Header, { "data-astro-cid-bvzihdzo": true })} <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img${addAttribute(1020, "width")}${addAttribute(510, "height")}${addAttribute(coverSrc, "src")} alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> ${renderComponent($$result, "FormattedDate", $$FormattedDate, { "date": pubDate, "data-astro-cid-bvzihdzo": true })} ${updatedDate && renderTemplate`<div class="last-updated-on" data-astro-cid-bvzihdzo>
+  return renderTemplate`<html lang="en" data-astro-cid-bvzihdzo> <head>${renderComponent($$result, "BaseHead", $$BaseHead, { "title": title, "description": description, "image": heroSrc, "data-astro-cid-bvzihdzo": true })}${renderHead()}</head> <body data-astro-cid-bvzihdzo> ${renderComponent($$result, "Header", $$Header, { "data-astro-cid-bvzihdzo": true })} <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> ${heroVideo ? renderTemplate`<video${addAttribute(heroVideo, "src")}${addAttribute(coverSrc, "poster")} controls autoplay muted loop playsinline${addAttribute(1020, "width")}${addAttribute(510, "height")} data-astro-cid-bvzihdzo></video>` : renderTemplate`<img${addAttribute(1020, "width")}${addAttribute(510, "height")}${addAttribute(coverSrc, "src")} alt="" data-astro-cid-bvzihdzo>`} </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> ${renderComponent($$result, "FormattedDate", $$FormattedDate, { "date": pubDate, "data-astro-cid-bvzihdzo": true })} ${updatedDate && renderTemplate`<div class="last-updated-on" data-astro-cid-bvzihdzo>
 Last updated on ${renderComponent($$result, "FormattedDate", $$FormattedDate, { "date": updatedDate, "data-astro-cid-bvzihdzo": true })} </div>`} </div> <h1 data-astro-cid-bvzihdzo>${title}</h1> <hr data-astro-cid-bvzihdzo> </div> ${renderSlot($$result, $$slots["default"])} </div> </article> </main> ${renderComponent($$result, "Footer", $$Footer, { "data-astro-cid-bvzihdzo": true })} </body></html>`;
 }, "/Users/gangshuanfan/Documents/Astro/HarryFan.github.io/src/layouts/BlogPost.astro", void 0);
 
