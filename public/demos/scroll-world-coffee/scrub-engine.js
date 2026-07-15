@@ -189,28 +189,59 @@ function mountScrollWorld(container, config) {
     window.scrollTo({ top: seg.start + (seg.end - seg.start) * 0.5, behavior: reduce ? 'auto' : 'smooth' });
   }
 
-  function loadClip(s) {
+  function attachVideo(s) {
+    const v = document.createElement('video');
+    v.className = 'sw-scene__video';
+    v.muted = true; v.playsInline = true; v.preload = 'auto';
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+    v.src = s.blobUrl;
+    v.addEventListener('loadedmetadata', () => { s.ready = true; read(); });
+    // Reveal the video (hide the still poster) only once a real frame has
+    // painted — on iOS a seeked-but-never-played muted video stays blank, so
+    // hiding the still on metadata alone would flash an empty scene.
+    v.addEventListener('seeked', () => { s.el.classList.add('has-clip'); }, { once: true });
+    v.addEventListener('loadeddata', () => { try { v.pause(); } catch (e) {} if (userReady) primeVideo(v); });
+    s.el.appendChild(v); s.video = v; s.hasClip = true;
+  }
+
+  // Pulling the bytes and holding a decoder are separate costs. Bytes are cheap and
+  // worth fetching early (a wide band) so a scene is never waiting on the network;
+  // a decoder is the scarce one, so it's claimed late and handed back early below.
+  function prefetchClip(s) {
     // Under prefers-reduced-motion we never load the clips at all — the stills stay up
     // and simply cross-dissolve as you scroll. No scrubbed video motion, no decode cost.
-    if (reduce || s.loading || !s.clip) return;
+    if (reduce || !s.clip || s.blobUrl || s.loading) return;
     s.loading = true;
     // Serve the lighter mobile encode on phones when one was provided.
     const url = (isMobile() && s.clipM) ? s.clipM : s.clip;
     fetch(url).then(r => r.ok ? r.blob() : Promise.reject(new Error('404')))
-      .then(blob => {
-        const v = document.createElement('video');
-        v.className = 'sw-scene__video';
-        v.muted = true; v.playsInline = true; v.preload = 'auto';
-        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-        v.src = URL.createObjectURL(blob);
-        v.addEventListener('loadedmetadata', () => { s.ready = true; read(); });
-        // Reveal the video (hide the still poster) only once a real frame has
-        // painted — on iOS a seeked-but-never-played muted video stays blank, so
-        // hiding the still on metadata alone would flash an empty scene.
-        v.addEventListener('seeked', () => { s.el.classList.add('has-clip'); }, { once: true });
-        v.addEventListener('loadeddata', () => { try { v.pause(); } catch (e) {} if (userReady) primeVideo(v); });
-        s.el.appendChild(v); s.video = v; s.hasClip = true;
-      }).catch(() => { s.loading = false; });
+      .then(blob => { s.blobUrl = URL.createObjectURL(blob); read(); })
+      .catch(() => { s.loading = false; });
+  }
+
+  function loadClip(s) {
+    if (reduce || !s.clip || s.video) return;
+    // No bytes yet — prefetch, and read() re-runs to attach once they land.
+    if (!s.blobUrl) { prefetchClip(s); return; }
+    attachVideo(s);
+  }
+
+  // A phone can only keep a handful of H.264 decoders alive at once — real devices
+  // (and in-app WebViews like LINE's, which are tighter still) start starving the
+  // later scenes once every clip stays resident, which is what turns the back half
+  // of the flight into a slideshow while the first scenes stay smooth. Desktop has
+  // no such ceiling, so it never showed the problem. Dropping the <video> for scenes
+  // that are far off-screen hands the decoder back; the still image covers the gap
+  // and s.cur is kept so a re-entry resumes at the right frame.
+  function unloadClip(s) {
+    const v = s.video;
+    if (!v) return;
+    try { v.pause(); } catch (e) {}
+    v.removeAttribute('src');
+    try { v.load(); } catch (e) {}   // forces the decoder to be released now
+    v.remove();
+    s.video = null; s.hasClip = false; s.ready = false;
+    s.el.classList.remove('has-clip');
   }
 
   function read() {
@@ -221,7 +252,14 @@ function mountScrollWorld(container, config) {
 
     for (let i = 0; i < NSEG; i++) {
       const s = SEGMENTS[i];
-      if (y > s.start - 1.6 * vh && y < s.end + 1.6 * vh) loadClip(s);
+      // Bytes: fetched from 1.6vh out on every device — never blocks on network.
+      if (y > s.start - 1.6 * vh && y < s.end + 1.6 * vh) prefetchClip(s);
+      // Decoder: desktop can hold them all, so it keeps the wide band. A phone claims
+      // one only within 0.8vh and releases it past 1.8vh — the gap between the two is
+      // hysteresis, so resting on a boundary can't thrash the decoder in and out.
+      const hold = isMobile() ? 0.8 : 1.6;
+      if (y > s.start - hold * vh && y < s.end + hold * vh) loadClip(s);
+      else if (isMobile() && (y < s.start - 1.8 * vh || y > s.end + 1.8 * vh)) unloadClip(s);
       const local = clamp((y - s.start) / (s.end - s.start), 0, 1);
       s.target = s.linger ? lingerEase(local, s.linger) : local;
       let outside = 0;
