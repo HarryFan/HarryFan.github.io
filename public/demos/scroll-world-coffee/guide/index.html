@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>scroll-world-coffee · 製作指南</title>
-<meta name="description" content="Meridian Roasters 影片刷放捲動站的製作指南——路由、三次反覆修正、提示詞配方、寫法與用法。" />
+<meta name="description" content="Meridian Roasters 影片 scrub 捲動站的製作指南——路由、三次反覆修正、提示詞配方、寫法與用法。" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -121,7 +121,7 @@
 <main>
 
   <div class="hero">
-    <p class="eyebrow">scroll-world · 影片刷放範例</p>
+    <p class="eyebrow">scroll-world · 影片 scrub 範例</p>
     <h1>捲動，就是<br>駕駛鏡頭飛行。</h1>
     <p class="lead">五個共用同一段美術指令的黏土場景，從咖啡果一路飛到成品咖啡。這頁記錄它怎麼被做出來——路由、修正、提示詞配方、寫法與用法。</p>
     <div class="chips">
@@ -142,16 +142,16 @@
     <p>這不是隨手做的 demo，而是 <code>scroll-world</code> 技能的<b>目標範本</b>：新生成的世界要達到的標竿。它經過完整流程才收斂——</p>
     <ol class="steps">
       <li><b>經由 <code>/guide</code>（<code>skills/skill-router</code>）路由至此。</b>「fly through the world／把一門生意變成可捲動電影」的 brief，會在 router 的「建置型態」步驟落到 <code>scroll-world</code>，而不是 <code>three-scroll-hero-creator</code>——因為訪客驅動的是<b>時間</b>，不是場景本身。</li>
-      <li><b>經過三次反覆修正。</b>提示詞/靜態圖 → 影片鏡頭連續性 → 刷放手感＋手機，每一輪修正上一輪暴露出的問題。</li>
+      <li><b>經過三次反覆修正。</b>提示詞/靜態圖 → 影片鏡頭連續性 → scrub 手感＋手機，每一輪修正上一輪暴露出的問題。</li>
       <li><b>配方定案。</b>下方記錄的提示詞是三輪之後收斂的結果，能直接重現這個效果。</li>
     </ol>
-    <p class="muted">要做新世界時把它當參考：先對齊這種一致性與刷放手感，再抽換品牌／文案／場景主體。</p>
+    <p class="muted">要做新世界時把它當參考：先對齊這種一致性與 scrub 手感，再抽換品牌／文案／場景主體。</p>
   </section>
 
   <section id="scenes">
     <p class="eyebrow">五個場景</p>
     <h2>從果實到杯中</h2>
-    <p class="muted">縮圖為每個場景的靜態圖（<code>../assets/*.jpg</code>，同時當引擎的 fallback poster）；刷放時載入對應的 <code>*.mp4</code>。</p>
+    <p class="muted">縮圖為每個場景的靜態圖（<code>../assets/*.jpg</code>，同時當引擎的 fallback poster）；scrub 時載入對應的 <code>*.mp4</code>。</p>
     <div class="scenes">
       <article class="scene" style="--sc:var(--estate)">
         <img src="../assets/estate.jpg" alt="The Estate 靜態圖" loading="lazy" />
@@ -184,7 +184,7 @@
   <section id="recipe">
     <p class="eyebrow">提示詞配方</p>
     <h2>兩道 AI · 每個場景</h2>
-    <p>先做<b>靜態圖</b>（<code>gpt_image_2</code>，3:2、2k），再做<b>刷放影片</b>（<code>seedance_2_0</code>，16:9、1080p、8 秒、無音軌），影片的 <code>--start-image</code> 就是那張靜態圖。全部重生成用 <code>skills/scroll-world/references/pipeline.md</code>。</p>
+    <p>先做<b>靜態圖</b>（<code>gpt_image_2</code>，3:2、2k），再做<b>scrub 影片</b>（<code>seedance_2_0</code>，16:9、1080p、8 秒、無音軌），影片的 <code>--start-image</code> 就是那張靜態圖。全部重生成用 <code>skills/scroll-world/references/pipeline.md</code>。</p>
 
     <h3>① 共用美術前綴（五張靜態圖一字不差、完全相同）</h3>
     <p class="note">最關鍵的訣竅——這段一字不差重用，就是讓五個各自生成的場景讀起來像「同一個地方」的原因。只換方括號裡的品牌部分，場景之間絕不改寫。</p>
@@ -210,7 +210,7 @@ composition, absolutely no text, no letters, no numbers, no logos.</pre>
       </table>
     </div>
 
-    <h3>③ 刷放影片提示詞（每場景一段，<code>--start-image</code> = 該場景靜態圖）</h3>
+    <h3>③ scrub 影片提示詞（每場景一段，<code>--start-image</code> = 該場景靜態圖）</h3>
     <p class="note">每段都是一鏡到底、往前推進、8 秒、無剪接——正是這種連續性讓引擎能刷成平滑飛行。<code>[FOCAL]</code> 依下表填入。</p>
     <pre>Single continuous cinematic camera move, no cuts. Begin high and far, looking down at the
 whole scene like a tiny model. The camera slowly glides forward and descends toward it,
@@ -239,7 +239,7 @@ Smooth, graceful, slow motion, subtle parallax. No text, no captions.</pre>
     <ul class="rules">
       <li><b>一段前綴，一字不差，處處相同。</b>一致性靠相同區塊重用，不靠各場景各自打磨。改寫它是打破「同一個世界」錯覺的頭號原因。</li>
       <li><b>每個場景只改 <code>Subject:</code> 一句。</b>用具體道具點名（梯田、乾燥床、鼓式烘豆機、鵝頸壺、咖啡杯）——道具錨定故事階段。</li>
-      <li><b>影片是一鏡到底往前滑推</b>，<code>--start-image</code>=該場景靜態圖，不給 <code>--end-image</code>（架構 A）。刷放把 <code>currentTime</code> 從 0 推到尾，中途倒退或剪接刷起來會很糟。</li>
+      <li><b>影片是一鏡到底往前滑推</b>，<code>--start-image</code>=該場景靜態圖，不給 <code>--end-image</code>（架構 A）。scrub 把 <code>currentTime</code> 從 0 推到尾，中途倒退或剪接刷起來會很糟。</li>
       <li><b>為中央構圖。</b>每段影片 <code>object-fit:cover</code>；直式手機裁到中央約一半。焦點置中留頭部空間，重要物件別放最左右緣。</li>
       <li><b>尾巴 <code>absolutely no text/letters/logos</code>。</b>生成器很愛幻覺出招牌文字。</li>
       <li><b>結尾刻意打破慣例：</b>英雄產品（那杯咖啡）、沒有浮島、鏡頭溶接<b>到</b>它，而非飛<b>進</b>建築。</li>
@@ -249,7 +249,7 @@ Smooth, graceful, slow motion, subtle parallax. No text, no captions.</pre>
   <section id="use">
     <p class="eyebrow">用法</p>
     <h2>引擎怎麼用這些素材</h2>
-    <p><code>index.html</code> 把每個場景對到一段影片與一塊文案；其餘交給 <code>scrub-engine.js</code>：影片以 <b>Blob</b> 載入（永遠可 seek），捲動偏移映射到影片 <code>currentTime</code>——是刷放，不是自動播放。</p>
+    <p><code>index.html</code> 把每個場景對到一段影片與一塊文案；其餘交給 <code>scrub-engine.js</code>：影片以 <b>Blob</b> 載入（永遠可 seek），捲動偏移映射到影片 <code>currentTime</code>——是 scrub，不是自動播放。</p>
     <h3>各場景停留旋鈕（在 <code>index.html</code> 設）</h3>
     <dl class="knobs">
       <dt>scroll:</dt><dd>這個場景花掉的捲動高度（越大＝越慢越久；estate／roastery／shop 拉到 1.5–1.6）</dd>

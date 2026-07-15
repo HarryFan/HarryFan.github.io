@@ -1,10 +1,10 @@
 ---
-title: '捲動就是駕駛鏡頭：我用「影片刷放」做了一個從咖啡果飛到咖啡杯的網站'
+title: '捲動就是駕駛鏡頭：我用「影片 scrub」做了一個從咖啡果飛到咖啡杯的網站'
 description: '不寫一行 WebGL，也能做出電影感的滾動飛行。這篇拆解 scroll-world 的做法：用 AI 生成五個共用同一段美術指令的黏土場景，把它們變成一鏡到底的短影片，再讓捲動去刷影片的 currentTime，捲多少、鏡頭就飛多少。附完整提示詞配方、引擎旋鈕，以及三次反覆修正踩到的坑。'
 pubDate: 2026-07-13
 category: 'frontend'
 heroImage: '/blog/2026-07-13-scroll-world-video-scrub.png'
-tags: ['滾動動畫', 'AI 生成', '前端筆記', '影片刷放', 'scroll-driven']
+tags: ['滾動動畫', 'AI 生成', '前端筆記', '影片 scrub', 'scroll-driven']
 ---
 
 做滾動網站，大家第一個想到的多半是 Three.js：真的在瀏覽器裡跑一個 3D 場景，捲動去驅動相機。這條路我走過，效果好，但代價也真實：建模、材質、光照、效能預算，每一項都是時間。
@@ -20,12 +20,12 @@ tags: ['滾動動畫', 'AI 生成', '前端筆記', '影片刷放', 'scroll-driv
 
 整段沒有一個 WebGL context。訪客能駕駛的只有一件事：時間。這篇就把這套做法拆開講。
 
-## 先講取捨：什麼時候該用影片刷放，什麼時候不該
+## 先講取捨：什麼時候該用影片 scrub，什麼時候不該
 
 一句話分界，就看訪客要不要「操作場景本身」。
 
 - 要（旋轉產品、換配色、拖曳、hover 反應）→ 老實跑 live WebGL，沒有捷徑。
-- 不要，只是「被帶著飛過去看」→ 影片刷放贏在畫質與零效能預算。鏡頭路徑是固定的藝術指導，訪客只推進時間。
+- 不要，只是「被帶著飛過去看」→ 影片 scrub 贏在畫質與零效能預算。鏡頭路徑是固定的藝術指導，訪客只推進時間。
 
 這個咖啡站屬於後者：它是一段被藝術指導過的「片子」，不是一個可把玩的 3D 玩具。認清這點，整個技術選擇就順了。
 
@@ -48,7 +48,7 @@ composition, absolutely no text, no letters, no numbers, no logos.
 
 ## 訣竅二：每個場景兩道 AI，先靜態圖再一鏡到底的影片
 
-流程是：先用影像模型生一張 3:2 的靜態圖，再用影片模型，拿那張靜態圖當 `--start-image`，生一段 8 秒的刷放影片。影片提示詞的重點就一件事：一鏡到底、往前推進、不剪接。
+流程是：先用影像模型生一張 3:2 的靜態圖，再用影片模型，拿那張靜態圖當 `--start-image`，生一段 8 秒的 scrub 影片。影片提示詞的重點就一件事：一鏡到底、往前推進、不剪接。
 
 ```
 Single continuous cinematic camera move, no cuts. Begin high and far, looking down at the
@@ -68,7 +68,7 @@ tilt-shift miniature, warm light, ...palette. Smooth, graceful, slow motion. No 
 
 1. 每個場景吃掉一段捲動距離，這段距離內的捲動偏移，線性映射到影片的 `currentTime`。
 2. 影片用 Blob 載入（`URL.createObjectURL`），這樣一定可 seek，不必依賴伺服器支援 HTTP range。
-3. 監聽捲動，在 rAF 裡把 `video.currentTime` 設到對應時間點，是刷放，不是 `play()`。
+3. 監聽捲動，在 rAF 裡把 `video.currentTime` 設到對應時間點，是 scrub，不是 `play()`。
 
 幾個好用的每場景旋鈕：
 
@@ -83,7 +83,7 @@ tilt-shift miniature, warm light, ...palette. Smooth, graceful, slow motion. No 
 
 1. 第一輪，提示詞和靜態圖：把五張的風格、色盤、構圖對齊。這輪的產出就是那段一字不差的前綴。
 2. 第二輪，影片鏡頭連續性：確保每段都是乾淨的單向前推。中途會倒退或甩鏡的就重生成，那種刷起來一定怪。
-3. 第三輪，刷放手感和手機：調 `scroll`/`linger` 的節奏，補上手機的 seek 合併與 poster。
+3. 第三輪，scrub 手感和手機：調 `scroll`/`linger` 的節奏，補上手機的 seek 合併與 poster。
 
 最大的體會是：這類「片子型」網站的品質，八成在提示詞的紀律，不在前端程式碼。引擎寫好一次就不太動了，真正決定成敗的，是那段前綴有沒有被守住、每支影片是不是乾淨的一鏡到底。
 
