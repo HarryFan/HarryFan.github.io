@@ -71,6 +71,7 @@ function getHeadings() {
 function _createMdxContent(props) {
   const _components = {
     code: "code",
+    img: "img",
     p: "p",
     strong: "strong",
     ...props.components
@@ -78,6 +79,11 @@ function _createMdxContent(props) {
   return createVNode(Fragment, {
     children: [createVNode(_components.p, {
       children: "現代日系動畫的視覺語言，是一套從手繪賽璐璐時代延續、再被數位作畫工業化的成熟美學。它的核心精神不是寫實，而是「用最精煉的線條與色塊，傳達最大的情緒」。一條乾淨的輪廓線、一塊俐落的陰影、一點眼中的高光，就能讓角色活起來。理解這點很重要：當你下提示詞時，本質上是在請 AI 模擬一套「資訊高度濃縮、但情感極度飽滿」的二維作畫系統，而不是替照片套濾鏡。乾淨是這個風格的底線，雜亂的線條會立刻破壞整體質感。"
+    }), "\n", createVNode(_components.p, {
+      children: createVNode(_components.img, {
+        src: "/styles/anime/01-refined-line.webp",
+        alt: "窗仔用一支筆畫出一條乾淨的線，線的末端迸出閃亮的動畫眼與淚珠，雜亂的線被揉成團丟進紙簍"
+      })
     }), "\n", createVNode(_components.p, {
       children: ["技術核心可拆成三塊。第一是描線，", createVNode(_components.code, {
         children: "clean lineart"
@@ -93,7 +99,17 @@ function _createMdxContent(props) {
         children: "beautiful painted background"
       }), "，畫面就有了劇場版那種清新通透的空氣感。"]
     }), "\n", createVNode(_components.p, {
+      children: createVNode(_components.img, {
+        src: "/styles/anime/02-three-cores.webp",
+        alt: "窗仔在小產線上組裝動畫角色：先描線做骨架，再平塗上色，最後點一顆眼睛高光，角色就活了過來"
+      })
+    }), "\n", createVNode(_components.p, {
       children: "題材與情緒上，這個風格幾乎萬用：校園日常、青春戀愛、奇幻冒險、治癒系小品都能駕馭，特別擅長表達細膩的情感與清新明亮的氛圍。它能承載輕快、感動、熱血等多種情緒，但若要做冷硬寫實或厚塗油畫質感，就不是它的強項。做角色頭像、同人插畫或視覺主圖時，記得讓主體線條乾淨、背景與角色畫風統一，避免一個寫實、一個平塗的割裂感。"
+    }), "\n", createVNode(_components.p, {
+      children: createVNode(_components.img, {
+        src: "/styles/anime/03-common-pitfalls.webp",
+        alt: "窗仔對照兩顆頭：左邊是描線雜亂、眼睛沒高光、配色過飽和的壞示範，右邊是乾淨俐落又帶高光的正確版"
+      })
     }), "\n", createVNode(_components.p, {
       children: ["各模型的實戰差異值得分開談。", createVNode(_components.strong, {
         children: "Midjourney"
