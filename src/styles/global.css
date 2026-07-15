@@ -154,6 +154,65 @@ table {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
 }
+/* qa-table: prose-heavy tables scroll badly, so stack each row into a labelled card on narrow screens */
+.prose table.qa-table {
+	display: table;
+	overflow-x: visible;
+	margin: 2rem 0;
+}
+.qa-table th,
+.qa-table td {
+	padding: 0.75rem 0.9rem;
+	border: 2px solid var(--rule);
+	text-align: left;
+	vertical-align: top;
+}
+.qa-table th {
+	background: var(--paper-soft);
+	font-weight: 700;
+}
+.qa-table td:first-child {
+	white-space: nowrap;
+	font-weight: 700;
+}
+@media (max-width: 640px) {
+	.prose table.qa-table,
+	.qa-table tbody,
+	.qa-table tr,
+	.qa-table td {
+		display: block;
+		width: 100%;
+	}
+	.qa-table thead {
+		display: none;
+	}
+	.qa-table tr {
+		border: 2px solid var(--rule);
+		border-radius: var(--radius);
+		background: var(--paper-soft);
+		margin-bottom: 1rem;
+		padding: 0.25rem 0.75rem 0.75rem;
+	}
+	.qa-table td {
+		border: 0;
+		padding: 0.5rem 0;
+	}
+	.qa-table td:first-child {
+		white-space: normal;
+	}
+	.qa-table td + td {
+		border-top: 2px dashed var(--soft-rule);
+	}
+	.qa-table td::before {
+		content: attr(data-label);
+		display: block;
+		margin-bottom: 0.25rem;
+		font-size: 0.78rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		opacity: 0.65;
+	}
+}
 img {
 	max-width: 100%;
 	height: auto;
