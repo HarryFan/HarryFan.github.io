@@ -1,7 +1,8 @@
 ---
 title: '一張邀請函做到什麼程度：貓空聚會落地頁的技術拆解'
-description: '一場朋友間的貓空茶會，我把邀請函做成了落地頁：程序化生成的 WebGL 山脊背景、一個 boolean 同時重畫三層渲染、拒絕 IntersectionObserver 的捲動進場、以及會從你點的那一格長出來的 FLIP 燈箱。這篇把每個效果拆到可以複製的程度，文章裡的 demo 都是能直接動手玩的真實實作，最後誠實記錄手機版怎麼把我打回原形。'
+description: '一場朋友間的貓空茶會，我把邀請函做成了落地頁：程序化生成的 WebGL 山脊背景、一個 boolean 同時重畫三層渲染、拒絕 IntersectionObserver 的捲動進場、以及會從你點的那一格長出來的 FLIP 燈箱。這篇把每個效果拆到可以複製的程度，文章裡的 demo 都是能直接動手玩的真實實作。兩個月後我把它拆成多頁，其中兩個當初自認聰明的決定當場崩給我看——更新的段落一併收錄。'
 pubDate: 2026-07-19
+updatedDate: 2026-07-19
 category: 'frontend'
 heroImage: '/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/cover.png'
 tags: ['three.js', 'GSAP', 'FLIP 動畫', '新粗獷主義', '落地頁', '前端筆記']
@@ -165,7 +166,35 @@ lerpColor((leafMat as THREE.MeshBasicMaterial).color, pal.leaf, k);
 
 注意是 `modeRef.current` 不是 `mode`。這一個字的差別讓整個 `useEffect` 的依賴陣列可以維持 `[]`——場景**建立一次就好**，切換天氣時不會被拆掉重建。React 的狀態負責 DOM，ref 負責跨越 render 邊界把值餵給 rAF 迴圈，兩邊各司其職。
 
-## 捲動進場：我刻意不用 IntersectionObserver
+### 後記：這個 boolean 後來教了我什麼叫「全站狀態」
+
+這節寫的時候，切換器是放在頁面內容裡的。而且**放了兩份**——`HeroSection` 的資訊卡有一個，`ItineraryTimeline` 的表頭又有一個。單頁的時候這不痛不癢，兩份都在同一個捲軸上，改哪個都一樣。
+
+拆成多頁之後，兩份同時失效了。
+
+首頁沒有行程時間軸，行程頁沒有那張資訊卡。於是變成：**你在首頁時，沒有任何控制項能切換你正在看的那片背景**。而背景是全站固定的——它就在那裡，藍的或綠的，但你動不了它。
+
+問題不在於「切換器該放哪一頁」，而在於我一開始就把它歸錯類了。判準其實很直白：
+
+> 這個狀態影響的範圍，就是它該待的層級。
+
+`weatherMode` 驅動 WebGL 場景、CSS 粒子層、全站主題色——它從來就不是某一頁的狀態，是全站的。所以正確答案是它**哪一頁都不屬於**：控制項移到 header，狀態提升到 Context，包在 Router 外面。
+
+```tsx
+<EventProvider>        {/* weatherMode 活在這裡 */}
+  <BrowserRouter>
+    <Route element={<Layout />}>   {/* header 的切換器讀它 */}
+      <Route index element={<HomePage />} />
+      ...
+```
+
+原本那兩處改成唯讀的狀態顯示——「☀️ 目前顯示晴天行程」。使用者仍然知道自己在哪個方案，但控制項只有一個，不會出現兩份 UI 各說各話。
+
+順帶一提，同一批狀態裡還有報名名單。它原本住在 `RsvpForm` 裡，而表單只存在於 `/rsvp`——所以首頁那個「已有 N 人完成出席登記」在使用者沒進過報名頁時永遠拿不到數字。判準一樣，處理方式一樣：提升到 Context。
+
+**在單頁裡，「元件持有狀態」和「全站持有狀態」看起來沒差別。拆頁就是那個把差別逼出來的時刻。**
+
+## 捲動進場：我刻意不用 IntersectionObserver（然後被自己打臉）
 
 這是整份程式碼裡最反直覺的決定。`Reveal.tsx` 沒有用 IntersectionObserver，也沒有用 GSAP ScrollTrigger，而是一個用 rAF 節流的捲動監聽，讀 `getBoundingClientRect().top`：
 
@@ -185,6 +214,8 @@ const onScroll = () => { if (!raf) raf = requestAnimationFrame(check); };
 check();  // 初始檢查：元素可能一開始就在視窗內
 window.addEventListener('scroll', onScroll, { passive: true });
 ```
+
+> ⚠️ **這段程式碼有 bug，請不要照抄。**下面保留我當時的推理過程，但結論是錯的——本節末尾有完整的踩坑紀錄與修正版本。
 
 為什麼？因為 IntersectionObserver 判斷的是「**現在有沒有相交**」，而我要問的是「**這個元素到底該不該被看見**」。這兩件事在使用者快速捲到底、或直接用 `#hash` 跳到頁面中段時會分岔——元素從沒觸發過 intersection，結果永遠卡在 `opacity: 0`。有人傳連結給朋友、朋友點進來直接落在報名區，然後看到一片空白，這種 bug 找起來很痛苦。
 
@@ -211,6 +242,67 @@ transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}ms,
 </div>
 <p class="mkdemo-hint">在框內往下捲。每張卡片進入視窗底部 92% 就上浮淡入，各差 80ms。這裡用的是跟正式站一模一樣的判斷式與 easing 曲線。</p>
 </div>
+
+### 更新：我把落地頁拆成多頁，然後這段程式碼死了
+
+上面那套推理，我維持了兩個月。直到我把這個單頁拆成首頁／行程／相簿／報名四頁。
+
+拆完之後，**相簿頁是空白的**。
+
+不是圖沒載到——`<img>` 全在 DOM 裡、`naturalWidth` 正常、opacity 是 1。是整個 `Reveal` 外層停在 `opacity: 0`，連帶把裡面的 Masonry 一起藏了。我盯著正式 build 看了二十秒，它沒有出現。
+
+原因很好笑，而且完全是我自己種的：
+
+```
+相簿頁的文件高度 = 779px
+瀏覽器視窗高度   = 779px
+```
+
+**這一頁不能捲動。**
+
+沒有捲軸，就永遠不會有 `scroll` 事件。而我的 `Reveal` 只在掛載時同步檢查一次，之後全靠事件重試。單頁時代這從來不是問題——4450px 的頁面必然會被捲動，初次判定就算失敗，隨便滑一下就補救回來了。頁面夠長，把 bug 蓋住了。
+
+拆頁之後，相簿頁短到剛好等於視窗。初次判定一失敗，就再也沒有第二次機會。**永久停在 `opacity: 0`。**
+
+回頭看我當初寫的理由：
+
+> ……元素從沒觸發過 intersection，結果永遠卡在 `opacity: 0`。
+
+我擔心 IntersectionObserver 會造成的事，一字不差地發生在我自己寫的替代方案上。
+
+而且那個擔心本身就是錯的。**IntersectionObserver 在你呼叫 `observe()` 時，對已經在視窗內的元素必定回報一次**，不需要任何捲動或互動。我文中設想的「`#hash` 跳到中段 → 從沒觸發 → 卡住」不會發生。我否定了一個正確的 API，理由是一個它其實沒有的缺陷，然後自己實作了那個缺陷。
+
+修法是讓 IO 當主力、原本的捲動判斷降級為備援：
+
+```tsx
+// 主要機制：IntersectionObserver 對「掛載當下就已在視窗內」的元素必定回報一次，
+// 不需要任何使用者互動。短頁面（高度等於視窗）根本無法捲動，
+// 只靠同步檢查一旦失敗，就再也不會有 scroll 事件把區塊救回來。
+if ('IntersectionObserver' in window) {
+  observer = new IntersectionObserver(
+    (entries) => { if (entries.some((e) => e.isIntersecting)) reveal(); },
+    { rootMargin: '0px 0px -8% 0px' }
+  );
+  observer.observe(el);
+}
+
+// 備援：捲動／縮放時重測，並在下一個影格再確認一次，
+// 避免首次量測時版面尚未穩定而誤判。
+check();
+raf = requestAnimationFrame(check);
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', onScroll);
+```
+
+多加的那行 `requestAnimationFrame(check)` 是另一個教訓：首次量測時 WebGL 畫布、圖片、字型都還沒定位，`getBoundingClientRect()` 給的是還沒穩定的版面。**只量一次就決定命運，是這整個 bug 的共同結構。**
+
+三件我帶走的事：
+
+1. **「頁面很長」不是一個你能依賴的前提。** 我的實作隱含假設了「使用者總會捲動」，而這個假設在拆頁那天失效了。長頁面不是安全網，它只是把 bug 藏起來。
+2. **駁回一個標準 API 之前，先確認你駁回的缺陷真的存在。** 我花了力氣手刻替代方案，而我要避開的問題從一開始就不存在。
+3. **一次性的判定要有第二次機會。** 不管是 rAF 重測還是 observer，任何「錯過就永遠錯過」的邏輯，都在等一個把它逼出來的版面。
+
+原文我留著沒刪。寫錯的推理跟寫對的結論一樣有參考價值——尤其當它錯得這麼具體的時候。
 
 ## 相簿：自己寫排版，讓高度不等圖片
 
@@ -305,6 +397,27 @@ onComplete: () => gsap.set(selector, { willChange: 'auto' })
 **第四個坑：`vh` 在 iOS Safari 是騙人的。** 燈箱的 `max-h-[85vh]` 把網址列佔的高度也算進去，圖片上下被裁掉。換成 `dvh`，再給底部的計數列補上 `env(safe-area-inset-bottom)` 避開 home indicator。
 
 順手還做了幾件事：手機最少兩欄（單欄要捲過八張全寬圖，那不叫相簿叫長條）；窄版關掉進場模糊、把飛入距離從 `window.innerHeight + 200` 縮成 `y + 80`；燈箱加上左右滑換圖、下滑關閉，並且要求該軸位移必須大於另一軸，避免誤判。
+
+**第五個坑（拆多頁之後才發現）：我的觸控目標全部太小。**
+
+多頁化之後 header 多了導覽列，我拿 390px 寬去量每一個可點元素的高度，結果很難看：
+
+```
+最小觸控目標   16px   ← 站名連結
+導覽列連結     32px
+行程頁 390px   23 個可點元素，19 個不合格
+```
+
+44px 是 Apple HIG 的建議下限（Material 抓 48px）。我全站沒有一個 header 元素達標——因為我是用滑鼠在 1440px 螢幕上開發的，游標的落點精度掩蓋了所有問題。跟上面那個 `Reveal` 是同一種錯誤：**在寬鬆的環境裡開發，狹窄的環境裡才會現形。**
+
+修法是給觸控目標補最小高度，桌面則維持原本的緊湊排版：
+
+```tsx
+// min-h-11（44px）為觸控目標下限；桌面滑鼠精準度高，md 以上恢復緊湊排版
+className="flex items-center justify-center min-h-11 md:min-h-0 px-3 py-1.5 ..."
+```
+
+改完重量，四個路由的 header 元素全部 44px。順帶一提，這種東西不需要真的拿手機測——把頁面塞進一個固定寬度的同源 iframe，用 `getBoundingClientRect()` 掃過所有可點元素就好，寫成腳本三十秒跑完一輪。
 
 ## 三件我帶走的事
 
