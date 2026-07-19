@@ -9,6 +9,7 @@ pubDate: 2026-07-09
 cover: /works/electric-guitar.webp
 video: /works/electric-guitar.mp4
 video_loop: /works/electric-guitar-loop.mp4
+demo: https://electric-guitar.vercel.app
 repo_private: true
 tech: ['Three.js r128', 'Vanilla JS', 'OpenSpec']
 category: product

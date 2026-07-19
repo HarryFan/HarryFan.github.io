@@ -9,6 +9,7 @@ pubDate: 2026-07-03
 cover: /works/nice-nike.webp
 video: /works/nice-nike.mp4
 video_loop: /works/nice-nike-loop.mp4
+demo: https://nice-nike.vercel.app
 repo_private: true
 tech: ['Three.js 0.160 (ESM)', 'Vanilla JS', 'Playwright']
 category: product

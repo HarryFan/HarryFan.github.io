@@ -9,6 +9,7 @@ pubDate: 2026-07-09
 cover: /works/designer-chair.webp
 video: /works/designer-chair.mp4
 video_loop: /works/designer-chair-loop.mp4
+demo: https://designer-chair.vercel.app
 repo_private: true
 tech: ['Three.js r128', 'Vanilla JS']
 category: product

@@ -10,6 +10,7 @@ pubDate: 2026-07-03
 cover: /works/hakkatv.webp
 video: /works/hakkatv.mp4
 video_loop: /works/hakkatv-loop.mp4
+demo: https://hakkatv.vercel.app
 repo_private: true
 tech: ['React 18', 'Vite 6', 'Tailwind v4', 'TypeScript', 'Vitest']
 category: product

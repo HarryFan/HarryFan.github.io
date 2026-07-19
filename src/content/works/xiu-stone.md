@@ -9,6 +9,7 @@ pubDate: 2026-07-12
 cover: /works/xiu-stone.webp
 video: /works/xiu-stone.mp4
 video_loop: /works/xiu-stone-loop.mp4
+demo: https://xiu-stone.vercel.app
 repo_private: true
 tech: ['Three.js r128', 'UnrealBloomPass', 'EffectComposer', 'Vanilla JS']
 category: product

@@ -10,6 +10,7 @@ pubDate: 2026-07-11
 cover: /works/apple-hero.webp
 video: /works/apple-hero.mp4
 video_loop: /works/apple-hero-loop.mp4
+demo: https://apple-hero-cyan.vercel.app
 repo_private: true
 blog_post: 2026-07-11-threejs-airpods-pro-flagship-3d
 tech: ['Three.js 0.160 (ESM)', 'GSAP', 'ScrollTrigger', 'Lenis']

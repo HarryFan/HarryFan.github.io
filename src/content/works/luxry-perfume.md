@@ -9,6 +9,7 @@ pubDate: 2026-07-08
 cover: /works/luxry-perfume.webp
 video: /works/luxry-perfume.mp4
 video_loop: /works/luxry-perfume-loop.mp4
+demo: https://luxry-perfume-seven.vercel.app
 repo_private: true
 tech: ['Three.js r128', 'GSAP', 'ScrollTrigger', 'Lenis', 'Vanilla JS']
 category: product

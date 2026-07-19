@@ -8,12 +8,13 @@ interface Props {
 	pubDate: Date;
 	cover?: string;
 	repo?: string;
+	demo?: string;
 	tech: string[];
 	brandBasis: 'fictional' | 'unofficial-concept';
 	disclaimer?: string;
 }
 
-const { slug, title, description, pubDate, cover, repo, tech, brandBasis, disclaimer } =
+const { slug, title, description, pubDate, cover, repo, demo, tech, brandBasis, disclaimer } =
 	Astro.props;
 
 const site = Astro.site?.href.replace(/\/$/, '') ?? '';
@@ -39,6 +40,7 @@ const creativeWork = {
 			: '自主練習作品，品牌為虛構。',
 	...(cover ? { image: `${site}${cover}` } : {}),
 	...(repo ? { codeRepository: repo } : {}),
+	...(demo ? { sameAs: demo } : {}),
 };
 
 const breadcrumb = {

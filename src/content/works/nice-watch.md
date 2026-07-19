@@ -9,6 +9,7 @@ pubDate: 2026-07-04
 cover: /works/nice-watch.webp
 video: /works/nice-watch.mp4
 video_loop: /works/nice-watch-loop.mp4
+demo: https://nice-watch.vercel.app
 repo_private: true
 tech: ['Three.js 0.160 (ESM)', 'Vanilla JS']
 category: product

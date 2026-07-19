@@ -9,6 +9,7 @@ pubDate: 2026-07-08
 cover: /works/coffee-bean-bag.webp
 video: /works/coffee-bean-bag.mp4
 video_loop: /works/coffee-bean-bag-loop.mp4
+demo: https://coffee-bean-bag.vercel.app
 repo_private: true
 tech: ['Three.js r128', 'Vanilla JS']
 category: product

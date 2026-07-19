@@ -9,6 +9,7 @@ pubDate: 2026-07-11
 cover: /works/takoyaki.webp
 video: /works/takoyaki.mp4
 video_loop: /works/takoyaki-loop.mp4
+demo: https://takoyaki-delta.vercel.app
 repo_private: true
 blog_post: 2026-07-11-threejs-night-market-flagship-3d
 tech: ['Three.js (ESM)', 'RoomEnvironment', 'Selective Bloom', 'Clearcoat', 'Node (zero-dep server)']

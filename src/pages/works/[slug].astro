@@ -34,6 +34,7 @@ const linkedPost = d.blog_post ? await getEntry('blog', d.blog_post) : undefined
 			pubDate={d.pubDate}
 			cover={d.cover}
 			repo={d.repo}
+			demo={d.demo}
 			tech={d.tech}
 			brandBasis={d.brand_basis}
 			disclaimer={d.disclaimer}
@@ -57,6 +58,17 @@ const linkedPost = d.blog_post ? await getEntry('blog', d.blog_post) : undefined
 						<span class="badge">{d.year}</span>
 						<FormattedDate date={d.pubDate} />
 					</div>
+
+					{
+						d.demo && (
+							<div class="work-actions">
+								<a class="work-demo" href={d.demo} target="_blank" rel="noopener noreferrer">
+									開啟實際網站 ↗
+								</a>
+								<span class="work-demo-note">部署於 Vercel · 原始碼未公開</span>
+							</div>
+						)
+					}
 
 					{
 						d.brand_basis === 'unofficial-concept' && d.disclaimer && (
@@ -110,6 +122,16 @@ const linkedPost = d.blog_post ? await getEntry('blog', d.blog_post) : undefined
 							{d.tech.map((t) => <li>{t}</li>)}
 						</ul>
 					</div>
+					{
+						d.demo && (
+							<div class="meta-block">
+								<h3>線上展示</h3>
+								<a class="repo-link" href={d.demo} target="_blank" rel="noopener noreferrer">
+									{d.demo.replace('https://', '')} ↗
+								</a>
+							</div>
+						)
+					}
 					<div class="meta-block">
 						<h3>原始碼</h3>
 						{
@@ -206,6 +228,37 @@ const linkedPost = d.blog_post ? await getEntry('blog', d.blog_post) : undefined
 			}
 			.badge--origin {
 				background: var(--yellow);
+			}
+			.work-actions {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 0.5rem 0.9rem;
+				margin-top: 1.2rem;
+			}
+			.work-demo {
+				display: inline-block;
+				padding: 0.6rem 1.2rem;
+				font-size: 0.95rem;
+				font-weight: 800;
+				text-decoration: none;
+				color: rgb(var(--ink));
+				background: var(--yellow);
+				border: 2px solid var(--rule);
+				border-radius: var(--radius, 6px);
+				box-shadow: 4px 4px 0 var(--rule);
+				transition:
+					transform 0.15s ease,
+					box-shadow 0.15s ease;
+			}
+			.work-demo:hover,
+			.work-demo:focus-visible {
+				transform: translate(-2px, -2px);
+				box-shadow: 6px 6px 0 var(--rule);
+			}
+			.work-demo-note {
+				font-size: 0.8rem;
+				color: rgb(var(--gray, 96 82 68));
 			}
 			.work-disclaimer {
 				margin: 1rem 0 0;

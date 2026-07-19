@@ -9,6 +9,7 @@ pubDate: 2026-07-11
 cover: /works/fable-five-showcase.webp
 video: /works/fable-five-showcase.mp4
 video_loop: /works/fable-five-showcase-loop.mp4
+demo: https://fable-five-showcase.vercel.app
 repo_private: true
 tech: ['GSAP', 'Lenis', 'Three.js', 'Vanilla JS', 'Node (zero-dep server)']
 category: collection
