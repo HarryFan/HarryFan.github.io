@@ -1,6 +1,6 @@
 ---
-title: 矽墟 SILICA HOLLOW
-subtitle: 末日廢土戰術 RPG 概念宣傳站
+title: 末日戰術 RPG 概念宣傳站
+subtitle: WebGL 粒子核心 × 滾動鏡頭敘事
 description: 作為最後的調律者，喚醒以殘存晶片為心的矽魂。滾動驅動的 WebGL 粒子晶片核心，加一整套自成 canon 的世界觀。
 origin: self-directed
 brand_basis: fictional
@@ -20,7 +20,7 @@ category: interactive
 role: 從世界觀 canon、視覺方向、美術到 WebGL 前端與音效，全部一人完成。
 challenge: 要在無 build step、無外部 3D 檔案的前提下，只靠 CDN 載入的 Three.js，做出一個會隨滾動流動、看起來有遊戲級質感的晶片核心背景，並讓整站以 AI 批次生成的美術維持統一畫風，而不是十幾種風格拼盤。
 outcome: 純靜態單頁，開瀏覽器即跑。晶片核心是 WebGL 粒子著色器，鏡頭隨 scroll 穿過世界觀、核心系統到預約各區塊。美術以共用 style DNA 批次生成、腳本具冪等性；讖頌區做成主從式舞台，切象有解碼動畫與合成音效，並與預約里程碑連動（每滿一萬人解一象）。
-seo_title: 矽墟 SILICA HOLLOW 末日戰術 RPG 概念站 | Harry Fan 作品集
+seo_title: 末日戰術 RPG 概念宣傳站 | Harry Fan 作品集
 seo_description: Three.js WebGL 粒子晶片核心、滾動鏡頭敘事、gpt-image-2 批次生成的統一美術，加完整世界觀 canon 的末日 RPG 概念宣傳站。
 ---
 
