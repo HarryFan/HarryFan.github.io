@@ -1,5 +1,4 @@
-import { n as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
-import 'clsx';
+import { v as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
 
 const frontmatter = {
   "title": "PS1 復古低多邊形",
@@ -148,14 +147,14 @@ function MDXContent(props = {}) {
 }
 
 const url = "src/content/styles/ps1-retro-3d.mdx";
-const file = "/Users/gangshuanfan/Documents/Astro/HarryFan.github.io/src/content/styles/ps1-retro-3d.mdx";
+const file = "/Users/harry/Documents/Astro/harryfan.github.io/src/content/styles/ps1-retro-3d.mdx";
 const Content = (props = {}) => MDXContent({
   ...props,
   components: { Fragment: Fragment, ...props.components, },
 });
 Content[Symbol.for('mdx-component')] = true;
 Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
-Content.moduleId = "/Users/gangshuanfan/Documents/Astro/HarryFan.github.io/src/content/styles/ps1-retro-3d.mdx";
+Content.moduleId = "/Users/harry/Documents/Astro/harryfan.github.io/src/content/styles/ps1-retro-3d.mdx";
 __astro_tag_component__(Content, 'astro:jsx');
 
 export { Content, Content as default, file, frontmatter, getHeadings, url };

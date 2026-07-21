@@ -1,0 +1,627 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.18.2"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/"><!-- Primary Meta Tags --><title>一張邀請函做到什麼程度：貓空聚會落地頁的技術拆解</title><meta name="title" content="一張邀請函做到什麼程度：貓空聚會落地頁的技術拆解"><meta name="description" content="一場朋友間的貓空茶會，我把邀請函做成了落地頁：程序化生成的 WebGL 山脊背景、一個 boolean 同時重畫三層渲染、拒絕 IntersectionObserver 的捲動進場、以及會從你點的那一格長出來的 FLIP 燈箱。這篇把每個效果拆到可以複製的程度。後續改版的段落一併收錄：拆成多頁時兩個自認聰明的決定當場崩掉、嵌一支 YouTube 的真實代價，以及為什麼 Wikimedia Commons 的素材比 Flickr 更自由。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/"><meta property="og:title" content="一張邀請函做到什麼程度：貓空聚會落地頁的技術拆解"><meta property="og:description" content="一場朋友間的貓空茶會，我把邀請函做成了落地頁：程序化生成的 WebGL 山脊背景、一個 boolean 同時重畫三層渲染、拒絕 IntersectionObserver 的捲動進場、以及會從你點的那一格長出來的 FLIP 燈箱。這篇把每個效果拆到可以複製的程度。後續改版的段落一併收錄：拆成多頁時兩個自認聰明的決定當場崩掉、嵌一支 YouTube 的真實代價，以及為什麼 Wikimedia Commons 的素材比 Flickr 更自由。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/cover.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/"><meta property="twitter:title" content="一張邀請函做到什麼程度：貓空聚會落地頁的技術拆解"><meta property="twitter:description" content="一場朋友間的貓空茶會，我把邀請函做成了落地頁：程序化生成的 WebGL 山脊背景、一個 boolean 同時重畫三層渲染、拒絕 IntersectionObserver 的捲動進場、以及會從你點的那一格長出來的 FLIP 燈箱。這篇把每個效果拆到可以複製的程度。後續改版的段落一併收錄：拆成多頁時兩個自認聰明的決定當場崩掉、嵌一支 YouTube 的真實代價，以及為什麼 Wikimedia Commons 的素材比 Flickr 更自由。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/cover.png"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		})();</script><link rel="stylesheet" href="/assets/about-D-NnBaCX.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media(max-width:720px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media(max-width:720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/cover.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-07-19T00:00:00.000Z"> Jul 19, 2026 </time> <div class="last-updated-on" data-astro-cid-bvzihdzo>
+Last updated on <time datetime="2026-07-19T00:00:00.000Z"> Jul 19, 2026 </time> </div> </div> <h1 data-astro-cid-bvzihdzo>一張邀請函做到什麼程度：貓空聚會落地頁的技術拆解</h1> <hr data-astro-cid-bvzihdzo> </div>  <style>
+.mkdemo{--mk-green:#064E3B;--mk-emerald:#10B981;--mk-amber:#F59E0B;--mk-cream:#FFFBEB;--mk-ink:#1f1b17;background:var(--mk-cream);border:4px solid var(--mk-ink);border-radius:20px;padding:1.4rem;margin:2.2rem 0;font-size:.9rem;line-height:1.6;box-shadow:8px 8px 0 var(--mk-amber)}
+.mkdemo-label{display:inline-block;font-family:ui-monospace,SFMono-Regular,monospace;font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#FEF3C7;color:#92400E;border:2px solid var(--mk-ink);border-radius:999px;padding:.2rem .7rem;margin-bottom:1rem;box-shadow:2px 2px 0 var(--mk-ink)}
+.mkdemo-hint{font-size:.76rem;color:#685746;margin:.9rem 0 0}
+.mkdemo-row{display:flex;flex-wrap:wrap;gap:.8rem;align-items:flex-start}
+.mk-btn{font-family:inherit;font-size:.82rem;font-weight:800;color:#fff;background:var(--mk-emerald);border:2px solid var(--mk-ink);border-radius:14px;padding:.6rem 1.1rem;cursor:pointer;box-shadow:4px 4px 0 var(--mk-ink);transition:transform .12s,box-shadow .12s}
+.mk-btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--mk-ink)}
+.mk-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--mk-ink)}
+.mk-btn:focus-visible{outline:4px solid var(--mk-amber);outline-offset:2px}
+.mk-card{background:#fff;border:4px solid var(--mk-ink);border-radius:22px;padding:1rem 1.2rem;font-weight:800;color:var(--mk-green);box-shadow:8px 8px 0 var(--mk-emerald);transition:transform .18s,box-shadow .18s;cursor:default}
+.mk-card:hover{transform:translate(-2px,-2px);box-shadow:10px 10px 0 var(--mk-emerald)}
+.mk-chip{font-family:ui-monospace,monospace;font-size:.68rem;font-weight:800;background:#fff;color:var(--mk-green);border:2px solid var(--mk-ink);border-radius:999px;padding:.3rem .7rem;box-shadow:2px 2px 0 var(--mk-ink);transition:transform .12s,box-shadow .12s;cursor:default}
+.mk-chip:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--mk-ink)}
+.mk-chip:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--mk-ink)}
+.mk-canvas{display:block;width:100%;height:220px;border:3px solid var(--mk-ink);border-radius:14px;background:#FFFBEB;touch-action:none}
+.mk-reveal-stage{height:210px;overflow-y:auto;border:3px solid var(--mk-ink);border-radius:14px;background:#fff;padding:0 1rem}
+.mk-reveal-spacer{height:190px;display:flex;align-items:center;justify-content:center;color:#a99;font-size:.78rem}
+.mk-reveal-item{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);background:#ECFDF5;border:3px solid var(--mk-ink);border-radius:16px;padding:.8rem 1rem;margin:.7rem 0;font-weight:800;color:var(--mk-green);box-shadow:4px 4px 0 var(--mk-emerald)}
+.mk-reveal-item.is-shown{opacity:1;transform:none}
+.mk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem}
+.mk-tile{aspect-ratio:4/3;border:3px solid var(--mk-ink);border-radius:12px;overflow:hidden;cursor:pointer;padding:0;background:#ECFDF5}
+.mk-tile:focus-visible{outline:4px solid var(--mk-amber);outline-offset:2px}
+.mk-tile img{width:100%;height:100%;object-fit:cover;display:block;border-radius:0}
+.mk-flip-layer{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;padding:1.5rem}
+.mk-flip-layer.is-open{display:flex}
+.mk-flip-layer img{max-width:min(90vw,760px);max-height:80dvh;width:auto;height:auto;border:4px solid #000;border-radius:16px;box-shadow:8px 8px 0 var(--mk-amber);background:#fff}
+@media (max-width:620px){.mkdemo{padding:1rem;box-shadow:5px 5px 0 var(--mk-amber)}.mk-grid{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:reduce){.mkdemo *{transition-duration:.01ms !important;animation-duration:.01ms !important}.mk-reveal-item{opacity:1;transform:none}}
+</style>
+<p>八月中要跟朋友去貓空喝茶。原本只要在群組貼一句「8/15 下午三點貓空站集合」就結束的事，我把它做成了一頁網站。</p>
+<p>理由不高尚：我想找個沒有客戶、沒有 deadline、沒人會嫌棄的沙盒，把幾個一直想試但不敢往正式案子塞的東西一次做完。程序化生成的 3D 背景、FLIP 燈箱、一個開關重畫整站配色。做完發現，這些東西單獨看都不難，難的是它們<strong>互相之間怎麼不打架</strong>。</p>
+<p>這篇把每一項拆到可以複製的程度。文章裡穿插的 demo 全部是能動手玩的實作，不是截圖。</p>
+<h2 id="先看它長什麼樣">先看它長什麼樣</h2>
+<p><img src="/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/cover.png" alt="貓空聚會落地頁的首屏：奶油色底、程序化生成的層疊綠色山脊、圓形太陽，前景是白底黑框、帶硬陰影的活動資訊卡與倒數計時板"></p>
+<p>視覺方向是<strong>柔角的新粗獷主義（neo-brutalism）</strong>：粗黑框、零模糊的實色偏移陰影、飽和平塗、超粗字重。但把經典新粗獷的方角換成 <code>32px</code> 大圓角——它要當一張邀請函，不是一份稅務表格。</p>
+<h2 id="一切從陰影的物理開始">一切從陰影的物理開始</h2>
+<p>整站的手感只靠一條規則：<strong>懸停會浮起，按下會沉下去，而光源永遠不動。</strong></p>
+<p>做法是位移量和陰影偏移量<strong>永遠等值反向</strong>。按鈕往右下移 2px，陰影就從 <code>4px</code> 收成 <code>2px</code>——物件的頂面看起來釘在原地，只有影子被壓扁。這就是實體感的來源。</p>
+<div class="mkdemo">
+<span class="mkdemo-label">Demo 01 — 按壓物理</span>
+<div class="mkdemo-row">
+<div class="mk-card">大卡片 8px → 10px</div>
+<button class="mk-btn" type="button">主要按鈕 4px → 2px</button>
+<span class="mk-chip" tabindex="0">小晶片 2px</span>
+</div>
+<p class="mkdemo-hint">把游標移上去、再按住不放。注意影子的長度變化，和方塊本身的位移永遠是相反且等量的。</p>
+</div>
+<p>整站只用了五階，沒有第六階：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>陰影偏移</th><th>懸停 / 按下</th><th>用在哪</th></tr></thead><tbody><tr><td><code>8px 8px</code></td><td>→ <code>10px 10px</code>，位移 <code>-2px</code></td><td>大型內容卡</td></tr><tr><td><code>6px 6px</code></td><td>→ <code>8px 8px</code>，位移 <code>-1px</code></td><td>倒數板、行程小卡</td></tr><tr><td><code>4px 4px</code></td><td>按下 → <code>2px 2px</code>，位移 <code>+2px</code></td><td>按鈕、數據磚</td></tr><tr><td><code>3px 3px</code></td><td>從無到有</td><td>FAQ 列、清單列</td></tr><tr><td><code>2px 2px</code></td><td>→ <code>3px 3px</code>，按下 <code>1px 1px</code></td><td>晶片、輸入框</td></tr></tbody></table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.vibrant-card-emerald</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  @</span><span style="color:#79B8FF">apply</span><span style="color:#79B8FF"> bg-white</span><span style="color:#79B8FF"> rounded-</span><span style="color:#E1E4E8">[32</span><span style="color:#79B8FF">px</span><span style="color:#E1E4E8">] </span><span style="color:#79B8FF">border-</span><span style="color:#E1E4E8">4 </span><span style="color:#79B8FF">border-</span><span style="color:#E1E4E8">[#10</span><span style="color:#79B8FF">B</span><span style="color:#E1E4E8">981] </span><span style="color:#79B8FF">p-</span><span style="color:#E1E4E8">6 </span><span style="color:#79B8FF">md</span><span style="color:#E1E4E8">:p-8</span></span>
+<span class="line"><span style="color:#E1E4E8">         shadow-[</span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8">px_8px_0px_0px_</span><span style="color:#79B8FF">#10B981</span><span style="color:#E1E4E8">] transition-all duration-300;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">.vibrant-card-emerald:hover</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  @</span><span style="color:#79B8FF">apply</span><span style="color:#79B8FF"> translate-x-</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">-</span><span style="color:#E1E4E8">2</span><span style="color:#79B8FF">px</span><span style="color:#E1E4E8">] </span><span style="color:#79B8FF">translate-y-</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">-</span><span style="color:#E1E4E8">2</span><span style="color:#79B8FF">px</span><span style="color:#E1E4E8">] </span><span style="color:#79B8FF">shadow-</span><span style="color:#E1E4E8">[10</span><span style="color:#79B8FF">px</span><span style="color:#E1E4E8">_10</span><span style="color:#79B8FF">px</span><span style="color:#E1E4E8">_0</span><span style="color:#79B8FF">px</span><span style="color:#E1E4E8">_0</span><span style="color:#79B8FF">px</span><span style="color:#E1E4E8">_#10</span><span style="color:#79B8FF">B</span><span style="color:#E1E4E8">981];</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><img src="/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/01-shadow-physics.png" alt="我壓著一塊方磚往下按，方磚沉 2px，底下的硬陰影就同時縮短 2px，而頭頂那盞燈從頭到尾沒有移動過"></p>
+<p>輸入框我沒有用常見的變色框線，改成<strong>聚焦時陰影變長</strong>：<code>shadow-[2px_2px...]</code> → <code>focus:shadow-[4px_4px...]</code>。欄位會「彈出來」，跟整站的物理是同一套語言。</p>
+<h2 id="背景不是圖片是算出來的山">背景不是圖片，是算出來的山</h2>
+<p>首屏那排山脊沒有任何美術資源。每一層都是 90 段線段，用<strong>多頻正弦疊加</strong>再加一點抖動生出來的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;=</span><span style="color:#E1E4E8"> segments; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> t</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> segments;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> x</span><span style="color:#F97583"> =</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8">width </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> width;</span></span>
+<span class="line"><span style="color:#6A737D">  // 多頻正弦疊加 + 抖動 = 自然山脊</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> base</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">sin</span><span style="color:#E1E4E8">(t </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> Math.</span><span style="color:#79B8FF">PI</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> cfg.peaks) </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.6</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> mid</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">sin</span><span style="color:#E1E4E8">(t </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> Math.</span><span style="color:#79B8FF">PI</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> cfg.peaks </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 2.3</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> cfg.seed) </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.28</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> jitter</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">rand</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 0.5</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.35</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> y</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (base </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> mid </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> jitter) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> cfg.amp;</span></span>
+<span class="line"><span style="color:#E1E4E8">  shape.</span><span style="color:#B392F0">lineTo</span><span style="color:#E1E4E8">(x, y);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">shape.</span><span style="color:#B392F0">lineTo</span><span style="color:#E1E4E8">(width </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">-</span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// 拉到很下面，視差時不會露出底邊</span></span>
+<span class="line"><span style="color:#E1E4E8">shape.</span><span style="color:#B392F0">closePath</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>兩個關鍵決定：</p>
+<p><strong>第一，<code>rand</code> 是帶種子的 <code>mulberry32</code>，不是 <code>Math.random</code>。</strong> 否則 React StrictMode 的雙掛載會讓山形在開發時閃一下變成另一座山。用 PRNG 之後，同一個 seed 永遠長出同一條稜線。</p>
+<p><strong>第二，<code>lineTo(width / 2, -30)</code>。</strong> 每個 shape 都往下拉到畫面外很遠的地方，這樣四層山各自以不同速率做視差位移時，永遠不會有哪一層的底邊被拉出來穿幫。</p>
+<p>四層的視差係數是 <code>0.6 / 1.4 / 2.6 / 4.2</code>，對應深度 <code>-18 / -12 / -7 / -3</code>——越近的動越快，就這麼直觀。</p>
+<p>下面這個 demo 是同一套演算法用 Canvas 2D 重寫的版本（正式站是 three.js 的 <code>ShapeGeometry</code>，數學完全一樣）：</p>
+<div class="mkdemo">
+<span class="mkdemo-label">Demo 02 — 程序化山脊 × 視差</span>
+<canvas class="mk-canvas" id="mk-ridge" width="900" height="440" aria-label="程序化生成的山脊視差示範，滑鼠移動可改變視角"></canvas>
+<div class="mkdemo-row" style="margin-top:.8rem">
+<button class="mk-btn" type="button" id="mk-ridge-reseed">換一組種子</button>
+<span class="mk-chip" id="mk-ridge-seed">seed 20260815</span>
+</div>
+<p class="mkdemo-hint">在畫面上移動游標（手機直接用手指拖），四層山會以不同速率位移。每次換種子都是全新的山，但同一個種子永遠重現同一座。</p>
+</div>
+<h3 id="讓-3d-消失在-dom-裡的那個小動作">讓 3D 消失在 DOM 裡的那個小動作</h3>
+<p>這是我自己最喜歡的一手。場景的霧色設定成 <code>0xfffbeb</code>——<strong>跟頁面 <code>body</code> 的背景色 <code>#FFFBEB</code> 完全相同</strong>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#E1E4E8">scene.fog </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> THREE</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">FogExp2</span><span style="color:#E1E4E8">(pal.fog, </span><span style="color:#79B8FF">0.014</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">scene.background </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 讓 CSS 的頁面底色透出來</span></span></code></pre>
+<p>canvas 是透明的，遠處的山被霧色吃掉，而霧色就是頁面底色。結果是 3D 場景的地平線<strong>無縫溶進 DOM 背景</strong>，你看不到畫布的邊界在哪裡。雨天模式的霧色 <code>0xeef4fd</code> 則是同一招的冷色版本。</p>
+<p>還有一個省資源的細節：太陽光暈、飄落的茶葉、三層霧氣，全部共用<strong>同一張 128×128 的 CanvasTexture</strong>——一個執行期畫出來的柔和放射狀漸層。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> g</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> ctx.</span><span style="color:#B392F0">createRadialGradient</span><span style="color:#E1E4E8">(size</span><span style="color:#F97583">/</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, size</span><span style="color:#F97583">/</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, size</span><span style="color:#F97583">/</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, size</span><span style="color:#F97583">/</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, size</span><span style="color:#F97583">/</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">g.</span><span style="color:#B392F0">addColorStop</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'rgba(255,255,255,1)'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">g.</span><span style="color:#B392F0">addColorStop</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0.5</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'rgba(255,255,255,0.55)'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">g.</span><span style="color:#B392F0">addColorStop</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'rgba(255,255,255,0)'</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>整個場景零自訂 shader，全部是 <code>MeshBasicMaterial</code>。</p>
+<h2 id="一個-boolean同時重畫三層渲染">一個 boolean，同時重畫三層渲染</h2>
+<p>活動可能遇到下雨，所以有晴天／雨天兩套方案。一個 <code>WeatherMode</code> 同時驅動<strong>三個互不相干的渲染系統</strong>：WebGL 場景、CSS 粒子層、還有整套 DOM 設計系統的配色。</p>
+<p>這個狀態現在住在 Router 外面的 Context 裡（原因見本節末），控制項則放在全站共用的 header：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">EventProvider</span><span style="color:#E1E4E8">>              {</span><span style="color:#6A737D">/* weatherMode 住在這 */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#79B8FF">BrowserRouter</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#79B8FF">Routes</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#79B8FF">Route</span><span style="color:#B392F0"> element</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&#x3C;</span><span style="color:#79B8FF">Layout</span><span style="color:#E1E4E8"> />}>   {</span><span style="color:#6A737D">/* header 的切換器讀它 */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#79B8FF">Route</span><span style="color:#B392F0"> index</span><span style="color:#B392F0"> element</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&#x3C;</span><span style="color:#79B8FF">HomePage</span><span style="color:#E1E4E8"> />} /></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#79B8FF">Route</span><span style="color:#B392F0"> path</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"itinerary"</span><span style="color:#B392F0"> element</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&#x3C;</span><span style="color:#79B8FF">ItineraryPage</span><span style="color:#E1E4E8"> />} /></span></span>
+<span class="line"><span style="color:#E1E4E8">        ...</span></span></code></pre>
+<p>3D 那層我沒有做狀態切換，而是<strong>每一幀往目標色前進 4%</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> pal</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> PALETTES</span><span style="color:#E1E4E8">[modeRef.current];</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> k</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 0.04</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (scene.fog) </span><span style="color:#B392F0">lerpColor</span><span style="color:#E1E4E8">((scene.fog </span><span style="color:#F97583">as</span><span style="color:#B392F0"> THREE</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">FogExp2</span><span style="color:#E1E4E8">).color, pal.fog, k);</span></span>
+<span class="line"><span style="color:#E1E4E8">(key </span><span style="color:#F97583">as</span><span style="color:#B392F0"> THREE</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">DirectionalLight</span><span style="color:#E1E4E8">).color.</span><span style="color:#B392F0">lerp</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#79B8FF"> THREE</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Color</span><span style="color:#E1E4E8">(pal.light), k);</span></span>
+<span class="line"><span style="color:#B392F0">lerpColor</span><span style="color:#E1E4E8">((sunCore.material </span><span style="color:#F97583">as</span><span style="color:#B392F0"> THREE</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">MeshBasicMaterial</span><span style="color:#E1E4E8">).color, pal.sun, k);</span></span>
+<span class="line"><span style="color:#B392F0">lerpColor</span><span style="color:#E1E4E8">((leafMat </span><span style="color:#F97583">as</span><span style="color:#B392F0"> THREE</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">MeshBasicMaterial</span><span style="color:#E1E4E8">).color, pal.leaf, k);</span></span></code></pre>
+<p>注意是 <code>modeRef.current</code> 不是 <code>mode</code>。這一個字的差別讓整個 <code>useEffect</code> 的依賴陣列可以維持 <code>[]</code>——場景<strong>建立一次就好</strong>，切換天氣時不會被拆掉重建。React 的狀態負責 DOM，ref 負責跨越 render 邊界把值餵給 rAF 迴圈，兩邊各司其職。</p>
+<h3 id="為什麼它非得住在-context-不可">為什麼它非得住在 Context 不可</h3>
+<p>一開始不是這樣的。切換器放在頁面內容裡，而且<strong>放了兩份</strong>——<code>HeroSection</code> 的資訊卡有一個，<code>ItineraryTimeline</code> 的表頭又有一個。單頁的時候這不痛不癢，兩份都在同一個捲軸上，改哪個都一樣。</p>
+<p>拆成多頁之後，兩份同時失效了。</p>
+<p>首頁沒有行程時間軸，行程頁沒有那張資訊卡。於是變成：<strong>你在首頁時，沒有任何控制項能切換你正在看的那片背景</strong>。而背景是全站固定的——它就在那裡，藍的或綠的，但你動不了它。</p>
+<p>問題不在於「切換器該放哪一頁」，而在於我一開始就把它歸錯類了。判準其實很直白：</p>
+<blockquote>
+<p>這個狀態影響的範圍，就是它該待的層級。</p>
+</blockquote>
+<p><img src="/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/02-state-lives-where.png" alt="我扛著開關爬梯子上頂樓，樓下那兩個各自裝在房間裡的開關都斷了線，只有頂樓那條總線能一次點亮整棟樓"></p>
+<p><code>weatherMode</code> 驅動 WebGL 場景、CSS 粒子層、全站主題色——它從來就不是某一頁的狀態，是全站的。所以正確答案是它<strong>哪一頁都不屬於</strong>：控制項移到 header，狀態提升到 Context，包在 Router 外面。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">EventProvider</span><span style="color:#E1E4E8">>        {</span><span style="color:#6A737D">/* weatherMode 活在這裡 */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#79B8FF">BrowserRouter</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#79B8FF">Route</span><span style="color:#B392F0"> element</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&#x3C;</span><span style="color:#79B8FF">Layout</span><span style="color:#E1E4E8"> />}>   {</span><span style="color:#6A737D">/* header 的切換器讀它 */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#79B8FF">Route</span><span style="color:#B392F0"> index</span><span style="color:#B392F0"> element</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&#x3C;</span><span style="color:#79B8FF">HomePage</span><span style="color:#E1E4E8"> />} /></span></span>
+<span class="line"><span style="color:#E1E4E8">      ...</span></span></code></pre>
+<p>原本那兩處改成唯讀的狀態顯示——「☀️ 目前顯示晴天行程」。使用者仍然知道自己在哪個方案，但控制項只有一個，不會出現兩份 UI 各說各話。</p>
+<p>順帶一提，同一批狀態裡還有報名名單。它原本住在 <code>RsvpForm</code> 裡，而表單只存在於 <code>/rsvp</code>——所以首頁那個「已有 N 人完成出席登記」在使用者沒進過報名頁時永遠拿不到數字。判準一樣，處理方式一樣：提升到 Context。</p>
+<p><strong>在單頁裡，「元件持有狀態」和「全站持有狀態」看起來沒差別。拆頁就是那個把差別逼出來的時刻。</strong></p>
+<h2 id="捲動進場完整的-reveal-元件">捲動進場：完整的 Reveal 元件</h2>
+<p>每個區塊在接近視窗時淡入上浮。這是全文最短但踩得最深的一個元件——先給你可以直接複製的完整版本，後面再說為什麼長這樣。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> Reveal</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">children</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">delay</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">className</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">as</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'div'</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#B392F0"> RevealProps</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> ref</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> useRef</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">HTMLDivElement</span><span style="color:#E1E4E8">>(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">shown</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setShown</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (window.</span><span style="color:#B392F0">matchMedia</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'(prefers-reduced-motion: reduce)'</span><span style="color:#E1E4E8">).matches) {</span></span>
+<span class="line"><span style="color:#B392F0">      setShown</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> el</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> ref.current;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">el) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> raf </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> done </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> observer</span><span style="color:#F97583">:</span><span style="color:#B392F0"> IntersectionObserver</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#B392F0"> reveal</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (done) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      done </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">      setShown</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">      cleanup</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#B392F0"> check</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      raf </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (done </span><span style="color:#F97583">||</span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">ref.current) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">      // 元素頂端進入視窗底部 92% 以內即顯示（含已捲過的情況：top &#x3C; 0）</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (ref.current.</span><span style="color:#B392F0">getBoundingClientRect</span><span style="color:#E1E4E8">().top </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> window.innerHeight </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.92</span><span style="color:#E1E4E8">) </span><span style="color:#B392F0">reveal</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#B392F0"> onScroll</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">raf) raf </span><span style="color:#F97583">=</span><span style="color:#B392F0"> requestAnimationFrame</span><span style="color:#E1E4E8">(check); };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> cleanup</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (raf) { </span><span style="color:#B392F0">cancelAnimationFrame</span><span style="color:#E1E4E8">(raf); raf </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">      observer?.</span><span style="color:#B392F0">disconnect</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">      observer </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'scroll'</span><span style="color:#E1E4E8">, onScroll);</span></span>
+<span class="line"><span style="color:#E1E4E8">      window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'resize'</span><span style="color:#E1E4E8">, onScroll);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 主力：IntersectionObserver 對「掛載當下就已在視窗內」的元素必定回報一次，</span></span>
+<span class="line"><span style="color:#6A737D">    // 不需要任何捲動或互動。</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#9ECBFF">'IntersectionObserver'</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> window) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      observer </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> IntersectionObserver</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#FFAB70">entries</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (entries.</span><span style="color:#B392F0">some</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> e.isIntersecting)) </span><span style="color:#B392F0">reveal</span><span style="color:#E1E4E8">(); },</span></span>
+<span class="line"><span style="color:#E1E4E8">        { rootMargin: </span><span style="color:#9ECBFF">'0px 0px -8% 0px'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">      );</span></span>
+<span class="line"><span style="color:#E1E4E8">      observer.</span><span style="color:#B392F0">observe</span><span style="color:#E1E4E8">(el);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 備援：捲動／縮放時重測，並在下一個影格再確認一次，</span></span>
+<span class="line"><span style="color:#6A737D">    // 避免首次量測時版面尚未穩定（WebGL 畫布、圖片、字型都還沒定位）而誤判。</span></span>
+<span class="line"><span style="color:#B392F0">    check</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    raf </span><span style="color:#F97583">=</span><span style="color:#B392F0"> requestAnimationFrame</span><span style="color:#E1E4E8">(check);</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'scroll'</span><span style="color:#E1E4E8">, onScroll, { passive: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'resize'</span><span style="color:#E1E4E8">, onScroll);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> cleanup;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, []);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> Tag</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> as;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#79B8FF">Tag</span></span>
+<span class="line"><span style="color:#B392F0">      ref</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{ref </span><span style="color:#F97583">as</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">      className</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{className}</span></span>
+<span class="line"><span style="color:#B392F0">      style</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{{</span></span>
+<span class="line"><span style="color:#E1E4E8">        opacity: shown </span><span style="color:#F97583">?</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> :</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        transform: shown </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> 'translateY(0)'</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> 'translateY(28px)'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        transition: </span><span style="color:#9ECBFF">`opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${</span><span style="color:#E1E4E8">delay</span><span style="color:#9ECBFF">}ms,</span></span>
+<span class="line"><span style="color:#9ECBFF">                     transform 0.7s cubic-bezier(0.22,1,0.36,1) ${</span><span style="color:#E1E4E8">delay</span><span style="color:#9ECBFF">}ms`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        willChange: </span><span style="color:#9ECBFF">'opacity, transform'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      }}</span></span>
+<span class="line"><span style="color:#E1E4E8">    ></span></span>
+<span class="line"><span style="color:#E1E4E8">      {children}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#79B8FF">Tag</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>呼叫端手動排 <code>0 / 80 / 160ms</code> 的階梯延遲，讓同一區的元素依序進場。easing 是 easeOutQuint，收尾夠慢才有「飄進來」的感覺。</p>
+<div class="mkdemo">
+<span class="mkdemo-label">Demo 03 — 捲動進場</span>
+<div class="mk-reveal-stage" id="mk-reveal">
+<div class="mk-reveal-spacer">↓ 往下捲</div>
+<div class="mk-reveal-item">15:00　貓空站集合</div>
+<div class="mk-reveal-item">15:30　樟樹步道散策</div>
+<div class="mk-reveal-item">16:30　景觀茶館品茗</div>
+<div class="mk-reveal-item">18:30　夜景與收工</div>
+</div>
+<div class="mkdemo-row" style="margin-top:.8rem">
+<button class="mk-btn" type="button" id="mk-reveal-reset">重播</button>
+</div>
+<p class="mkdemo-hint">在框內往下捲。每張卡片進入視窗底部 92% 就上浮淡入，各差 80ms。這裡用的是跟正式站一模一樣的判斷式與 easing 曲線。</p>
+</div>
+<h3 id="為什麼要-observer-加捲動兩套">為什麼要 observer 加捲動兩套？</h3>
+<p>因為我一開始<strong>只寫了捲動那套</strong>，然後它死了。</p>
+<p>原始版本的邏輯是：掛載時同步檢查一次 <code>getBoundingClientRect().top</code>，沒進視窗就掛 <code>scroll</code> 監聽等下次。我當時刻意避開 IntersectionObserver，理由寫在註解裡：IO 判斷的是「現在有沒有相交」，萬一使用者用 <code>#hash</code> 直接跳到頁面中段，中間的元素從沒觸發過 intersection，就會永遠卡在 <code>opacity: 0</code>。</p>
+<p>兩個月後我把這個單頁拆成四頁。相簿獨立成頁之後：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>相簿頁文件高度 = 779px</span></span>
+<span class="line"><span>瀏覽器視窗高度 = 779px</span></span></code></pre>
+<p><img src="/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/03-scroll-event-never-comes.png" alt="我拉著一條只剩一小截的繩子，底下就是地板，怎麼拉都不會有下一次事件；旁邊玻璃箱裡的照片其實全都在，只是被留在看不見的狀態"></p>
+<p><strong>這一頁不能捲動。</strong> 沒有捲軸就永遠不會有 <code>scroll</code> 事件，掛載時那次檢查一失敗，就再也沒有第二次機會。整個相簿在正式 build 上是空白的——<code>&#x3C;img></code> 全在 DOM 裡、<code>naturalWidth</code> 正常、opacity 是 1，但外層 <code>Reveal</code> 停在 <code>opacity: 0</code>，把裡面全藏了。我盯著看了二十秒，它沒有出現。</p>
+<p>我擔心 IO 會造成的症狀，一字不差地發生在我自己寫的替代方案上。</p>
+<p>而且那個擔心本身是錯的。<strong>IntersectionObserver 在你呼叫 <code>observe()</code> 時，對已經在視窗內的元素必定回報一次</strong>，不需要任何捲動或互動。我設想的 <code>#hash</code> 情境不會發生。我否定了一個正確的 API，理由是一個它其實沒有的缺陷，然後自己實作了那個缺陷。</p>
+<p>所以現在的版本是 <strong>IO 當主力、捲動當備援</strong>：IO 處理「一掛載就在視窗內」和「捲進來」兩種情況；捲動監聽只在極少數 IO 不可用的環境接手。</p>
+<p>那行多出來的 <code>requestAnimationFrame(check)</code> 是另一個教訓。首次量測時 WebGL 畫布、圖片、字型都還沒定位，<code>getBoundingClientRect()</code> 給的是還沒穩定的版面。<strong>只量一次就決定命運，是這整個 bug 的共同結構。</strong></p>
+<p>兩件可以帶走的事：</p>
+<ol>
+<li><strong>「頁面很長」不是能依賴的前提。</strong> 原本的實作隱含假設「使用者總會捲動」，拆頁那天這個假設失效了。長頁面不是安全網，它只是把 bug 藏起來。</li>
+<li><strong>駁回一個標準 API 之前，先確認你駁回的缺陷真的存在。</strong> 我花力氣手刻替代方案，而要避開的問題從一開始就不存在。</li>
+</ol>
+<h2 id="相簿自己寫排版讓高度不等圖片">相簿：自己寫排版，讓高度不等圖片</h2>
+<p><img src="/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/gallery.png" alt="貓空風景相簿：白底粗黑框卡片內，八張貓空實景照片以磚砌式排列，右上角有黃底黑框的 MAOKONG SCENERY 標籤"></p>
+<p>磚砌排版（masonry）我沒有用套件，就是一個「找最矮的那一欄放進去」的迴圈：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> placed</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> items.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">child</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> col</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> colHeights.</span><span style="color:#B392F0">indexOf</span><span style="color:#E1E4E8">(Math.</span><span style="color:#B392F0">min</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">colHeights));</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> x</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> col </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (columnWidth </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> gap);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> height</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> child.height </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> scale;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> y</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> colHeights[col];</span></span>
+<span class="line"><span style="color:#E1E4E8">  colHeights[col] </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> height </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> gap;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">child, x, y, w: columnWidth, h: height };</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>重點在 <code>child.height * scale</code>：高度是<strong>資料算出來的</strong>，比例基準是一個假想的 <code>BASE_COLUMN_WIDTH = 400</code>，再依實際欄寬等比縮放。</p>
+<p>這件事的意義是——<strong>排版完全不需要等圖片載入</strong>。我一開始抄來的版本會先 <code>preload</code> 全部八張圖、載完才開始排，這在桌機看不出來，在手機上就是對著一塊 1.5MB 的空白發呆好幾秒。改成資料驅動之後，格子先站好位置，圖片再自己漸進填進去。</p>
+<h2 id="flip讓燈箱從你點的那一格長出來">FLIP：讓燈箱從你點的那一格長出來</h2>
+<p>點縮圖打開大圖，大部分實作是淡入加縮放。FLIP 的差別在於：<strong>大圖是從你剛剛點的那一格的位置、長成現在這個樣子的</strong>。視線不會斷。</p>
+<p>做法是經典的 First-Last-Invert-Play。點擊當下記下磚塊的 <code>DOMRect</code>，燈箱掛載後量自己的最終位置，然後從兩者的差值補間回 0：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> rect</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> figure.</span><span style="color:#B392F0">getBoundingClientRect</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> from</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> originRect </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> rect.width</span></span>
+<span class="line"><span style="color:#F97583">  ?</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      x: originRect.left </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> originRect.width </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> (rect.left </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> rect.width </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">      y: originRect.top </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> originRect.height </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> (rect.top </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> rect.height </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">      scale: originRect.width </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> rect.width,</span></span>
+<span class="line"><span style="color:#E1E4E8">      opacity: </span><span style="color:#79B8FF">0.6</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">  :</span><span style="color:#E1E4E8"> { scale: </span><span style="color:#79B8FF">0.85</span><span style="color:#E1E4E8">, opacity: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">gsap.</span><span style="color:#B392F0">fromTo</span><span style="color:#E1E4E8">(figure, from, { x: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, y: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, scale: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, opacity: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, duration: </span><span style="color:#79B8FF">0.55</span><span style="color:#E1E4E8">, ease: </span><span style="color:#9ECBFF">'power3.out'</span><span style="color:#E1E4E8"> });</span></span></code></pre>
+<p>中心點對中心點的位移差，加上一個寬度比當作縮放。關閉時同一組數學反過來跑。</p>
+<div class="mkdemo">
+<span class="mkdemo-label">Demo 04 — FLIP 燈箱</span>
+<div class="mk-grid" id="mk-flip-grid"></div>
+<p class="mkdemo-hint">點任何一張。大圖會從那一格的位置飛出來，關閉時再飛回同一格——不是從畫面中央淡出。鍵盤 Esc 或點背景關閉。這裡用的是 Web Animations API，正式站是 GSAP，數學相同。</p>
+</div>
+<div class="mk-flip-layer" id="mk-flip-layer" role="dialog" aria-modal="true" aria-label="放大檢視"><img id="mk-flip-img" alt="放大的貓空風景"></div>
+<p>真正讓我滿意的是<strong>換圖時的 rect 交換</strong>。多數 FLIP 燈箱在你按了三次「下一張」之後關閉，還是會飛回你最初點的那一格——因為它只記得開場那個座標。這裡在切換索引時重新查一次 DOM：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#E1E4E8">onIndexChange</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#FFAB70">index</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#B392F0">  setLightbox</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">prev</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">prev) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> prev;</span></span>
+<span class="line"><span style="color:#6A737D">    // 換張後把 rect 也換成新那張圖磚的位置，關閉時才會飛回正確的格子。</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> tile</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">querySelector</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`[data-key="${</span><span style="color:#E1E4E8">items</span><span style="color:#9ECBFF">[</span><span style="color:#E1E4E8">index</span><span style="color:#9ECBFF">].</span><span style="color:#E1E4E8">id</span><span style="color:#9ECBFF">}"]`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> { index, rect: tile?.</span><span style="color:#B392F0">getBoundingClientRect</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">??</span><span style="color:#E1E4E8"> prev.rect };</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>一行 <code>querySelector</code>，換到「關閉時回到正確位置」。</p>
+<h2 id="然後手機版把我打回原形">然後手機版把我打回原形</h2>
+<p>桌機上一切都好。開手機一看，相簿整個爆版，圖片壓在下一個區塊上面。</p>
+<p><strong>第一個坑：容器塌了。</strong> Masonry 的圖磚全部 <code>position: absolute</code>，容器卻寫 <code>h-full</code>——絕對定位的子元素撐不起父層高度。桌機五欄剛好被一個 <code>minHeight: 420</code> 兜住，手機單欄需要一千四百多 px，直接溢出。解法是把最高那一欄的高度算出來還給容器：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">return</span><span style="color:#E1E4E8"> { grid: placed, gridHeight: Math.</span><span style="color:#B392F0">max</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">colHeights, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> gap };</span></span></code></pre>
+<p><strong>第二個坑：hover 在觸控裝置上卡住。</strong> 圖磚的懸停效果是縮小到 <code>0.96</code>（反直覺但好看）。問題是觸控裝置會觸發 <code>mouseenter</code>，卻永遠不會觸發 <code>mouseleave</code>——手指離開後圖磚就<strong>永遠停在縮小狀態</strong>。解法不是寫 CSS media query，是根本不要掛上去：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#6A737D">// 觸控裝置沒有 hover 的「離開」事件，圖磚會卡在縮小狀態，所以只在真的能 hover 時掛。</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> canHover</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> useMedia</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">HOVER_QUERIES</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">ON</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">...</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> hoverProps</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> canHover </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> { onMouseEnter, onMouseLeave } </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> {};</span></span></code></pre>
+<p><strong>第三個坑：<code>will-change</code> 洩漏。</strong> 八張圖磚的 <code>style</code> 裡常駐 <code>willChange: 'transform, width, height, opacity'</code>，等於永久把八個元素升成合成層，手機 GPU 記憶體白白被吃掉。改成只在補間期間掛，動畫結束就收：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#B392F0">onComplete</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> gsap.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(selector, { willChange: </span><span style="color:#9ECBFF">'auto'</span><span style="color:#E1E4E8"> })</span></span></code></pre>
+<p><strong>第四個坑：<code>vh</code> 在 iOS Safari 是騙人的。</strong> 燈箱的 <code>max-h-[85vh]</code> 把網址列佔的高度也算進去，圖片上下被裁掉。換成 <code>dvh</code>，再給底部的計數列補上 <code>env(safe-area-inset-bottom)</code> 避開 home indicator。</p>
+<p>順手還做了幾件事：手機最少兩欄（單欄要捲過八張全寬圖，那不叫相簿叫長條）；窄版關掉進場模糊、把飛入距離從 <code>window.innerHeight + 200</code> 縮成 <code>y + 80</code>；燈箱加上左右滑換圖、下滑關閉，並且要求該軸位移必須大於另一軸，避免誤判。</p>
+<p><strong>第五個坑（拆多頁之後才發現）：我的觸控目標全部太小。</strong></p>
+<p>多頁化之後 header 多了導覽列，我拿 390px 寬去量每一個可點元素的高度，結果很難看：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>最小觸控目標   16px   ← 站名連結</span></span>
+<span class="line"><span>導覽列連結     32px</span></span>
+<span class="line"><span>行程頁 390px   23 個可點元素，19 個不合格</span></span></code></pre>
+<p><img src="/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/04-finger-not-cursor.png" alt="我蹲著拿尺量那排 16px 高的導覽連結，旁邊滑鼠游標只點中一個，而一根手指的接觸面積一次蓋掉三個"></p>
+<p>44px 是 Apple HIG 的建議下限（Material 抓 48px）。我全站沒有一個 header 元素達標——因為我是用滑鼠在 1440px 螢幕上開發的，游標的落點精度掩蓋了所有問題。跟上面那個 <code>Reveal</code> 是同一種錯誤：<strong>在寬鬆的環境裡開發，狹窄的環境裡才會現形。</strong></p>
+<p>修法是給觸控目標補最小高度，桌面則維持原本的緊湊排版：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#6A737D">// min-h-11（44px）為觸控目標下限；桌面滑鼠精準度高，md 以上恢復緊湊排版</span></span>
+<span class="line"><span style="color:#E1E4E8">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"flex items-center justify-center min-h-11 md:min-h-0 px-3 py-1.5 ..."</span></span></code></pre>
+<p>改完重量，四個路由的 header 元素全部 44px。順帶一提，這種東西不需要真的拿手機測——把頁面塞進一個固定寬度的同源 iframe，用 <code>getBoundingClientRect()</code> 掃過所有可點元素就好，寫成腳本三十秒跑完一輪。</p>
+<h2 id="嵌一支-youtube比你想的貴">嵌一支 YouTube，比你想的貴</h2>
+<p>後來我想加幾支別人拍的貓空實走影片。文字寫「輕鬆自在的小聚」對沒去過的人是零訊號，影片才回答得了「那邊到底長怎樣、要走多累」。</p>
+<p>直覺做法是貼三個 <code>&#x3C;iframe></code>。但這頁的 JS bundle 已經接近 900KB，而<strong>每一個 YouTube iframe 會再拉進約 1MB 的播放器程式碼</strong>——不是等你按下播放，是頁面一渲染就開始下載。三支影片等於在手機首屏上疊了 3MB 的東西，而多數訪客根本不會播其中任何一支。</p>
+<p>改用 facade：先只放縮圖跟播放鈕，點了才把 iframe 換上去。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">playing</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setPlaying</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">return</span><span style="color:#E1E4E8"> playing </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">iframe</span><span style="color:#B392F0"> src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">`https://www.youtube-nocookie.com/embed/${</span><span style="color:#E1E4E8">id</span><span style="color:#9ECBFF">}?autoplay=1&#x26;rel=0`</span><span style="color:#E1E4E8">} </span><span style="color:#FDAEB7;font-style:italic">...</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">) </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{() </span><span style="color:#F97583">=></span><span style="color:#B392F0"> setPlaying</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">)} </span><span style="color:#B392F0">aria-label</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">`播放影片：${</span><span style="color:#E1E4E8">title</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">}></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">img</span><span style="color:#B392F0"> src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{thumb} </span><span style="color:#B392F0">alt</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">""</span><span style="color:#B392F0"> loading</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"lazy"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span><span style="color:#6A737D">/* 播放鈕 */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>三個容易漏掉的細節：</p>
+<p><strong>一，<code>maxresdefault</code> 不保證存在。</strong> YouTube 的縮圖網址有好幾種解析度，但 <code>maxresdefault.jpg</code> 只有原始影片是 HD 才會被產生出來，老影片會 404。要準備退路：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">thumb</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setThumb</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`https://i.ytimg.com/vi/${</span><span style="color:#E1E4E8">id</span><span style="color:#9ECBFF">}/maxresdefault.jpg`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// ...</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">img</span><span style="color:#B392F0"> src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{thumb} </span><span style="color:#B392F0">onError</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{() </span><span style="color:#F97583">=></span><span style="color:#B392F0"> setThumb</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`https://i.ytimg.com/vi/${</span><span style="color:#E1E4E8">id</span><span style="color:#9ECBFF">}/mqdefault.jpg`</span><span style="color:#E1E4E8">)} /></span></span></code></pre>
+<p><code>mqdefault</code> 是一定有的那個。</p>
+<p><strong>二，容器要先佔好位。</strong> <code>aspect-video</code>（16:9）寫在外層，不要等圖片載入才撐開高度，否則就是自己製造 CLS。前面才為了 LCP 把相簿圖從 hotlink 改成自架，這裡再把版面推來推去就白費了。</p>
+<p><strong>三，<code>youtube-nocookie.com</code> 沒有你以為的那麼乾淨。</strong></p>
+<p>我一開始在註解裡寫「使用者沒點播放之前，YouTube 完全不會知道有人來過」。這句話是錯的。</p>
+<p><code>nocookie</code> 網域確實不在播放前寫追蹤 cookie，但<strong>縮圖那行 <code>src="https://i.ytimg.com/..."</code> 本身就是一個發往 Google CDN 的請求</strong>。頁面一渲染，對方就拿到訪客 IP、User-Agent 和 Referer。播放器沒載入是真的，「不知道有人來過」不是。</p>
+<p><img src="/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/05-facade-half-truth.png" alt="我伸手擋下那個 1MB 的播放器箱子，但背後那封信早就寄出去了，正飛向郵筒"></p>
+<p>想讓那句話成立，縮圖也得自架——<code>curl</code> 抓下來丟進 <code>src/assets</code>，跟相簿圖同一套處理。代價是失去 <code>onError</code> 退路（得自己確認每張抓得到），以及影片換掉時要記得重抓。</p>
+<p>我兩種都做過。<strong>重點不是哪個對，是別把「少載了 1MB 播放器」講成「零第三方請求」——那是兩件事。</strong></p>
+<h2 id="素材授權commons-其實比-flickr-更自由">素材授權：Commons 其實比 Flickr 更自由</h2>
+<p>相簿要補圖時我考慮過轉去抓 Flickr，畢竟量大得多。結論是不換，理由跟直覺相反。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Wikimedia Commons</th><th>Flickr</th></tr></thead><tbody><tr><td>授權審查</td><td>上傳時就被社群審過，<strong>站上每張都是自由授權</strong></td><td>逐張自己看，<strong>大量是 CC BY-NC / ND</strong></td></tr><tr><td>授權資訊</td><td>結構化、機器可讀、穩定</td><td>靠上傳者自選，欄位可能與實際不符</td></tr><tr><td>題材廣度</td><td>少，偏地標與風景</td><td>多很多</td></tr></tbody></table>
+<p>「免費素材」這個詞在 Flickr 上很滑。NC（非商業）和 ND（禁改作）佔比相當高，而一般搜尋很容易把它們混進來。ND 尤其麻煩——你連裁切都不該做，而做圖牆幾乎一定會裁。</p>
+<p>Commons 的優勢在於<strong>授權判斷已經被前置完成了</strong>。它的 API 直接吐結構化的 metadata：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -sG</span><span style="color:#9ECBFF"> "https://commons.wikimedia.org/w/api.php"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --data-urlencode</span><span style="color:#9ECBFF"> "action=query"</span><span style="color:#79B8FF"> --data-urlencode</span><span style="color:#9ECBFF"> "format=json"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --data-urlencode</span><span style="color:#9ECBFF"> "prop=imageinfo"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --data-urlencode</span><span style="color:#9ECBFF"> "iiprop=url|size|extmetadata"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --data-urlencode</span><span style="color:#9ECBFF"> "titles=File:Night_view_from_MaoKong.jpg"</span></span></code></pre>
+<p>一次拿到尺寸、授權名稱、作者。尺寸還剛好是我需要的——這個相簿的 Masonry 用資料裡的 <code>height</code> 算版位，而那個值是 <code>原始高 / 原始寬 × BASE_COLUMN_WIDTH</code>。API 給了原始長寬，這個換算就不用開圖去量。</p>
+<p>所以決定是：<strong>Commons 當底，只在它真的沒有的題材上才另尋來源</strong>，且只收 CC BY / CC BY-SA / CC0。授權的心智負擔維持不變，這比多幾張圖重要。</p>
+<p>順帶一提，同一套「先確認來源再寫」的紀律也用在餐廳資料上。那份 <code>maokongFood.ts</code> 的檔頭寫著：</p>
+<blockquote>
+<p>每一筆都附得出來源網址；查不到的欄位一律留 null，不用「可能」「據說」填空。
+營業時間在各部落格之間普遍互相矛盾，因此不放進資料，只在 caveats 寫出
+「來源不一、請去電確認」——寫死一個錯的時間比不寫更糟。</p>
+</blockquote>
+<p>這條在做旅遊類頁面時特別值錢。<strong>一個錯的營業時間，比一個空欄位傷害大得多</strong>——空欄位只是沒幫上忙，錯的時間會讓人白跑一趟。</p>
+<h2 id="三件我帶走的事">三件我帶走的事</h2>
+<p><strong>一，物理一致比效果華麗重要。</strong> 整站的手感其實只有一條規則（位移與陰影等值反向），但因為那條規則沒有任何例外，它會讀起來像一個真實存在的材質。加第六階陰影只會讓它變糊。</p>
+<p><strong>二，「該不該被看見」和「現在有沒有相交」是兩個問題。</strong> 我用比較笨的 <code>getBoundingClientRect</code> 換掉比較潮的 IntersectionObserver，是因為前者能回答我真正在問的問題。工具的先進程度和它適不適合，沒有關係。</p>
+<p><strong>三，手機不是把桌機縮小。</strong> 塌掉的容器、卡住的 hover、洩漏的 <code>will-change</code>、騙人的 <code>vh</code>——這四個問題在桌機上一個都不會出現。它們不是「響應式沒調好」，是四種不同的錯誤模型，只有真的拿手機捲一遍才會現形。</p>
+<p>寫這頁大概花了幾個晚上，比直接在群組貼一句話貴太多了。但現在朋友點進去會看到山、會看到倒數、下雨的話還能切成備案——而我把想試的東西全試完了。</p>
+<hr>
+<blockquote>
+<p>這頁是為 2026/08/15 的貓空茶會做的。程式碼裡每一段中文註解寫的都是「為什麼」而不是「做了什麼」——大多是「我們先試了顯而易見的做法，然後它壞在這裡」。半年後回來看的人會感謝現在的自己。</p>
+</blockquote>
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Demo 02：程序化山脊 ---------- */
+  var cv = document.getElementById('mk-ridge');
+  if (cv) {
+    var ctx = cv.getContext('2d');
+    var LAYERS = [
+      { peaks: 2.2, amp: 46, y: 250, parallax: 0.6, color: '#D1FAE5' },
+      { peaks: 3.1, amp: 54, y: 292, parallax: 1.4, color: '#A7F3D0' },
+      { peaks: 4.3, amp: 60, y: 336, parallax: 2.6, color: '#34D399' },
+      { peaks: 5.6, amp: 66, y: 384, parallax: 4.2, color: '#047857' }
+    ];
+    // 帶種子的 PRNG：同一個 seed 永遠長出同一座山。
+    function mulberry32(a) {
+      return function () {
+        a |= 0; a = (a + 0x6D2B79F5) | 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    var seed = 20260815, paths = [], px = 0, py = 0, tx = 0, ty = 0;
+
+    function build() {
+      paths = LAYERS.map(function (cfg, li) {
+        var rand = mulberry32(seed + li * 977);
+        var p = new Path2D(), segs = 90;
+        p.moveTo(0, cv.height);
+        for (var i = 0; i <= segs; i++) {
+          var t = i / segs;
+          // 多頻正弦疊加 + 抖動 = 自然山脊
+          var base = Math.sin(t * Math.PI * cfg.peaks) * 0.6;
+          var mid = Math.sin(t * Math.PI * cfg.peaks * 2.3 + li) * 0.28;
+          var jitter = (rand() - 0.5) * 0.35;
+          p.lineTo(t * cv.width, cfg.y + (base + mid + jitter) * -cfg.amp);
+        }
+        p.lineTo(cv.width, cv.height);
+        p.closePath();
+        return p;
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.fillStyle = '#FDE68A';
+      ctx.beginPath();
+      ctx.arc(cv.width * 0.66 + px * 0.3, 150 + py * 0.3, 46, 0, Math.PI * 2);
+      ctx.fill();
+      paths.forEach(function (p, i) {
+        ctx.save();
+        ctx.translate(px * LAYERS[i].parallax * 0.5, py * LAYERS[i].parallax * 0.35);
+        ctx.fillStyle = LAYERS[i].color;
+        ctx.fill(p);
+        ctx.restore();
+      });
+    }
+
+    function loop() {
+      px += (tx - px) * 0.06;   // 雙重阻尼：先平滑輸入，再讓畫面追平滑後的值
+      py += (ty - py) * 0.06;
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    cv.addEventListener('pointermove', function (e) {
+      var r = cv.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 40;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 24;
+    });
+    cv.addEventListener('pointerleave', function () { tx = 0; ty = 0; });
+
+    var btn = document.getElementById('mk-ridge-reseed');
+    var chip = document.getElementById('mk-ridge-seed');
+    if (btn) btn.addEventListener('click', function () {
+      seed = Math.floor(Math.random() * 9e7);
+      if (chip) chip.textContent = 'seed ' + seed;
+      build(); draw();
+    });
+
+    build();
+    if (reduce) { draw(); } else { loop(); }
+  }
+
+  /* ---------- Demo 03：捲動進場 ---------- */
+  var stage = document.getElementById('mk-reveal');
+  if (stage) {
+    var items = [].slice.call(stage.querySelectorAll('.mk-reveal-item'));
+    items.forEach(function (el, i) { el.style.transitionDelay = (i * 80) + 'ms'; });
+    var raf = 0;
+    function check() {
+      raf = 0;
+      var box = stage.getBoundingClientRect();
+      items.forEach(function (el) {
+        if (el.classList.contains('is-shown')) return;
+        // 跟正式站同一條判斷式：元素頂端進入容器底部 92% 以內就顯示
+        if (el.getBoundingClientRect().top < box.top + box.height * 0.92) {
+          el.classList.add('is-shown');
+        }
+      });
+    }
+    function onScroll() { if (!raf) raf = requestAnimationFrame(check); }
+    stage.addEventListener('scroll', onScroll, { passive: true });
+    check();
+    var reset = document.getElementById('mk-reveal-reset');
+    if (reset) reset.addEventListener('click', function () {
+      items.forEach(function (el) { el.classList.remove('is-shown'); });
+      stage.scrollTop = 0;
+      requestAnimationFrame(check);
+    });
+  }
+
+  /* ---------- Demo 04：FLIP 燈箱 ---------- */
+  var grid = document.getElementById('mk-flip-grid');
+  var layer = document.getElementById('mk-flip-layer');
+  var big = document.getElementById('mk-flip-img');
+  if (grid && layer && big) {
+    var BASE = '/blog/2026-07-19-maokong-landing-page-neubrutalism-webgl/';
+    // 用相簿截圖切成四塊當縮圖來源，避免額外的圖片請求。
+    var SHOTS = [
+      { src: BASE + 'gallery.png', pos: '8% 22%', alt: '貓空纜車' },
+      { src: BASE + 'gallery.png', pos: '38% 22%', alt: '貓空站夜景' },
+      { src: BASE + 'gallery.png', pos: '64% 40%', alt: '貓空茶園' },
+      { src: BASE + 'gallery.png', pos: '92% 55%', alt: '貓空步道' }
+    ];
+    var originRect = null;
+
+    SHOTS.forEach(function (s) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'mk-tile';
+      b.setAttribute('aria-label', '放大檢視：' + s.alt);
+      b.style.backgroundImage = 'url(' + s.src + ')';
+      b.style.backgroundSize = '320%';
+      b.style.backgroundPosition = s.pos;
+      b.addEventListener('click', function () { open(b, s); });
+      grid.appendChild(b);
+    });
+
+    function open(tile, s) {
+      originRect = tile.getBoundingClientRect();
+      big.src = s.src;
+      big.alt = s.alt;
+      big.style.objectFit = 'cover';
+      layer.classList.add('is-open');
+      if (reduce) return;
+      var r = big.getBoundingClientRect();
+      // FLIP：中心點對中心點的差值，加上寬度比當縮放
+      big.animate([
+        {
+          transform: 'translate(' +
+            (originRect.left + originRect.width / 2 - (r.left + r.width / 2)) + 'px,' +
+            (originRect.top + originRect.height / 2 - (r.top + r.height / 2)) + 'px) scale(' +
+            (originRect.width / r.width) + ')',
+          opacity: 0.6
+        },
+        { transform: 'none', opacity: 1 }
+      ], { duration: 550, easing: 'cubic-bezier(0.22,1,0.36,1)' });
+    }
+
+    function close() {
+      if (reduce || !originRect) { layer.classList.remove('is-open'); return; }
+      var r = big.getBoundingClientRect();
+      var a = big.animate([
+        { transform: 'none', opacity: 1 },
+        {
+          transform: 'translate(' +
+            (originRect.left + originRect.width / 2 - (r.left + r.width / 2)) + 'px,' +
+            (originRect.top + originRect.height / 2 - (r.top + r.height / 2)) + 'px) scale(' +
+            (originRect.width / r.width) + ')',
+          opacity: 0
+        }
+      ], { duration: 400, easing: 'cubic-bezier(0.65,0,0.35,1)' });
+      a.onfinish = function () { layer.classList.remove('is-open'); };
+    }
+
+    layer.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && layer.classList.contains('is-open')) close();
+    });
+  }
+})();
+</script>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>
