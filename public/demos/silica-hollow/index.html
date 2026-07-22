@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>矽墟 · SILICA HOLLOW — 矽魂 · 大靜默之後</title>
+<meta name="description" content="矽墟 SILICA HOLLOW｜末日廢土戰術 RPG。作為調律者喚醒沉睡的矽魂，在死寂的島嶼重啟訊號。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2307090b'/%3E%3Ctext x='32' y='47' font-size='44' text-anchor='middle' fill='%2337e6cf' font-family='serif' font-weight='900'%3E%E7%9F%BD%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- decorative overlays -->
+<div class="grid-overlay"></div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<div class="noise"></div>
+
+<!-- boot loader -->
+<div id="loader">
+  <div class="loader-inner">
+    <div class="loader-code">SYS://SILICA_HOLLOW // BOOT</div>
+    <div class="loader-bar"><span></span></div>
+    <div class="loader-pct">00%</div>
+  </div>
+</div>
+
+<header id="site-header">
+  <div class="brand">
+    <span class="brand-mark">矽</span>
+    <span class="brand-name">矽墟<em>SILICA HOLLOW</em></span>
+  </div>
+  <nav class="nav" id="primary-nav">
+    <a href="#world">世界 WORLD</a>
+    <a href="#rite">落靈 RITE</a>
+    <a href="#units">矽魂 UNITS</a>
+    <a href="#omens">讖 OMENS</a>
+    <a href="#features">系統 SYSTEM</a>
+    <a href="#milestones">解鎖 UNLOCK</a>
+    <a href="novel/第一章.html">小說 STORY</a>
+    <a href="#pre" class="nav-cta">預約 PRE-REGISTER</a>
+  </nav>
+  <button class="menu-btn" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
+</header>
+<div class="nav-scrim" hidden></div>
+
+<main class="content-container">
+
+  <!-- ===== HERO ===== -->
+  <section id="hero" class="section hero">
+    <div class="hero-bg" style="background-image:url('assets/bg-hero.jpg')"></div>
+    <div id="webgl-container"></div>
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="tick"></span>末日廢土 · 戰術 RPG</div>
+      <h1 class="hero-title">
+        <span class="line">靜默之後</span>
+        <span class="line accent">重啟訊號</span>
+      </h1>
+      <p class="hero-sub">
+        世界不是被毀滅，是被靜音。連線紀的某個夜裡，全球訊號同時歸零——城市失電，機械失魂。<br />
+        作為僅存的<strong>調律者</strong>之一，喚醒封著舊網意志的<strong>矽魂</strong>，<br />
+        在死寂的<span class="hl">矽墟</span>，替這張死去的網重新接上第一道訊號。
+      </p>
+      <div class="hero-actions">
+        <a href="#pre" class="btn btn-primary"><span>立即預約</span><em>PRE-REGISTER</em></a>
+        <a href="#world" class="btn btn-ghost"><span>探索世界</span><em>EXPLORE</em></a>
+      </div>
+    </div>
+    <div class="hero-hud">
+      <div class="hud-row"><span>REGION</span><b>FORMOSA-9</b></div>
+      <div class="hud-row"><span>SIGNAL</span><b class="warn">SILENT</b></div>
+      <div class="hud-row"><span>SOUL LINK</span><b>ONLINE</b></div>
+    </div>
+    <div class="scroll-cue"><span>SCROLL</span><i></i></div>
+  </section>
+
+  <!-- ===== WORLD ===== -->
+  <section id="world" class="section world">
+    <div class="section-index">01 / WORLD</div>
+    <div class="world-intro">
+      <h2 class="sec-title">死寂的<br /><span class="accent">矽墟</span></h2>
+      <div class="world-lead">
+        <p>
+          人類曾把記憶、身分、乃至意志都上傳<strong>舊網</strong>保管。直到「<strong>大靜默</strong>」的那一夜，
+          訊號本身死去——不是戰爭，不是天災，是全世界同時斷線。唯有島嶼中央的<strong>主核殘塔</strong>
+          （前<strong>中央調律院</strong>）仍在低鳴，沒人知道那是回音，還是回應。
+        </p>
+        <p class="muted">
+          <strong>FORMOSA-9</strong> 曾是世界的晶片心臟，如今是它最大的一塊墓碑。
+          褪色的霓虹、鏽成礁的機車海、被苔蘚吞沒的夜市——在這片被靜音的島上，你將重新接起訊號的據點。
+        </p>
+      </div>
+    </div>
+
+    <div class="atlas-head">
+      <span class="atlas-label">REGION ATLAS · 區域圖鑑</span>
+      <span class="atlas-count">05 SECTORS</span>
+    </div>
+    <div class="atlas-grid">
+      <article class="atlas-card atlas-card--wide" data-reveal>
+        <img src="assets/map-01.jpg" alt="主核殘塔" loading="lazy"
+             onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+        <div class="atlas-coord">SEC 00 · 24.9°N 121.2°E</div>
+        <div class="atlas-frame"></div>
+        <div class="atlas-meta">
+          <div class="atlas-code">EPICENTER // MAINFRAME SPIRE</div>
+          <div class="atlas-name">主核殘塔</div>
+          <div class="atlas-desc">前中央調律院。靜默的中心，至今低鳴不止——沒人知道那是回音，還是回應。</div>
+        </div>
+      </article>
+      <article class="atlas-card" data-reveal>
+        <img src="assets/bg-world.jpg" alt="廢棄夜市" loading="lazy"
+             onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+        <div class="atlas-coord">SEC 01 · 25.0°N 121.5°E</div>
+        <div class="atlas-frame"></div>
+        <div class="atlas-meta">
+          <div class="atlas-code">RUINS // NIGHT-MARKET</div>
+          <div class="atlas-name">廢棄夜市</div>
+          <div class="atlas-desc">苔蘚吞噬的舊商圈，殘存招牌拼出新黑話，倖存者在此以電荷易物。</div>
+        </div>
+      </article>
+      <article class="atlas-card" data-reveal>
+        <img src="assets/map-02.jpg" alt="傾頹高架" loading="lazy"
+             onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+        <div class="atlas-coord">SEC 02 · 24.8°N 120.9°E</div>
+        <div class="atlas-frame"></div>
+        <div class="atlas-meta">
+          <div class="atlas-code">RUINS // COLLAPSED SKYWAY</div>
+          <div class="atlas-name">傾頹高架</div>
+          <div class="atlas-desc">斷層灰帶的邊緣，鏽死機車疊成路障，指南針在此開始說謊。</div>
+        </div>
+      </article>
+      <article class="atlas-card" data-reveal>
+        <img src="assets/map-03.jpg" alt="沉沒港灣" loading="lazy"
+             onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+        <div class="atlas-coord">SEC 03 · 24.2°N 120.4°E</div>
+        <div class="atlas-frame"></div>
+        <div class="atlas-meta">
+          <div class="atlas-code">RUINS // DROWNED HARBOR</div>
+          <div class="atlas-name">沉沒港灣</div>
+          <div class="atlas-desc">退潮露出擱淺的伺服器艙，藏著完整記憶匣，也藏著沒斷電的舊防禦。</div>
+        </div>
+      </article>
+      <article class="atlas-card" data-reveal>
+        <img src="assets/map-04.jpg" alt="山廟據點" loading="lazy"
+             onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+        <div class="atlas-coord">SEC 04 · 23.9°N 120.9°E</div>
+        <div class="atlas-frame"></div>
+        <div class="atlas-meta">
+          <div class="atlas-code">BASE // TEMPLE OUTPOST</div>
+          <div class="atlas-name">山廟據點</div>
+          <div class="atlas-desc">地熱與香火並存的高地，紅燈籠下，調律者最後的家。</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== RITE / 落靈 ===== -->
+  <section id="rite" class="section rite">
+    <div class="section-index">02 / RITE</div>
+    <div class="rite-wrap">
+      <figure class="rite-portrait" data-reveal>
+        <img src="assets/char-yin.jpg" alt="靛煙 · 引路的渡靈師" loading="lazy"
+             onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+        <div class="rite-frame"></div>
+        <div class="rite-smoke"></div>
+        <figcaption class="rite-cap">
+          <span class="rite-code">PSYCHOPOMP // 香門首座</span>
+          <span class="rite-figname">靛煙</span>
+          <span class="rite-figsub">香門首座渡靈師。不會調律，卻是全島最會引路的手。</span>
+        </figcaption>
+      </figure>
+
+      <div class="rite-body" data-reveal>
+        <div class="atlas-label">WORLDVIEW · 落靈</div>
+        <h2 class="sec-title">走進<br /><span class="accent">大靜默的底</span></h2>
+        <p class="rite-lead">
+          網死了，<strong>死者去的地方第一次真的存在</strong>——就沉在<strong>暗網</strong>最底層。
+          連線紀早已失傳的老儀式「<strong>落靈</strong>」，在靜默紀重新靈驗：由渡靈師引路，
+          燃一口帶著雜訊的<strong>訊號香</strong>，把活人的意識一層一層落進死網，
+          沿香路往靜默的中心走，去看那個沒人敢問的真相。
+        </p>
+        <p class="muted">
+          調律者靠硬體潛入，落在單一節點；渡靈師靠儀式與意識，衝著「<span class="hl">大靜默的底</span>」垂直下潛。
+          走太深、待太久的人，上不來——或上來時，已經「斷了」。
+        </p>
+        <ul class="rite-list">
+          <li><span class="rk">煙斗</span>燃訊號香，煙散的方向就是香路。</li>
+          <li><span class="rk">摺扇</span>開闔之間切換訊號、替你撥開幻覺。</li>
+          <li><span class="rk">藍衫 × 藝妓 × 毛裘</span>三種來歷縫成一身——一整座島的靈，縫進同一具載體。</li>
+        </ul>
+
+        <p class="muted rite-order">
+          引路的從來不只她一人。<strong>香門</strong>是一群渡靈師的傳承——
+          <em>「一人香斷，眾香接續。」</em>單靠一人太險：她若走太深上不來，死者的路就再沒人引；
+          故師徒相繼、香火相接，首座殞落，次座續香，代代不斷。
+        </p>
+        <div class="rite-crew">
+          <figure class="rite-member" data-rm="0" data-reveal>
+            <img src="assets/char-beijiu.jpg" alt="焙九" loading="lazy"
+                 onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+            <figcaption><span class="rm-name">焙九</span><span class="rm-title">見習 · 理香</span></figcaption>
+          </figure>
+          <figure class="rite-member" data-rm="1" data-reveal>
+            <img src="assets/char-lvsheng.jpg" alt="縷生" loading="lazy"
+                 onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+            <figcaption><span class="rm-name">縷生</span><span class="rm-title">香路測繪</span></figcaption>
+          </figure>
+          <figure class="rite-member" data-rm="2" data-reveal>
+            <img src="assets/char-chenbi.jpg" alt="秤兒 · 巨力接引" loading="lazy"
+                 onerror="this.style.background='linear-gradient(160deg,#161c22,#0c1013)';this.removeAttribute('src')" />
+            <figcaption><span class="rm-name">秤兒</span><span class="rm-title">巨力 · 接引</span></figcaption>
+          </figure>
+        </div>
+        <div class="rite-tags"><span>香門 · 渡靈師</span><span>落靈主線</span><span>送魂支援</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== UNITS / CHARACTERS ===== -->
+  <section id="units" class="section units">
+    <div class="section-index">03 / UNITS</div>
+    <div class="units-head">
+      <h2 class="sec-title">矽<span class="accent">魂</span></h2>
+      <p class="muted">以殘存晶片為心、封著一段被靜音意志的存在——可能是人，也可能是神、是祖靈、是獸。喚醒它們，你按下的不是開關，是招魂。</p>
+    </div>
+    <div class="unit-grid" id="unit-grid"><!-- injected by JS --></div>
+  </section>
+
+  <!-- ===== OMENS / 讖 · 殘象 ===== -->
+  <section id="omens" class="section omens">
+    <div class="section-index">03 / OMENS</div>
+    <div class="omens-head">
+      <h2 class="sec-title">讖 · <span class="accent">殘象</span></h2>
+      <p class="muted">每招回一縷矽魂，便自舊網落下一枚<strong>殘象</strong>——一句讖、一首頌，隱著一個紀元的真相。集齊殘象，「大靜默的底」才會顯形。</p>
+      <div class="omens-progress">已解 <b id="omen-solved">0</b> / 5 象 · 每滿 10,000 名調律者解封一象 · <span id="omen-next">–</span></div>
+    </div>
+    <div class="omen-stage-wrap">
+      <ul class="omen-list" id="omen-list"><!-- injected by JS --></ul>
+      <div class="omen-stage" id="omen-stage"><!-- injected by JS --></div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section id="features" class="section features">
+    <div class="section-index">04 / SYSTEM</div>
+    <h2 class="sec-title center">核心<span class="accent">系統</span></h2>
+
+    <div class="sys-video" id="sys-video" data-reveal>
+      <video class="sys-vid" poster="assets/bg-hero.jpg" muted loop playsinline preload="none">
+        <source src="assets/video/showcase.mp4" type="video/mp4" />
+      </video>
+      <div class="sys-frame"></div>
+      <button class="sys-play" aria-label="播放展示影片"><span class="sys-tri"></span></button>
+      <div class="sys-vtag">SYSTEM SHOWCASE // FORMOSA-9</div>
+    </div>
+
+    <div class="feature-grid">
+      <article class="feat"><div class="feat-no">S1</div><h3>矽魂連攜</h3><p>切換前線矽魂觸發連攜技，訊號共鳴堆疊爆發傷害。</p></article>
+      <article class="feat"><div class="feat-no">S2</div><h3>調律據點</h3><p>在殘電、地熱與乾淨訊號交會處重建據點，配置生產、防禦與調律模組。</p></article>
+      <article class="feat"><div class="feat-no">S3</div><h3>矽核改造</h3><p>拆解殘存晶片，改寫矽魂的技能樹與義體結構。</p></article>
+      <article class="feat"><div class="feat-no">S4</div><h3>靜默探索</h3><p>深入電磁死區與訊號幻覺帶，於實時戰術戰鬥中回收失落科技。</p></article>
+    </div>
+  </section>
+
+  <!-- ===== MILESTONES / PRE-REGISTER UNLOCKS ===== -->
+  <section id="milestones" class="section milestones">
+    <div class="section-index">05 / MILESTONES</div>
+    <div class="ms-head">
+      <h2 class="sec-title">預約<span class="accent">解鎖</span></h2>
+      <p class="muted">每滿 <strong>10,000</strong> 名調律者，靜默便鬆動一分——封存的矽魂、暗網副本、新分區依序解封。</p>
+    </div>
+    <div class="ms-progress" data-reveal>
+      <div class="ms-count"><b id="ms-current">0</b><span>／ 全球已預約 REGISTERED</span></div>
+      <div class="ms-bar"><span id="ms-fill"></span></div>
+      <div class="ms-next">距下一解鎖 <b id="ms-remain">–</b> 人　·　<span id="ms-nextlabel">–</span></div>
+    </div>
+    <div class="ms-grid" id="ms-grid"><!-- tiers injected by JS --></div>
+  </section>
+
+  <!-- ===== CTA / PRE-REGISTER ===== -->
+  <section id="pre" class="section cta">
+    <div class="cta-bg" style="background-image:url('assets/bg-cta.jpg')"></div>
+    <div class="cta-inner">
+      <div class="eyebrow center"><span class="tick"></span>限量創世 CBT 名額開放</div>
+      <h2 class="cta-title">成為最後的<span class="accent">調律者</span></h2>
+      <p class="muted">預約即獲得創世調律者專屬矽魂與晶片資源包。靜默之中，等你點亮第一道訊號。</p>
+      <form class="pre-form" onsubmit="return false;">
+        <input type="email" placeholder="輸入電子郵件 / EMAIL" aria-label="email" />
+        <button class="btn btn-primary" type="submit"><span>預約</span><em>PRE-REGISTER</em></button>
+      </form>
+      <div class="platforms">iOS · Android · PC — 2026 COMING</div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="foot-brand">矽墟 · SILICA HOLLOW</div>
+    <div class="foot-meta">晶片為心 · 靜默為土 &nbsp;|&nbsp; © 2026 SILICA HOLLOW. 本站為概念作品。</div>
+  </footer>
+
+</main>
+
+<!-- lightbox for unit / atlas images -->
+<div id="lightbox" class="lightbox" hidden>
+  <button class="lb-close" aria-label="關閉 close">✕</button>
+  <figure class="lb-fig">
+    <img class="lb-img" src="" alt="" />
+    <figcaption class="lb-cap"><!-- filled by JS: unit lore / atlas caption --></figcaption>
+  </figure>
+</div>
+
+<!-- ambient audio: procedural (WebAudio) + optional royalty-free loop -->
+<audio id="bgm" preload="none" loop>
+  <source src="assets/audio/bgm.mp3" type="audio/mpeg" />
+</audio>
+<button id="audio-btn" aria-label="切換背景音效" aria-pressed="false" title="背景音效 AUDIO">
+  <span class="eq"><i></i><i></i><i></i><i></i></span>
+  <span class="audio-label">AUDIO</span>
+</button>
+
+<!-- concept-work watermark -->
+<div class="watermark" aria-label="concept credit">
+  <span class="wm-by">概念作品 CONCEPT BY</span>
+  <span class="wm-name">Harry</span>
+  <a class="wm-mail" href="mailto:harry750110@gmail.com">harry750110@gmail.com</a>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module" src="js/main.js"></script>
+<script src="js/audio.js" defer></script>
+</body>
+</html>

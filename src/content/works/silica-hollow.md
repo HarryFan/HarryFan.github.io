@@ -7,6 +7,7 @@ brand_basis: fictional
 year: 2026
 pubDate: 2026-07-21
 cover: /works/silica-hollow.webp
+demo: https://harryfan.github.io/demos/silica-hollow/
 repo_private: true
 tech:
   - 'Three.js 0.160'
