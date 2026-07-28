@@ -3,7 +3,7 @@ title: '左邊是元素，右邊是像素：我在 Flutter Meetup #36 講的三�
 description: '7/28 在天瓏二樓的 Flutter Meetup #36，我用 30 分鐘講 Vue、React、Flutter Web 的三種世界觀。從 Hot Reload 轉正談起，攤開同一個訂票 App 的真實 code 對照，誠實列出 Canvas 要付的四筆過路費，最後給三個順序不能換的選型問題。'
 pubDate: 2026-07-28
 category: 'events'
-heroImage: '/blog/2026-07-28-flutter-meetup-36-three-worldviews.png'
+heroImage: '/blog/2026-07-28-flutter-meetup-36-three-worldviews.jpg'
 tags: ['Flutter', 'Flutter Web', 'Vue', 'React', '技術選型', '演講']
 ---
 
@@ -33,6 +33,10 @@ tags: ['Flutter', 'Flutter Web', 'Vue', 'React', '技術選型', '演講']
 - Vue 對照組：<https://flight-booking-vue.vercel.app/>
 
 同一個訂票流程，兩套實作。等下所有的 code 對照都是從這兩包直接挖出來的，不是簡化過的教學範例。
+
+現場我先放了一支 20 秒的 demo 影片，讓成品自己說話 —— 搜尋介面、航班結果、選 BEST VALUE，全部是 Flutter Web 跑出來的畫面，而這整包東西是用後面要講的那套 agentic workflow 做完的：
+
+<video src="/blog/2026-07-28-flutter-meetup-36-three-worldviews/waypoint-air-demo.mp4" poster="/blog/2026-07-28-flutter-meetup-36-three-worldviews/waypoint-air-poster.jpg" controls muted loop playsinline preload="metadata" style="width:100%;height:auto;display:block;margin:1.5rem 0;border:3px solid #2a2620;">你的瀏覽器不支援內嵌影片，<a href="/blog/2026-07-28-flutter-meetup-36-three-worldviews/waypoint-air-demo.mp4">點這裡直接觀看</a>。</video>
 
 ## Act 1：先講 Hot Reload，因為那道門檻沒了
 
