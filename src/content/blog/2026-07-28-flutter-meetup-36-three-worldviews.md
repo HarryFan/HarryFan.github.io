@@ -13,7 +13,7 @@ tags: ['Flutter', 'Flutter Web', 'Vue', 'React', '技術選型', '演講']
 
 這篇要回答的就是這一題。中間會攤開同一個訂票流程的 Vue 跟 Flutter 真實 code，誠實列出 Canvas 要付的四筆過路費，最後給三個順序不能換的選型問題。
 
-內容來自 7/28 天瓏二樓的 Flutter Meetup #36，我的 30 分鐘講題《Hot Reload 之後 — Flutter Web、Vue、React 的三種世界觀》。
+內容來自2026/7/28 天瓏二樓的 Flutter Meetup #36，我的 30 分鐘講題《Hot Reload 之後 — Flutter Web、Vue、React 的三種世界觀》。
 
 台下有 Flutter 工程師、有講師、有各種軟體工程師，資深前端只有我一個。所以這場不可能是 Flutter 教學，論 Flutter 台下比我熟的人一大票。我能帶進去的是他們沒有的那個視角：一個每天在 DOM 裡討生活的人，第一次認真用 Flutter Web 是什麼感覺，又是在哪幾個地方撞到牆。
 
