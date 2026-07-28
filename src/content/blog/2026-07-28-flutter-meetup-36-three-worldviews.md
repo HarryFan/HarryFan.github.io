@@ -1,25 +1,29 @@
 ---
-title: '左邊是元素，右邊是像素：我在 Flutter Meetup #36 講的三種世界觀'
-description: '7/28 在天瓏二樓的 Flutter Meetup #36，我用 30 分鐘講 Vue、React、Flutter Web 的三種世界觀。從 Hot Reload 轉正談起，攤開同一個訂票 App 的真實 code 對照，誠實列出 Canvas 要付的四筆過路費，最後給三個順序不能換的選型問題。'
+title: '不會 Dart 也做得出 Flutter Web，但 Canvas 有四筆過路費要付'
+description: 'AI 補掉了語言門檻，我不會 Dart 也做完了一個 Flutter Web 訂票 App。但按下 F12 就會發現，Vue 跟 React 交出的是 DOM 節點，Flutter 交出的是一張畫布，而畫布要付 SEO、無障礙、首屏、文字選取這四筆過路費。文末給三個順序不能換的選型問題，幫你決定這個專案該不該用 Flutter Web。'
 pubDate: 2026-07-28
-category: 'events'
+category: 'frontend'
 heroImage: '/blog/2026-07-28-flutter-meetup-36-three-worldviews.jpg'
 tags: ['Flutter', 'Flutter Web', 'Vue', 'React', '技術選型', '演講']
 ---
 
-> 今晚回到天瓏二樓，Flutter Meetup #36。上次我坐在台下抄筆記，這次站在台上講 30 分鐘。
+> 我不會 Dart。這半年我還是把一個訂票 App 做完了，跑在 Flutter Web 上。
 
-上個月同一個場地，我還是那個坐在後排抄 Flutter 3.44 更新重點的人（[Meetup #35 的整理在這裡](/blog/2026-06-30-flutter-meetup-35)）。這次換我上台，講題是《Hot Reload 之後 — Flutter Web、Vue、React 的三種世界觀》。
+這句話在三年前不成立。語言門檻被 AI 補掉之後，「不會寫」就不再是拒絕一個框架的理由，問題整個往上移了一層：這個專案到底該不該用 Flutter Web。
 
-先講清楚定位。這場不是 Flutter 教學，台下大多是前端工程師，有些人連 Dart 都沒碰過。我想帶他們看的是這三個框架在腦子裡其實是三種完全不同的世界觀，以及各自該用在哪。
+這篇要回答的就是這一題。中間會攤開同一個訂票流程的 Vue 跟 Flutter 真實 code，誠實列出 Canvas 要付的四筆過路費，最後給三個順序不能換的選型問題。
 
-這篇是講稿的完整版，把 30 分鐘裡被時間壓掉的東西補回來。
+內容來自 7/28 天瓏二樓的 Flutter Meetup #36，我的 30 分鐘講題《Hot Reload 之後 — Flutter Web、Vue、React 的三種世界觀》。
+
+台下有 Flutter 工程師、有講師、有各種軟體工程師，資深前端只有我一個。所以這場不可能是 Flutter 教學，論 Flutter 台下比我熟的人一大票。我能帶進去的是他們沒有的那個視角：一個每天在 DOM 裡討生活的人，第一次認真用 Flutter Web 是什麼感覺，又是在哪幾個地方撞到牆。
+
+上個月同一個場地，我還是坐在後排抄筆記的那個人（[Meetup #35 的整理在這裡](/blog/2026-06-30-flutter-meetup-35)）。這篇是講稿的完整版，把 30 分鐘裡被時間壓掉的東西補回來。
 
 ## 為什麼是我來講這個
 
 我很早就想做 Flutter，卡住我的從來不是它難，是 Dart。我有正職，光把 JavaScript 寫好就佔滿了，沒有多餘心力再養一個語言。那本 Dart 的書買回來放著，一直沒拆。
 
-現在不一樣了。語法交給 AI，我把十幾年的經驗留在該用的地方：驗收、微調、品味。冒煙測試、健全性測試也讓 AI 跑，我做最後那關的品保。這半年我用這個方式把一個訂票 side project 搬去 Flutter Web，專案叫 Waypoint Air。
+現在不一樣了。語法交給 AI，我把十幾年的經驗留在該用的地方：驗收、微調、品味。冒煙測試、健全性測試也讓 AI 跑，我做最後那關的品保。開頭說的那個訂票 side project 就是這樣搬去 Flutter Web 的，專案叫 Waypoint Air。
 
 ![輸送帶把 AI 寫好的半成品送到我面前，我不碰輸送帶，只拿量尺量、拿筆劃記、蓋一個章；地上那本 Dart 厚書我一直沒拆封](/blog/2026-07-28-flutter-meetup-36-three-worldviews/01-why-me.png)
 
@@ -31,6 +35,8 @@ tags: ['Flutter', 'Flutter Web', 'Vue', 'React', '技術選型', '演講']
 - Vue 對照組：<https://flight-booking-vue.vercel.app/>
 
 同一個訂票流程，兩套實作。等下所有的 code 對照都是從這兩包直接挖出來的，不是簡化過的教學範例。
+
+先說一件不太光彩但該講的事：Flutter 版那個連結常常掛掉，現在點下去有機會吃到 Vercel 的 `404: NOT_FOUND`。Vue 版倒是一直好好的。原因我還在追，沒有結論之前不亂猜，但這件事本身挺有意思：同一天部署、同一個平台、同一個人手動操作，DOM 那份沒事，Canvas 那份會掉。它不在我等下要講的四筆過路費裡，卻提醒了我另一件事，這條路上還有一些沒被寫進文件的坑。真的打不開的話，看上面那支影片，或直接玩 Vue 版對照。
 
 現場我先放了一支 20 秒的 demo 影片，讓成品自己說話。搜尋介面、航班結果、選 BEST VALUE，全部是 Flutter Web 跑出來的畫面，而這整包東西是用後面要講的那套 agentic workflow 做完的：
 
@@ -400,6 +406,6 @@ Wasm 已經 stable，roadmap 上要變成 Web 的預設。這背後的意思是�
 
 謝謝天瓏、謝謝 Flutter Taipei 跟 GDG Taipei，也謝謝留下來 Q&A 的每一位。
 
-兩個 demo 再放一次，歡迎自己按 F12 對照：[Flutter 版](https://flight-booking-flutter.vercel.app/)｜[Vue 版](https://flight-booking-vue.vercel.app/)
+兩個 demo 再放一次，歡迎自己按 F12 對照：[Flutter 版](https://flight-booking-flutter.vercel.app/)（這支常掛，掛了就看文章開頭那支影片）｜[Vue 版](https://flight-booking-vue.vercel.app/)
 
 最後私心推一下自己的 podcast《妖你聽新聞》EP54，聊中年求職。面試不是只有你被評分，你也有權利好好看看對方。[Spotify 這裡聽](https://open.spotify.com/episode/6Utm5Zjla66CqIMa2HI9Gg)。
