@@ -36,7 +36,28 @@ tags: ['Flutter', 'Flutter Web', 'Vue', 'React', '技術選型', '演講']
 
 同一個訂票流程，兩套實作。等下所有的 code 對照都是從這兩包直接挖出來的，不是簡化過的教學範例。
 
-先說一件不太光彩但該講的事：寫這篇的時候，Flutter 版那個連結是掛的，點下去會吃到 Vercel 的 `404: NOT_FOUND`，Vue 版則一直正常。我試了 `/`、`/index.html`、`/main.dart.js`，連靜態資源都 404，回應標頭是 `x-vercel-error: NOT_FOUND`，所以這是那個網域後面沒有部署，跟 Flutter Web 本身的技術特性無關，別把它算進等下要講的代價裡。是我自己的部署沒顧好，還在追。真的打不開的話，看上面那支影片，或直接玩 Vue 版對照。
+### 補記：寫這篇的時候，Flutter 那個連結是掛的
+
+寫到這裡我自己點了一下，Flutter 版回我 `404: NOT_FOUND`，Vue 版好好的。
+
+我第一個念頭是「果然 Flutter Web 部署有雷」，差點就把它寫進等下那份代價清單裡。還好先查了才寫。
+
+查下去是這樣：Vercel 上專案還在，最新的 production 部署狀態是 Ready，但 `vercel inspect` 顯示它的 Aliases 是空的，沒有任何部署綁到那個網址上。再往下挖，問題出在我 Makefile 裡這行：
+
+```makefile
+vercel deploy build/web --prod
+```
+
+Vercel CLI 會拿**目錄名**當專案名。所以我每次 `make deploy`，東西都被部署到一個叫 `web` 的專案去了，從來沒進過 `flight-booking-flutter`。難怪別名永遠掛不上。改成先進到輸出目錄、綁好專案再部署就正常了：
+
+```makefile
+deploy: build
+	cd build/web && vercel deploy --prod --yes
+```
+
+我留著這段沒刪，因為它剛好是我等下要講的那件事的實例。這個坑不在 Flutter 的四筆過路費裡，也不在任何一份文件裡，它只是某個工具的某個預設行為，而我卡了一個晚上。等下講到「語言補得掉，生態補不掉」的時候，我說的就是這種東西：真正花掉你時間的，往往不是你不會寫，是沒人先幫你踩過。
+
+（連結現在是通的。如果哪天又掛了，上面那支影片一樣能看，或者直接玩 Vue 版對照。）
 
 現場我先放了一支 20 秒的 demo 影片，讓成品自己說話。搜尋介面、航班結果、選 BEST VALUE，全部是 Flutter Web 跑出來的畫面，而這整包東西是用後面要講的那套 agentic workflow 做完的：
 
@@ -126,6 +147,29 @@ Waypoint Air 就是這樣做完的。
 這一點決定了後面所有的優點跟代價，今天要講的一切都從這裡長出來。
 
 ![左邊我用鑷子夾起一疊積木中的一塊，其他塊留在原位；右邊同樣的畫面我對著一整片畫布伸鑷子，夾了個空](/blog/2026-07-28-flutter-meetup-36-three-worldviews/05-dom-vs-canvas.png)
+
+現場是用 F12 演的，比較有戲劇性。但寫這篇的時候我補做了一個更冷酷的版本：用無頭瀏覽器對兩支 demo 各下一次「把這頁的文字抓出來」，就像爬蟲會做的那樣。
+
+Vue 版回給我這些：
+
+```
+Waypoint Air Premium Flight 今天想飛往哪裡？東京 (NRT) 往返程 單程
+出發地 台北 (TPE) 目的地 請選擇目的地航點 日程區間 2026-07-15 ➔ 2026-07-22
+乘客 & 艙位等級 1 位乘客 · 經濟艙 搜尋精選航班
+© 2026 WAYPOINT AIR · PREMIUM LUXURY EXPERIENCE
+```
+
+Flutter 版回給我這些：
+
+```
+flutter typography measurement
+```
+
+就這樣，一個字串，而且那還不是我寫的文案，是 Flutter 自己拿來量字體的內部節點。
+
+兩邊畫面長得幾乎一樣，「今天想飛往哪裡？」「台北 (TPE)」「搜尋精選航班」在螢幕上都看得一清二楚。差別是左邊那些字是文字節點，右邊那些字是顏料。爬蟲、螢幕閱讀器、翻譯外掛、你按住滑鼠想反白複製的那個動作，走的全都是左邊那條路。
+
+這就是等下第一筆過路費的樣子，它不抽象。
 
 ### 同一題，三個答案
 
@@ -406,7 +450,7 @@ Wasm 已經 stable，roadmap 上要變成 Web 的預設。這背後的意思是�
 
 謝謝天瓏、謝謝 Flutter Taipei 跟 GDG Taipei，也謝謝留下來 Q&A 的每一位。
 
-兩個 demo 再放一次，歡迎自己按 F12 對照：[Flutter 版](https://flight-booking-flutter.vercel.app/)（這支常掛，掛了就看文章開頭那支影片）｜[Vue 版](https://flight-booking-vue.vercel.app/)
+兩個 demo 再放一次，歡迎自己按 F12 對照：<a href="https://flight-booking-flutter.vercel.app/" target="_blank" rel="noopener noreferrer">Flutter 版</a>（這支常掛，掛了就看文章開頭那支影片）｜<a href="https://flight-booking-vue.vercel.app/" target="_blank" rel="noopener noreferrer">Vue 版</a>
 
 ![《妖你聽新聞》EP54 節目封面：45 歲找不到工作，是能力問題，還是市場問題？](/blog/2026-07-28-flutter-meetup-36-three-worldviews/podcast-ep54-cover.jpg)
 
