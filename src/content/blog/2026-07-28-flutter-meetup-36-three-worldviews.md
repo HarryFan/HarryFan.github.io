@@ -408,4 +408,6 @@ Wasm 已經 stable，roadmap 上要變成 Web 的預設。這背後的意思是�
 
 兩個 demo 再放一次，歡迎自己按 F12 對照：[Flutter 版](https://flight-booking-flutter.vercel.app/)（這支常掛，掛了就看文章開頭那支影片）｜[Vue 版](https://flight-booking-vue.vercel.app/)
 
+![《妖你聽新聞》EP54 節目封面：45 歲找不到工作，是能力問題，還是市場問題？](/blog/2026-07-28-flutter-meetup-36-three-worldviews/podcast-ep54-cover.jpg)
+
 最後私心推一下自己的 podcast《妖你聽新聞》EP54，聊中年求職。面試不是只有你被評分，你也有權利好好看看對方。[Spotify 這裡聽](https://open.spotify.com/episode/6Utm5Zjla66CqIMa2HI9Gg)。
