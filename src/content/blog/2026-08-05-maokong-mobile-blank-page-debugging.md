@@ -17,12 +17,37 @@ tags: ['除錯', 'three.js', 'Vercel', '效能優化', 'WebGL', '前端筆記']
 
 ## 先講結論
 
-| # | 問題 | 症狀 | 為什麼難查 |
-|---|---|---|---|
-| 1 | SPA rewrite 吃掉 404 | 舊快取指向已刪除的 JS，伺服器回 `200 text/html` | module 被 MIME 檢查擋掉，**不執行也不報錯** |
-| 2 | 沒有 Error Boundary | 任何 render 例外 → React 卸載整棵樹 | 手機沒有 devtools，白畫面等於零資訊 |
-| 3 | `localStorage` 會 throw | 瀏覽器封鎖 site data 時 `getItem` 丟 `SecurityError` | 錯在 `useEffect` 裡，直接炸掉整頁 |
-| 4 | z-fighting | 桌面第三道山一直閃 | 我在自己機器上**永遠重現不了** |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>問題</th>
+			<th>症狀</th>
+			<th>為什麼難查</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="問題">SPA rewrite 吃掉 404</td>
+			<td data-label="症狀">舊快取指向已刪除的 JS，伺服器回 <code>200 text/html</code></td>
+			<td data-label="為什麼難查">module 被 MIME 檢查擋掉，<strong>不執行也不報錯</strong></td>
+		</tr>
+		<tr>
+			<td data-label="問題">沒有 Error Boundary</td>
+			<td data-label="症狀">任何 render 例外 → React 卸載整棵樹</td>
+			<td data-label="為什麼難查">手機沒有 devtools，白畫面等於零資訊</td>
+		</tr>
+		<tr>
+			<td data-label="問題"><code>localStorage</code> 會 throw</td>
+			<td data-label="症狀">瀏覽器封鎖 site data 時 <code>getItem</code> 丟 <code>SecurityError</code></td>
+			<td data-label="為什麼難查">錯在 <code>useEffect</code> 裡，直接炸掉整頁</td>
+		</tr>
+		<tr>
+			<td data-label="問題">z-fighting</td>
+			<td data-label="症狀">桌面第三道山一直閃</td>
+			<td data-label="為什麼難查">我在自己機器上<strong>永遠重現不了</strong></td>
+		</tr>
+	</tbody>
+</table>
 
 ## 一、Vercel 的 SPA rewrite 是靜默失敗製造機
 
@@ -54,6 +79,8 @@ content-type: text/html; charset=utf-8
 這就是空白頁的機制。瀏覽器留著舊版的 `index.html`，裡面寫著上一次部署的檔名雜湊；那個檔已經被刪了，伺服器把首頁當成 JS 餵回去。而 `<script type="module">` 有嚴格的 MIME 檢查：拿到 `text/html` 就**直接拒絕執行**。
 
 不執行。不報錯。畫面全白。
+
+![我伸手去要一份腳本，櫃台遞出來的是一張網頁，還蓋章說成功](/blog/2026-08-05-maokong-mobile-blank-page-debugging/01-html-instead-of-js.png)
 
 LINE 的內建瀏覽器有自己獨立的快取，第一次開就是全新載入，拿到的是正確的檔名——所以它好好的。對照組解釋完畢。
 
@@ -121,6 +148,8 @@ React 只要在 render 或 lifecycle 裡拋出例外，就會卸載整棵樹。�
 關鍵在**它必須是 classic script**。第一個問題的失敗模式是 module 根本沒被執行——這時候 Error Boundary 連載入都還沒載入，救不了任何東西。只有一段不依賴 module 系統的程式碼才攔得到。
 
 順便把 UA 印出來。使用者截個圖，我就知道是哪個瀏覽器哪個版本。
+
+![我裝了一個土炮計時器，十秒內沒動靜就自動把原因蓋印到那面白板上](/blog/2026-08-05-maokong-mobile-blank-page-debugging/02-white-page-cannot-speak.png)
 
 ## 三、`localStorage` 是會拋例外的
 
@@ -266,14 +295,40 @@ MSAA 修好部署上線，回報是：**還是在閃。**
 
 先排除掛載問題。用 CDP 在 25 個取樣點上記錄：
 
-| 檢查 | 結果 |
-|---|---|
-| canvas 數量 | 恆為 1 |
-| canvas 節點身分 | 沒被重建 |
-| WebGL context lost / restored | 0 / 0 |
-| console 錯誤 | 無 |
-| 靜止時逐幀變動像素 | 平均 0.11%，最大 0.13% |
-| 捲動時頁面高度 | 恆定，視差進度無跳動 |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>檢查</th>
+			<th>結果</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="檢查">canvas 數量</td>
+			<td data-label="結果">恆為 1</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">canvas 節點</td>
+			<td data-label="結果">沒被重建</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">context lost</td>
+			<td data-label="結果">0 次</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">console 錯誤</td>
+			<td data-label="結果">無</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">靜止逐幀變動</td>
+			<td data-label="結果">平均 0.11%，最大 0.13%</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">捲動頁面高度</td>
+			<td data-label="結果">恆定，視差無跳動</td>
+		</tr>
+	</tbody>
+</table>
 
 **我測不到那個閃。** 在我的環境裡它不存在。
 
