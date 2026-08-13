@@ -13,7 +13,7 @@ tags: ['AI 工作流', 'Claude Code', 'Codex', '專案管理', '技術決策', '
 
 我自己踩過最貴的幾次，都不是 code 寫壞，是需求還沒想清楚就開工：做到一半發現資料結構跟後面的需求打架、發現有個邊界情況整個流程要重來、發現當初「先簡單做」的那個決定變成之後每一頁都要繞開的地雷。code 本身沒 bug，但整段時間白花。
 
-`/grill me`（我用的是 [`grill-me-codex`](https://github.com/chaseai-yt/grill-me-codex) 這個變體）就是專門處理這件事的：**在寫任何一行 code 之前，先讓模型把你問到痛，再讓另一個模型來拆你的計畫。**
+`/grill me`（我用的是 <a href="https://github.com/chaseai-yt/grill-me-codex" target="_blank" rel="noopener noreferrer"><code>grill-me-codex</code></a> 這個變體）就是專門處理這件事的：**在寫任何一行 code 之前，先讓模型把你問到痛，再讓另一個模型來拆你的計畫。**
 
 ## 一句話定義
 
