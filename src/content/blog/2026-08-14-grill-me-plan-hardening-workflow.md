@@ -19,10 +19,27 @@ tags: ['AI 工作流', 'Claude Code', 'Codex', '專案管理', '技術決策', '
 
 兩幕劇，各自處理一個失敗模式：
 
-| | 誰對誰 | 處理的失敗模式 |
-| --- | --- | --- |
-| **Act 1 — Grill** | 你 ↔ Claude | 做錯東西（需求／意圖沒對齊） |
-| **Act 2 — Review** | Claude ↔ Codex | 計畫聽起來對、實際會炸（設計有洞） |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>階段</th>
+			<th>誰對誰</th>
+			<th>處理的失敗模式</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="階段"><strong>Act 1 — Grill</strong></td>
+			<td data-label="誰對誰">你 ↔ Claude</td>
+			<td data-label="處理的失敗模式">做錯東西（需求／意圖沒對齊）</td>
+		</tr>
+		<tr>
+			<td data-label="階段"><strong>Act 2 — Review</strong></td>
+			<td data-label="誰對誰">Claude ↔ Codex</td>
+			<td data-label="處理的失敗模式">計畫聽起來對、實際會炸（設計有洞）</td>
+		</tr>
+	</tbody>
+</table>
 
 你只在兩個時間點出現：**回答拷問**，跟**最後簽核**。中間 Codex 全程唯讀，不碰任何檔案。整個過程不寫 code。
 
@@ -68,18 +85,67 @@ Act 1 的核心指令其實只有三句話（這部分沿用 Matt Pocock 的 `gr
 
 這個流程有成本——一輪拷問十幾二十個來回，加上幾輪 Codex，是實實在在的時間。所以場景要挑。
 
-| 情況 | 用不用 | 原因 |
-| --- | --- | --- |
-| 認證／權限模型 | ✅ 很值得 | 改錯的代價是資安事故，不是重工 |
-| 資料庫 schema、migration | ✅ 很值得 | 上線後幾乎不可逆，錯誤會沿著時間複利 |
-| 金流、對帳、扣款 | ✅ 很值得 | 錯了就是真的錢，而且邊界情況多到記不完 |
-| 並發／狀態同步 | ✅ 很值得 | race condition 是最典型「聽起來很對」的失敗 |
-| 跨多頁面的重構 | ✅ 值得 | 影響面大，最貴的是「做到一半才發現要回頭」 |
-| 第三方整合（金流、SSO、Webhook） | ✅ 值得 | 對方的限制往往不在你的假設裡 |
-| 效能優化方向的取捨 | 🟡 看規模 | 只有幾個檔案就直接做，動到架構才值得 |
-| 加一個欄位、改一段文案 | ❌ 別用 | 拷問成本 > 做錯成本 |
-| 探索性原型 | ❌ 別用 | 這階段「做錯」正是目的，先做出來再說 |
-| 已經寫完的 code 要審 | ❌ 用錯工具 | 那是 code review，不是計畫審查 |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>情況</th>
+			<th>用不用</th>
+			<th>原因</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="情況">認證／權限模型</td>
+			<td data-label="用不用">✅ 很值得</td>
+			<td data-label="原因">改錯的代價是資安事故，不是重工</td>
+		</tr>
+		<tr>
+			<td data-label="情況">資料庫 schema、migration</td>
+			<td data-label="用不用">✅ 很值得</td>
+			<td data-label="原因">上線後幾乎不可逆，錯誤會沿著時間複利</td>
+		</tr>
+		<tr>
+			<td data-label="情況">金流、對帳、扣款</td>
+			<td data-label="用不用">✅ 很值得</td>
+			<td data-label="原因">錯了就是真的錢，而且邊界情況多到記不完</td>
+		</tr>
+		<tr>
+			<td data-label="情況">並發／狀態同步</td>
+			<td data-label="用不用">✅ 很值得</td>
+			<td data-label="原因">race condition 是最典型「聽起來很對」的失敗</td>
+		</tr>
+		<tr>
+			<td data-label="情況">跨多頁面的重構</td>
+			<td data-label="用不用">✅ 值得</td>
+			<td data-label="原因">影響面大，最貴的是「做到一半才發現要回頭」</td>
+		</tr>
+		<tr>
+			<td data-label="情況">第三方整合（金流、SSO、Webhook）</td>
+			<td data-label="用不用">✅ 值得</td>
+			<td data-label="原因">對方的限制往往不在你的假設裡</td>
+		</tr>
+		<tr>
+			<td data-label="情況">效能優化方向的取捨</td>
+			<td data-label="用不用">🟡 看規模</td>
+			<td data-label="原因">只有幾個檔案就直接做，動到架構才值得</td>
+		</tr>
+		<tr>
+			<td data-label="情況">加一個欄位、改一段文案</td>
+			<td data-label="用不用">❌ 別用</td>
+			<td data-label="原因">拷問成本 &gt; 做錯成本</td>
+		</tr>
+		<tr>
+			<td data-label="情況">探索性原型</td>
+			<td data-label="用不用">❌ 別用</td>
+			<td data-label="原因">這階段「做錯」正是目的，先做出來再說</td>
+		</tr>
+		<tr>
+			<td data-label="情況">已經寫完的 code 要審</td>
+			<td data-label="用不用">❌ 用錯工具</td>
+			<td data-label="原因">那是 code review，不是計畫審查</td>
+		</tr>
+	</tbody>
+</table>
 
 一個簡單的判準：**如果做錯了只要改一次就好，直接做。如果做錯了要改十個地方、或改不回來，先拷問。**
 
