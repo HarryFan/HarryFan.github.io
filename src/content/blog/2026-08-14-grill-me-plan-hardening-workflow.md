@@ -45,6 +45,58 @@ tags: ['AI 工作流', 'Claude Code', 'Codex', '專案管理', '技術決策', '
 
 ![我扛著計畫，先過「做對東西」那關，再去撞「撐得住」那關，桌上還是空的](/blog/2026-08-14-grill-me-plan-hardening-workflow/01-two-gates.png)
 
+## 怎麼跑起來
+
+裝好 skill 之後（安裝方式看 repo），在 Claude Code 裡直接打：
+
+```
+/grill-me-codex 我想做一個 XXX，大概是這樣⋯⋯
+```
+
+想改審查輪數上限就帶參數，預設 5 輪：
+
+```
+/grill-me-codex rounds=3 我想改權限模型⋯⋯
+```
+
+Act 2 需要本機有 Codex CLI 並且登入過：
+
+```bash
+codex --version   # 需要 ≥ 0.130，舊版跑預設模型會直接 error
+codex login       # ChatGPT 帳號就可以
+```
+
+**不要 pin 模型**。用 ChatGPT 帳號認證時指定 `gpt-5.x-codex` 系列會回 400，讓它吃 config 預設就好。
+
+兩幕的提示詞如果想自己拆開用，原文長這樣。Act 1：
+
+```text
+Interview me relentlessly about every aspect of this plan until we reach a
+shared understanding. Walk down each branch of the design tree, resolving
+dependencies between decisions one-by-one. For each question, provide your
+recommended answer.
+
+Ask the questions one at a time, waiting for my answer before continuing.
+
+If a question can be answered by exploring the codebase, explore the codebase
+instead.
+```
+
+Act 2 每一輪送給 Codex 的審查提示詞：
+
+```text
+You are an adversarial reviewer for an implementation plan. Be skeptical and
+specific — your job is to find what breaks, not to be agreeable. Read the plan
+at `PLAN.md` and any repo files you need (you are read-only). Identify concrete
+flaws: security holes, race conditions, missing edge cases, schema conflicts,
+wrong assumptions, observability gaps, simpler alternatives. For each, give a
+one-line fix. Do NOT modify any files. End your reply with EXACTLY one line:
+`VERDICT: APPROVED` if the plan is sound enough to implement, or
+`VERDICT: REVISE` if it still has material problems.
+```
+
+跑完會留下兩個檔案：`PLAN.md`（定稿計畫）和 `PLAN-REVIEW-LOG.md`（每一輪的批評與回應，append-only）。後者才是真正的產出，後面會講怎麼用。
+
 ## Act 1：被問到底
 
 Act 1 的核心指令其實只有三句話（這部分沿用 Matt Pocock 的 `grill-me`，MIT 授權）：
