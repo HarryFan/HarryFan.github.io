@@ -2,6 +2,7 @@
 title: 'Weebly 要停止服務了？搬到 WordPress 前先做這份備份清單'
 description: 'Weebly 在包含台灣在內的 67 個國家逐步停止服務。這篇整理官方期限、資料備份、Weebly 轉 WordPress 的幾種做法，以及網域、SEO、表單、商店資料切換時最容易漏掉的地方。'
 pubDate: 2026-08-22
+heroImage: '/blog/2026-08-22-weebly-to-wordpress-migration-note/cover.png'
 category: 'frontend'
 ---
 
@@ -11,11 +12,28 @@ category: 'frontend'
 
 我去查了一輪官方文件，重點是這樣：Weebly 不是全世界同一天消失，而是會在 **67 個國家逐步終止服務**，名單裡有台灣。官方公告寫到幾個關鍵日期：
 
-| 時間 | 影響 |
-| --- | --- |
-| 2026-06-29 | 受影響地區的帳號不能再發布新頁面 |
-| 2026-09-27 | 現有 Weebly 網站會被取消發布 |
-| 2026-12-26 | 還能登入帳號搬資料、搬網域；之後就不能登入 Weebly 帳號 |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>時間</th>
+			<th>影響</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="時間">2026-06-29</td>
+			<td data-label="影響">受影響地區的帳號不能再發布新頁面</td>
+		</tr>
+		<tr>
+			<td data-label="時間">2026-09-27</td>
+			<td data-label="影響">現有 Weebly 網站會被取消發布</td>
+		</tr>
+		<tr>
+			<td data-label="時間">2026-12-26</td>
+			<td data-label="影響">還能登入帳號搬資料、搬網域；之後就不能登入 Weebly 帳號</td>
+		</tr>
+	</tbody>
+</table>
 
 所以這不是「明天網站就爆炸」，但也不是可以拖到年底再想。真正要怕的不是頁面今天還在不在，而是你有沒有拿到一份完整、可驗證、能重建的資料。
 
@@ -63,6 +81,8 @@ Weebly 官方提供兩種資料取得方式。
 
 我會把這些整理成一份 Google Sheet。不是為了好看，是因為搬家到一半一定會有人問：「這頁原本網址是什麼？」「這個表單原本寄給誰？」「這張圖去哪裡了？」沒有表格就會靠記憶力救火。
 
+![窗仔拿著搬站清單，逐項檢查網址、SEO、表單、圖片、商品、訂單和 DNS，旁邊的舊網站資料正被整理進新網站箱子](/blog/2026-08-22-weebly-to-wordpress-migration-note/01-chuangzai-migration-checklist.png)
+
 ## 第二步：選 WordPress 路線
 
 「搬到 WordPress」其實有兩種意思。
@@ -75,12 +95,32 @@ Weebly 官方提供兩種資料取得方式。
 
 我自己的判斷會是：
 
-| 網站類型 | 建議 |
-| --- | --- |
-| 小型形象站 | 直接在 WordPress 重建，別硬轉版型 |
-| 有大量部落格 | 先用 WXR 匯入文章，再人工整理版面 |
-| 電商網站 | 商品、訂單、會員、金物流獨立規劃，不要只當成頁面搬家 |
-| 很依賴 Weebly 拖拉版型 | 當成重新設計專案，不要期待 1:1 自動還原 |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>網站類型</th>
+			<th>建議</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="網站類型">小型形象站</td>
+			<td data-label="建議">直接在 WordPress 重建，別硬轉版型</td>
+		</tr>
+		<tr>
+			<td data-label="網站類型">有大量部落格</td>
+			<td data-label="建議">先用 WXR 匯入文章，再人工整理版面</td>
+		</tr>
+		<tr>
+			<td data-label="網站類型">電商網站</td>
+			<td data-label="建議">商品、訂單、會員、金物流獨立規劃，不要只當成頁面搬家</td>
+		</tr>
+		<tr>
+			<td data-label="網站類型">很依賴 Weebly 拖拉版型</td>
+			<td data-label="建議">當成重新設計專案，不要期待 1:1 自動還原</td>
+		</tr>
+	</tbody>
+</table>
 
 ## 第三步：把 Weebly 內容轉成 WordPress 能吃的格式
 
@@ -144,16 +184,48 @@ Weebly 的商品可以透過 CSV 匯出。官方文件提到，商品匯出後�
 
 搬到 WordPress / WooCommerce 時，我會把電商拆成這幾塊：
 
-| 資料 | 做法 |
-| --- | --- |
-| 商品 | 從 Weebly 匯出 CSV，整理欄位後匯入 WooCommerce |
-| 商品圖片 | 不要只相信 CSV 裡的圖片 URL，最好另外下載原圖 |
-| 訂單 | 匯出保存，必要時再評估是否匯入 WooCommerce |
-| 會員 | 確認 Weebly 是否可匯出，並注意個資與同意狀態 |
-| 付款 | 在新站重新串接金流 |
-| 物流 | 在新站重新設定運費、配送方式 |
-| 稅務 | 在新站重新設定稅率，不要沿用猜測 |
-| 優惠券 | 逐項重建，順便淘汰過期活動 |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>資料</th>
+			<th>做法</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="資料">商品</td>
+			<td data-label="做法">從 Weebly 匯出 CSV，整理欄位後匯入 WooCommerce</td>
+		</tr>
+		<tr>
+			<td data-label="資料">商品圖片</td>
+			<td data-label="做法">不要只相信 CSV 裡的圖片 URL，最好另外下載原圖</td>
+		</tr>
+		<tr>
+			<td data-label="資料">訂單</td>
+			<td data-label="做法">匯出保存，必要時再評估是否匯入 WooCommerce</td>
+		</tr>
+		<tr>
+			<td data-label="資料">會員</td>
+			<td data-label="做法">確認 Weebly 是否可匯出，並注意個資與同意狀態</td>
+		</tr>
+		<tr>
+			<td data-label="資料">付款</td>
+			<td data-label="做法">在新站重新串接金流</td>
+		</tr>
+		<tr>
+			<td data-label="資料">物流</td>
+			<td data-label="做法">在新站重新設定運費、配送方式</td>
+		</tr>
+		<tr>
+			<td data-label="資料">稅務</td>
+			<td data-label="做法">在新站重新設定稅率，不要沿用猜測</td>
+		</tr>
+		<tr>
+			<td data-label="資料">優惠券</td>
+			<td data-label="做法">逐項重建，順便淘汰過期活動</td>
+		</tr>
+	</tbody>
+</table>
 
 最務實的做法通常是：**商品可以匯，訂單先封存，付款物流重設。**
 
@@ -165,11 +237,28 @@ Weebly 的商品可以透過 CSV 匯出。官方文件提到，商品匯出後�
 
 先確認這件事，因為流程不同：
 
-| 情況 | 做法 |
-| --- | --- |
-| 網域在 Weebly 註冊 | 需要解除 registrar lock，取得 EPP authorization code，再到新註冊商發起轉移 |
-| 網域在其他註冊商 | 不必轉移網域，只要切 DNS 到新 WordPress 主機 |
-| 網域有企業信箱 | 不要亂改 nameserver，先備份 MX、SPF、DKIM、DMARC |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>情況</th>
+			<th>做法</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="情況">網域在 Weebly 註冊</td>
+			<td data-label="做法">需要解除 registrar lock，取得 EPP authorization code，再到新註冊商發起轉移</td>
+		</tr>
+		<tr>
+			<td data-label="情況">網域在其他註冊商</td>
+			<td data-label="做法">不必轉移網域，只要切 DNS 到新 WordPress 主機</td>
+		</tr>
+		<tr>
+			<td data-label="情況">網域有企業信箱</td>
+			<td data-label="做法">不要亂改 nameserver，先備份 MX、SPF、DKIM、DMARC</td>
+		</tr>
+	</tbody>
+</table>
 
 Weebly 官方文件也提醒，網域註冊後 60 天內通常不能轉移；如果你在轉移前改了註冊人聯絡資訊，也可能觸發 60 天鎖定。這件事很容易被忽略。
 
@@ -220,15 +309,44 @@ https://example.com/blog/my-old-post.html
 
 如果網站不大，我會這樣排：
 
-| 天數 | 工作 |
-| --- | --- |
-| Day 1 | 匯出 Weebly 帳號資料、網站 ZIP、商品／訂單 CSV，建立 URL 清單 |
-| Day 2 | 架 WordPress 測試站，選佈景主題，建立主要頁面 |
-| Day 3 | 搬文字、圖片、表單、SEO metadata |
-| Day 4 | 匯入部落格或商品，逐頁抽查 |
-| Day 5 | 設定 redirects、Analytics、Search Console、備份外掛 |
-| Day 6 | 用暫時網址驗收手機版和表單 |
-| Day 7 | 降低 DNS TTL，切網域，觀察錯誤 |
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>天數</th>
+			<th>工作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="天數">Day 1</td>
+			<td data-label="工作">匯出 Weebly 帳號資料、網站 ZIP、商品／訂單 CSV，建立 URL 清單</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 2</td>
+			<td data-label="工作">架 WordPress 測試站，選佈景主題，建立主要頁面</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 3</td>
+			<td data-label="工作">搬文字、圖片、表單、SEO metadata</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 4</td>
+			<td data-label="工作">匯入部落格或商品，逐頁抽查</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 5</td>
+			<td data-label="工作">設定 redirects、Analytics、Search Console、備份外掛</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 6</td>
+			<td data-label="工作">用暫時網址驗收手機版和表單</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 7</td>
+			<td data-label="工作">降低 DNS TTL，切網域，觀察錯誤</td>
+		</tr>
+	</tbody>
+</table>
 
 電商站不要用七天估。只要牽涉付款、物流、訂單紀錄、會員資料、稅務，就應該當成正式遷移專案處理。
 
