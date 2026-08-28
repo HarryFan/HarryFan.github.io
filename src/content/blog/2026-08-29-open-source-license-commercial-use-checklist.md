@@ -6,6 +6,8 @@ heroImage: '/blog/2026-08-29-open-source-license-commercial-use-checklist/cover.
 category: 'career'
 ---
 
+*English version: ["Can We Use This Package Commercially?" The Question GitHub Stars Can't Answer](/blog/2026-08-29-open-source-license-commercial-use-checklist-en/)*
+
 前幾天在 Threads 上看到 [@vicckuo 的一串貼文](https://www.threads.com/@vicckuo/post/DckIdDoIPlU)，場景是技術選型會議。PM 問：「這個套件能商用嗎？」工程師頭也不抬：「可以啊，GitHub 上兩萬星星，很多人在用。」追問下去，又補了一句「應該很多公司都在用吧，應該沒問題」。再追問如果是 GPL 系列授權，商用產品是不是得公開原始碼，回答是「這個要查一下」。
 
 貼文作者說這種對話他遇過不只一次，我看完也只能點頭。我自己在選型會議上講過類似的話，也聽過別人講。這篇就把那串貼文戳到的東西，配合我後來查證過的資料，整理成一份選型時能直接拿來對照的筆記。
