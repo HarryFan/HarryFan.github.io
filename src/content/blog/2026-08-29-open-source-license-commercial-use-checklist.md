@@ -20,7 +20,10 @@ category: 'career'
 
 「應該很多公司都在用」這句話更危險一點。那些公司是付了商用授權、簽了協議，還是根本沒理這件事直接硬上？大部分時候問的人也不知道。「應該」聽起來像有根據的判斷，實際上只是把責任丟給空氣。
 
-![我站在天平旁邊冒汗：左邊一整盤星星輕飄飄地翹起來，右邊一張 LICENSE 紙把整個盤子壓到底](/blog/2026-08-29-open-source-license-commercial-use-checklist/01-stars-vs-license.png)
+<figure>
+  <img src="/blog/2026-08-29-open-source-license-commercial-use-checklist/01-stars-vs-license.png" alt="我站在天平旁邊冒汗：左邊一整盤星星輕飄飄地翹起來，右邊一張 LICENSE 紙把整個盤子壓到底" loading="lazy" />
+  <figcaption>我站在天平旁邊冒汗：左邊一整盤星星輕飄飄地翹起來，右邊一張 LICENSE 紙把整個盤子壓到底</figcaption>
+</figure>
 
 ## 三個等級：寬鬆、copyleft、source-available
 
@@ -34,7 +37,10 @@ category: 'career'
 
 第一級跟第三級都相對好判斷：寬鬆授權基本沒顧慮，source-available 則直接去讀它的「Additional Use Grant」或限制條款，看你的用法有沒有被排除。
 
-![我抱著一箱程式碼走向三道門：MIT 綠門敞開，GPL 黃門半掩掛著條件牌，BSL 紅門上鎖](/blog/2026-08-29-open-source-license-commercial-use-checklist/02-three-gates.png)
+<figure>
+  <img src="/blog/2026-08-29-open-source-license-commercial-use-checklist/02-three-gates.png" alt="我抱著一箱程式碼走向三道門：MIT 綠門敞開，GPL 黃門半掩掛著條件牌，BSL 紅門上鎖" loading="lazy" />
+  <figcaption>我抱著一箱程式碼走向三道門：MIT 綠門敞開，GPL 黃門半掩掛著條件牌，BSL 紅門上鎖</figcaption>
+</figure>
 
 真正讓人在會議上愣住的，是第二級。
 
@@ -56,6 +62,47 @@ Copyleft 的核心是「衍生作品要用同樣的授權釋出」，但**什麼
 
 還有一個前端工程師特別要注意的：GPL 的「散布」在 web 情境下不完全等於「零觸發」。你的後端程式碼跑在伺服器上不算散布，但打包後送到瀏覽器執行的 JavaScript，FSF 的立場是那也算 convey。這塊沒有明確判例，但如果你的前端 bundle 裡有 GPL 套件，別假設 SaaS loophole 幫你擋掉了。
 
+## MIT、MPL-2.0、BSL 1.1：三個等級各認識一個代表
+
+上面講的都是「觸發條件」，但選型會議上更常遇到的狀況是：有人念出一個授權名稱，桌上沒人能在十秒內說出它到底要你做什麼。三個等級各挑一個最常碰到的，把基本概念放在同一張表裡。
+
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>授權</th>
+			<th>它是什麼</th>
+			<th>你要做的事</th>
+			<th>你不能做的事</th>
+			<th>誰在用</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="授權">MIT</td>
+			<td data-label="它是什麼">1980 年代末 MIT 寫的寬鬆授權，全文不到 200 字，是 npm 生態最常見的一種。</td>
+			<td data-label="你要做的事">複製或散布時，把原作者的版權聲明和這份授權全文一起帶著。就這樣。</td>
+			<td data-label="你不能做的事">幾乎沒有。可以閉源、可以商用、可以改名賣。唯一要注意的是它沒有明文的專利授權條款，跟 Apache-2.0 不同。</td>
+			<td data-label="誰在用">React、Vue、jQuery、Rails、大部分你裝過的 npm 套件</td>
+		</tr>
+		<tr>
+			<td data-label="授權">MPL-2.0</td>
+			<td data-label="它是什麼">Mozilla 在 2012 年定稿的「檔案層級 copyleft」。它管的單位是檔案，不是整個專案。</td>
+			<td data-label="你要做的事">你改動了 MPL 授權的<strong>那個檔案</strong>，改動後的檔案要以 MPL 釋出、讓拿到你程式的人取得原始碼。你自己新寫的檔案不受影響，可以閉源。另外它有專利授權條款。</td>
+			<td data-label="你不能做的事">不能把改過的 MPL 檔案藏起來當自己的私有碼；不能拿掉授權聲明。除此之外，跟自家閉源程式碼放在同一個產品裡是允許的。</td>
+			<td data-label="誰在用">Firefox、LibreOffice、Terraform 1.5 以前的版本</td>
+		</tr>
+		<tr>
+			<td data-label="授權">BSL 1.1</td>
+			<td data-label="它是什麼">Business Source License，MariaDB 在 2013 年提出、2017 年改到 1.1 版。看得到原始碼，但<strong>不是</strong> OSI 認可的開源授權。</td>
+			<td data-label="你要做的事">先讀授權方填在「Additional Use Grant」裡的那一段，那才是真正的規則。非生產環境的使用一般都放行；生產環境要看你有沒有被排除。每個版本都有一個 Change Date（最多四年），到期後自動轉成授權方指定的開源授權（Change License）。</td>
+			<td data-label="你不能做的事">通常是「不能拿它做跟授權方競爭的產品或託管服務」。以 Terraform 為例，自己內部用、或幫客戶跑都可以，但做一個賣 Terraform 託管服務的產品就踩線。</td>
+			<td data-label="誰在用">Terraform、Vault 等 HashiCorp 產品（2023 年起）、MariaDB MaxScale</td>
+		</tr>
+	</tbody>
+</table>
+
+這三個放在一起看，判斷順序就很清楚：MIT 帶著聲明就能走；MPL 看你有沒有改到它的檔案；BSL 不要看授權名稱，直接翻 Additional Use Grant 和 Change Date。
+
 ## 五個最容易踩的坑
 
 ### 1. repo 根本沒有 LICENSE 檔
@@ -74,7 +121,10 @@ Copyleft 的核心是「衍生作品要用同樣的授權釋出」，但**什麼
 
 你只裝了一個 MIT 套件，但它的 dependency tree 裡可能有幾百個間接依賴，任何一個都可能是 GPL 或沒授權。自己一層一層翻不可能，得靠工具。
 
-![我拿著放大鏡站在冰山頂，上面只有一個 MIT 小箱子，水面下卻是整棵依賴樹，中間有一個紅色的 GPL 在發亮](/blog/2026-08-29-open-source-license-commercial-use-checklist/03-dependency-iceberg.png)
+<figure>
+  <img src="/blog/2026-08-29-open-source-license-commercial-use-checklist/03-dependency-iceberg.png" alt="我拿著放大鏡站在冰山頂，上面只有一個 MIT 小箱子，水面下卻是整棵依賴樹，中間有一個紅色的 GPL 在發亮" loading="lazy" />
+  <figcaption>我拿著放大鏡站在冰山頂，上面只有一個 MIT 小箱子，水面下卻是整棵依賴樹，中間有一個紅色的 GPL 在發亮</figcaption>
+</figure>
 
 ```bash
 # 只看 production 依賴，輸出各種授權的數量
@@ -119,7 +169,10 @@ Threads 貼文作者說，他現在的習慣是任何要進生產環境的套件
 
 第七點是整份清單的重點。貼文裡那個案例，兩年的技術債換來三個月的交易延遲和法務加班。十分鐘跟三個月的匯率，誰都算得出來——問題只是選型當下有沒有人想到要算。
 
-![左邊的我泡杯茶、拿放大鏡看 LICENSE，計時器十分鐘；右邊的我被法務文件堆到只剩一顆頭，日曆已經劃掉三個月](/blog/2026-08-29-open-source-license-commercial-use-checklist/04-ten-minutes.png)
+<figure>
+  <img src="/blog/2026-08-29-open-source-license-commercial-use-checklist/04-ten-minutes.png" alt="左邊的我泡杯茶、拿放大鏡看 LICENSE，計時器十分鐘；右邊的我被法務文件堆到只剩一顆頭，日曆已經劃掉三個月" loading="lazy" />
+  <figcaption>左邊的我泡杯茶、拿放大鏡看 LICENSE，計時器十分鐘；右邊的我被法務文件堆到只剩一顆頭，日曆已經劃掉三個月</figcaption>
+</figure>
 
 ## 團隊層級可以做的事
 
