@@ -31,7 +31,7 @@ category: 'career'
 
 | 等級 | 常見授權 | 商用時的核心義務 | 白話 |
 |---|---|---|---|
-| 寬鬆（permissive） | MIT、ISC、BSD-2/3、Apache-2.0 | 保留版權聲明與授權全文；Apache 另有 NOTICE 檔與專利授權條款 | 幾乎可以放心用，記得把聲明帶上 |
+| 寬鬆（permissive） | MIT、ISC、BSD-2/3、Apache-2.0 | 保留版權聲明與授權全文；Apache 另有專利授權條款，原專案若附 NOTICE 檔也要一併帶著 | 幾乎可以放心用，記得把聲明帶上 |
 | Copyleft | GPL-2.0/3.0、AGPL-3.0、LGPL、MPL-2.0 | 衍生作品在特定條件下必須以相同授權釋出原始碼 | 要先搞清楚「條件」是什麼，才知道你有沒有踩到 |
 | Source-available（有原始碼但不是開源） | BSL 1.1、SSPL、Elastic License 2.0、RSAL | 通常禁止你拿它做競爭性的服務或產品；不是 OSI 認可的開源授權 | 看得到程式碼不代表能隨便商用 |
 
@@ -89,11 +89,11 @@ Copyleft 的核心是「衍生作品要用同樣的授權釋出」，但**什麼
 			<td data-label="它是什麼">Mozilla 在 2012 年定稿的「檔案層級 copyleft」。它管的單位是檔案，不是整個專案。</td>
 			<td data-label="你要做的事">你改動了 MPL 授權的<strong>那個檔案</strong>，改動後的檔案要以 MPL 釋出、讓拿到你程式的人取得原始碼。你自己新寫的檔案不受影響，可以閉源。另外它有專利授權條款。</td>
 			<td data-label="你不能做的事">不能把改過的 MPL 檔案藏起來當自己的私有碼；不能拿掉授權聲明。除此之外，跟自家閉源程式碼放在同一個產品裡是允許的。</td>
-			<td data-label="誰在用">Firefox、LibreOffice、Terraform 1.5 以前的版本</td>
+			<td data-label="誰在用">Firefox、LibreOffice（MPL-2.0 / LGPLv3+ 雙授權）、Terraform 1.5.x 及以前的版本</td>
 		</tr>
 		<tr>
 			<td data-label="授權">BSL 1.1</td>
-			<td data-label="它是什麼">Business Source License，MariaDB 在 2013 年提出、2017 年改到 1.1 版。看得到原始碼，但<strong>不是</strong> OSI 認可的開源授權。</td>
+			<td data-label="它是什麼">Business Source License，MariaDB 創辦人 2013 年提出概念、2016 年隨 MaxScale 2.0 正式釋出 1.0 版、2017 年改到 1.1 版。看得到原始碼，但<strong>不是</strong> OSI 認可的開源授權。</td>
 			<td data-label="你要做的事">先讀授權方填在「Additional Use Grant」裡的那一段，那才是真正的規則。非生產環境的使用一般都放行；生產環境要看你有沒有被排除。每個版本都有一個 Change Date（最多四年），到期後自動轉成授權方指定的開源授權（Change License）。</td>
 			<td data-label="你不能做的事">通常是「不能拿它做跟授權方競爭的產品或託管服務」。以 Terraform 為例，自己內部用、或幫客戶跑都可以，但做一個賣 Terraform 託管服務的產品就踩線。</td>
 			<td data-label="誰在用">Terraform、Vault 等 HashiCorp 產品（2023 年起）、MariaDB MaxScale</td>
@@ -142,7 +142,7 @@ npx license-checker-rseidelsohn --production \
 這幾年最戲劇性的幾個案例：
 
 - **HashiCorp Terraform**：2023 年 8 月從 MPL-2.0 改成 BSL 1.1，限制「競爭性使用」。社群 fork 出 OpenTofu，掛在 Linux Foundation 底下。IBM 在 2025 年 2 月完成收購 HashiCorp，授權沒改回來。
-- **Elasticsearch / Kibana**：2021 年拿掉 Apache-2.0 改成 SSPL + Elastic License；2024 年 9 月又加回 AGPL-3.0 作為選項，重新符合 OSI 的開源定義。
+- **Elasticsearch / Kibana**：2021 年拿掉 Apache-2.0 改成 SSPL + Elastic License；2024 年 8 月底宣布加回 AGPL-3.0 作為選項（8.16 起出貨），重新符合 OSI 的開源定義。
 - **Redis**：2024 年 3 月從 BSD 改成 RSALv2 / SSPLv1，社群 fork 出 Valkey；2025 年 5 月 Redis 8.0 加入 AGPL-3.0，變成三授權並行。
 
 這幾個案例的共同點是：改授權的時候，你已經用了好幾年。所以選型時除了看現在的 LICENSE，也要看它是不是某家公司的核心商業產品，那種套件改授權的機率比純社群維護的專案高得多。鎖版本可以暫時擋住，但長期還是得決定要留、要換、還是要跟著 fork 走。
@@ -151,7 +151,7 @@ npx license-checker-rseidelsohn --production \
 
 字型、圖示、圖片、AI 模型權重，全都有。
 
-思源黑體、Noto 系列是 SIL OFL，商用和嵌入都沒問題；但很多中文字型（例如華康、文鼎的大部分字體）要另外買商用授權，網頁嵌入跟印刷還是分開算。Font Awesome 的 Free 版其實是三種授權疊在一起：圖示 CC BY 4.0、字型檔 SIL OFL 1.1、程式碼 MIT，用的時候要保留署名；Pro 版是商用授權。AI 模型更複雜：Llama 系列用的是 Meta 自訂的授權，不是 OSI 認可的開源授權，對超過一定月活躍用戶數的產品有額外條款，Llama 4 的多模態模型甚至直接不授權給設籍在歐盟的企業使用。
+思源黑體、Noto 系列是 SIL OFL，商用和嵌入都沒問題；但很多中文字型（例如華康、文鼎的大部分字體）要另外買商用授權，網頁嵌入跟印刷還是分開算。Font Awesome 的 Free 版其實是三種授權疊在一起：圖示 CC BY 4.0、字型檔 SIL OFL 1.1、程式碼 MIT，用的時候要保留署名；Pro 版是商用授權。AI 模型更複雜：Llama 系列用的是 Meta 自訂的授權，不是 OSI 認可的開源授權，對超過一定月活躍用戶數的產品有額外條款，Llama 4 的多模態模型甚至直接不授權給設籍在歐盟的企業使用。反過來，Meta 在 2026 年 8 月釋出的 Muse Glimmer 30B 卻是純 Apache-2.0，沒有這些條款——同一家公司的模型，授權也要一個一個看。
 
 這些東西不會出現在 `package.json` 裡，所以掃描工具也掃不到。得靠人記得問。
 
