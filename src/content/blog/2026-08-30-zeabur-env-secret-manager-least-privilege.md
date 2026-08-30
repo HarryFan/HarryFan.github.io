@@ -1,6 +1,6 @@
 ---
 title: 'Zeabur ENV 外洩後：不要把部署平台當成 Secret Manager'
-description: 'Zeabur 事件提醒我們，Environment Variables 很方便，但不是密碼保險箱。這篇從工程實務角度整理 Secret Manager、最小權限、Workload Identity、固定 IP、短期憑證與自動輪替該怎麼搭配。'
+description: 'Zeabur 事件提醒我們，Environment Variables 很方便，但不是密碼保險箱。這篇從工程實務角度整理 Secret Manager、最小權限、Workload Identity、固定 IP、短期憑證與自動輪替該怎麼搭配，並用一套多租戶後台的前端實務對照。'
 pubDate: 2026-08-30
 category: 'ai'
 heroImage: '/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/cover.png'
@@ -227,6 +227,49 @@ GitHub token 不要給整個帳號所有 repo；Cloudflare token 不要給全域
 6. 平台被攻破時，攻擊者能不能從一個專案橫向移動到整個組織？
 
 這份清單比「用不用 Secret Manager」更重要。Secret Manager 是工具，威脅模型才是設計。
+
+## 一個真實案例：多租戶後台的前端怎麼分層
+
+講完原則，拿一個手上的系統對照一下。這是一套多租戶的後台管理系統，Vue 3 + Vite 的純前端 SPA，後面接 REST API。對照的目的不是證明它做得多好，而是看「前端」在這個威脅模型裡到底該負責什麼。
+
+**第一件事：前端的 ENV 天生公開，所以只能放設定。**
+
+Vite 的 `VITE_*` 變數在 build 時就被打進 bundle，任何人開 DevTools 都看得到。這套系統的 `.env` 只有這幾類：
+
+```
+VITE_GLOB_APP_TITLE      # 應用標題
+VITE_GLOB_API_URL        # API 基底
+VITE_GLOB_API_URL_PREFIX
+VITE_GLOB_UPLOAD_URL     # 上傳路徑
+VITE_PUBLIC_PATH
+VITE_KEEP_CONSOLE        # build 是否保留 console
+VITE_USE_MOCK
+```
+
+全部是設定，沒有任何 credential。這不是因為團隊特別自律，而是工具鏈逼的：放進去也會外洩，所以根本沒人會放。回頭看前面那個「ENV 抽屜」的問題，前端專案反而是最不容易踩的一層，因為它連「把 secret 藏在 ENV」的幻覺都沒有。
+
+**第二件事：連 feature flag 都不走 ENV。**
+
+前面我說 ENV 可以放 feature flag。這套系統更嚴：哪個租戶看得到哪個功能，由後端回傳的權限清單決定，前端只照清單渲染選單和按鈕。沒有 `VITE_ENABLE_XXX` 這種東西。好處是 flag 是 per-tenant 的 runtime 狀態，不是 build-time 常數；壞處是一個坑——曾經有人在路由模組頂層寫 `const canSee = getAuthCache(USER_INFO_KEY)?.xxx`，模組在登入前就載入，求值一次永遠 false，隔天被撤掉改回 runtime 過濾。憑證和權限都是 runtime 狀態，別在載入期讀，跟 `VITE_*` 是同一個道理。
+
+**第三件事：前端只持有短期 session token，密鑰管理是後端功能。**
+
+前端唯一拿在手上的憑證，是登入後從 response header 取的 session token。它不是 API key，不是資料庫連線字串，過期就要重登。真正的 secret 管理全部是後端功能，前端只是操作面板：
+
+- 每個租戶一組對接密鑰，後台有「更換」「更新介面密鑰」「失效」三個獨立操作，上層租戶可以管下層的
+- 管理員帳號可綁 TOTP 兩步驗證，流程是產生 secret → 產生 QR → 校驗
+- 有 IP 黑名單與 IP 白名單；對外回調另有一道白名單驗證
+- 操作日誌記錄 IP、操作者、角色、操作類型（登入、改密碼、改安全設定……）
+
+對照前面的最小權限清單：每個租戶一組 key、可撤銷、IP 限制、稽核、兩步驗證，都有。這套系統上線多年，這些功能不是為了資安演練加的，是被業務逼出來的——牽涉金流的後台，這些是標配。
+
+**沒做到的三件事，也老實列出來：**
+
+1. 輪替靠人。三個密鑰操作都是後台按鈕，沒有排程、沒有到期提醒。前面第五條「靠人記得就是不會發生」直接命中。要補的是 runbook 或 job，不是前端的事。
+2. session token 落在 localStorage。這是多數 admin 模板的預設，XSS 一旦成立就能讀走。改 httpOnly cookie 是後端改法，前端動不了。
+3. 測試環境的 proxy 目標 host 寫在 `.env.development` 進了 git。不是 credential，但是內部主機名，屬於情報外洩。該搬去 `.env.development.local` 加 gitignore。
+
+這個案例想說的只有一件事：**前端專案在這個威脅模型裡的正確姿勢，就是「什麼 secret 都不持有」**。它拿短期 token 換後端授權，後端用身分和 IP 決定它能做什麼。Zeabur 事件外洩的那串 `DATABASE_URL`、`JWT_SECRET`、`STRIPE_SECRET_KEY`，在這種分層下前端根本碰不到——爆炸半徑從一開始就被切在後端那一層。
 
 ## 回到 Zeabur 事件
 
