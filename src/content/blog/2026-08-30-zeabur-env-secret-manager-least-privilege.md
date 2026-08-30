@@ -1,6 +1,6 @@
 ---
 title: 'Zeabur ENV 外洩後：不要把部署平台當成 Secret Manager'
-description: 'Zeabur 事件提醒我們，Environment Variables 很方便，但不是密碼保險箱。這篇從工程實務角度整理 Secret Manager、最小權限、Workload Identity、固定 IP、短期憑證與自動輪替該怎麼搭配，並用一套多租戶後台的前端實務對照。'
+description: '你的 API key、資料庫密碼、JWT secret 很可能全在同一個抽屜。Zeabur 事件後，整理 Secret Manager、最小權限、短期憑證、自動輪替怎麼搭，並用一套多租戶後台的前端實務對照。'
 pubDate: 2026-08-30
 category: 'ai'
 heroImage: '/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/cover.png'
