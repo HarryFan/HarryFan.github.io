@@ -269,7 +269,93 @@ VITE_USE_MOCK
 2. session token 落在 localStorage。這是多數 admin 模板的預設，XSS 一旦成立就能讀走。改 httpOnly cookie 是後端改法，前端動不了。
 3. 測試環境的 proxy 目標 host 寫在 `.env.development` 進了 git。不是 credential，但是內部主機名，屬於情報外洩。該搬去 `.env.development.local` 加 gitignore。
 
+第二點我之前在頻道上用白板講過一次：localStorage、cookie、記憶體三種放法各自擋得住什麼、擋不住什麼。跟這篇的結論是同一件事——token 放哪裡，決定的是被攻破時能拿走多少。
+
+<figure>
+  <iframe src="https://www.youtube-nocookie.com/embed/tN1IOpH5xG8?rel=0" title="JWT 該存哪裡才安全？localStorage、cookie、記憶體白話解釋" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <figcaption>JWT 該存哪裡才安全？localStorage、cookie、記憶體三種放法的取捨。（一張白板）</figcaption>
+</figure>
+
 這個案例想說的只有一件事：**前端專案在這個威脅模型裡的正確姿勢，就是「什麼 secret 都不持有」**。它拿短期 token 換後端授權，後端用身分和 IP 決定它能做什麼。Zeabur 事件外洩的那串 `DATABASE_URL`、`JWT_SECRET`、`STRIPE_SECRET_KEY`，在這種分層下前端根本碰不到——爆炸半徑從一開始就被切在後端那一層。
+
+## 那前端的 .env 到底該放什麼？
+
+寫完案例，還是會有人問：所以前端 `.env` 是不是乾脆別放東西？不是。它有它的用途，只是要先弄懂一件事：
+
+**前端 `.env` 只放「就算印在網頁原始碼裡也無所謂」的東西。因為它本來就會被印進去。**
+
+### 先搞清楚前綴的意思
+
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>框架</th>
+			<th>會進 bundle（公開）</th>
+			<th>只在 build / server 端</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="框架">Vite</td>
+			<td data-label="會進 bundle（公開）"><code>VITE_*</code></td>
+			<td data-label="只在 build / server 端">無前綴，build script 讀得到、bundle 讀不到</td>
+		</tr>
+		<tr>
+			<td data-label="框架">Astro</td>
+			<td data-label="會進 bundle（公開）"><code>PUBLIC_*</code></td>
+			<td data-label="只在 build / server 端">無前綴，只有 SSR、integration、build script 能讀</td>
+		</tr>
+		<tr>
+			<td data-label="框架">Next.js</td>
+			<td data-label="會進 bundle（公開）"><code>NEXT_PUBLIC_*</code></td>
+			<td data-label="只在 build / server 端">無前綴，只在 server component、API route</td>
+		</tr>
+	</tbody>
+</table>
+
+加前綴，等於你在宣告「這個值可以公開」。但反過來，沒加前綴不等於安全——它還是在 repo 裡、在 CI log 裡、在 build 機器上。前綴只決定「會不會被打進 bundle」，不決定「是不是秘密」。
+
+### 可以放的四類
+
+1. **端點與路徑**：API base URL、public path、上傳路徑、CDN base。
+2. **識別子，不是憑證**：GA4 measurement ID、Sentry DSN、Stripe publishable key、Firebase 前端 config、Google Maps browser key。這類 key 的設計本來就是給瀏覽器用的，但要記得在對方後台綁 HTTP referrer 或 domain 限制。
+3. **build 行為開關**：要不要保留 console、要不要開 mock、要不要出 sourcemap、壓縮方式。
+4. **顯示用常數**：應用標題、版本號、region。
+
+判準只有一句：這個值被拿走，攻擊者能做的事是「呼叫你本來就對全世界開放的東西」？可以放。能「以你的身分」做事？不能放。
+
+### 不能放的，就算沒前綴也一樣
+
+- 任何 `*_SECRET`、`*_PRIVATE_KEY`、`*_TOKEN`：GitHub PAT、OpenAI、Stripe secret key。
+- `DATABASE_URL`、`JWT_SECRET`。
+- 「前端需要直接打第三方 API」的 key。這不是 env 問題，是架構問題。解法是後端代理一層（BFF），或請第三方發短期、限範圍的 token 給前端，而不是把長期 key 塞進 bundle。refresh token 就是這個思路的一種實作：前端拿短命 access token，長命的那把留在後端或 httpOnly cookie。這題我也在頻道講過：<a href="https://www.youtube.com/watch?v=jp-mD9_U2IE" target="_blank" rel="noopener noreferrer">為什麼有些網站一個月不開還是登入狀態？refresh token 白話解釋</a>。
+- 內網主機名、測試環境帳密。放 `.env.local` 或 `.env.development.local`，gitignore 掉。案例裡那個進了 git 的 proxy host 就是這條。
+
+### 不該放 env 的「設定」
+
+有兩類東西看起來像設定，但放 env 是錯的：
+
+- **per-user、per-tenant 的 feature flag**。env 是 build-time 值，改一個 flag 要重 build 就錯了。這種東西是 runtime 狀態，該由後端權限清單或 flag service 決定，前端照清單渲染。案例那套系統就是這樣做的。
+- **任何會隨登入者改變的值**。同理。
+
+### 檔案分工
+
+```
+.env                    # 所有環境共用的公開預設，進 git
+.env.development        # dev 專用公開值，進 git
+.env.production         # prod 專用公開值，進 git
+.env.*.local            # 個人機器、內網 host、本機開關，gitignore
+```
+
+`.env.production` 進 git 沒有問題，前提是裡面真的沒有秘密。反過來說，如果你發現某個值「不太敢 commit」，那它就不該在前端 env 裡。該做的是換個地方放，不是換個檔案藏。
+
+### 一行自檢
+
+```bash
+grep -rE 'SECRET|TOKEN|PASSWORD|PRIVATE' .env* | grep -v '\.local'
+```
+
+有輸出就該搬家。這行可以直接放進 pre-commit hook。
 
 ## 回到 Zeabur 事件
 
