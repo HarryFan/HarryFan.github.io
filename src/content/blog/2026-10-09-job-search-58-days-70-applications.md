@@ -3,6 +3,7 @@ title: '58 天、約 70 次投遞、10 家面試：2026 第三季資深前端求
 description: '早上 11 點線上面試，下午 3 點拿到 offer。之前花了 58 天、投了約 70 次，回覆率兩成。整理我自己的求職漏斗數字，以及為什麼 2026 第三季景氣創新高，軟體工程師卻找得這麼辛苦。'
 pubDate: 2026-10-09
 category: 'career'
+heroImage: '/blog/2026-10-09-job-search-58-days-70-applications/cover.png'
 ---
 
 10 月 8 日早上 11 點，我參加一場線上面試。下午 3 點，offer 就來了。
@@ -30,7 +31,17 @@ category: 'career'
 
 **大約 7 次投遞換到 1 次面試，10 次面試換到 1 個 offer。**
 
+<figure>
+  <img src="/blog/2026-10-09-job-search-58-days-70-applications/01-funnel.png" alt="我把一大疊履歷信封倒進漏斗，底下只掉出一封 offer" loading="lazy" />
+  <figcaption>約 70 次投遞進去，10 場面試留在中間，最後掉出 1 個 offer。</figcaption>
+</figure>
+
 節奏也不平均。8 月中投了十幾筆就開始猶豫、修履歷、做作品集、寫分析文件。後來我自己檢討：一天半產出二十幾個 commit、三千多行筆記，卻只投了 2 家。我在用準備逃避投遞。真正的轉折是 9 月底到 10 月初，四天內衝了約 30 筆，後面的面試大多是那一波來的。
+
+<figure>
+  <img src="/blog/2026-10-09-job-search-58-days-70-applications/02-polish-not-send.png" alt="我拿抹布一直擦亮履歷，旁邊的郵筒結了蜘蛛網" loading="lazy" />
+  <figcaption>一直「再修一下」，郵筒卻空著：8 月中我只投了 2 家。</figcaption>
+</figure>
 
 ## 沒過的那些，都卡在哪
 
@@ -45,6 +56,11 @@ category: 'career'
 
 列完發現，大部分不是我不夠好，是錯配：價格、溝通方式、技術棧對不上。錯配可以調，覺得自己不夠好只會更焦慮。
 
+<figure>
+  <img src="/blog/2026-10-09-job-search-58-days-70-applications/03-mismatch-locks.png" alt="我拿一把鑰匙對著三個形狀不同的鎖孔，手上還掛著一串備用鑰匙" loading="lazy" />
+  <figcaption>價格、溝通、技術棧，三個鎖孔都對不上。但鑰匙可以換。</figcaption>
+</figure>
+
 ## 為什麼 2026 第三季這麼難
 
 我一開始也不懂。新聞每天在講經濟成長創新高、失業率超低，為什麼我投了一個多月，回覆率才兩成？
@@ -56,6 +72,11 @@ category: 'career'
 但 104 的《2026 科技業人才報告書》顯示，軟體網路業每月徵才人數，從 2024 下半年高峰約 8 萬人，降到 2026 年初約 6.3 萬人；同期半導體徵才年增 23%。104 把這個現象叫「位移效應」（[工商時報，2026/05/02](https://www.ctee.com.tw/news/20260502700006-431003)）。
 
 典型的 K 型：數字很漂亮，但漂亮的那一半不是軟體業。
+
+<figure>
+  <img src="/blog/2026-10-09-job-search-58-days-70-applications/04-k-shape.png" alt="兩座梯子拼成 K 字，半導體那座往上爬，我提著公事包站在往下的軟體業那座" loading="lazy" />
+  <figcaption>K 型：半導體往上，軟體業往下，我站在下面那一撇。</figcaption>
+</figure>
 
 ### 2. 失業率低，缺的是對口的職缺
 
@@ -102,6 +123,11 @@ JD 寫的是「加入一個客戶的系統平台開發專案」，目標「服�
 這跟我被外商以溝通方式不合婉拒，是同一個問題：JD 只寫技術條件，但會寫 Vue 的十幾二十個人裡，能用英文開會、先講結論的會先被挑走。
 
 如果你的目標包含外商或跨國專案，英文口說不要等 JD 寫了才練。
+
+<figure>
+  <img src="/blog/2026-10-09-job-search-58-days-70-applications/05-hidden-english-gate.png" alt="我推開寫著 JD 沒寫的紙門，後面卻立著一道寫著英文的閘門" loading="lazy" />
+  <figcaption>推開 JD 那扇門，後面還有一道沒寫出來的英文閘門。</figcaption>
+</figure>
 
 ## 最後是怎麼拿到的
 
