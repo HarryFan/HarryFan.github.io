@@ -4,6 +4,7 @@ description: '在接案平台看到一則「機場接送預約單＋店家後台
 pubDate: 2026-11-01
 category: 'frontend'
 heroImage: '/blog/2026-11-01-airport-transfer-side-project/screen-booking.png'
+draft: true
 ---
 
 > 這是我自己練習用的 side project，不是幫案主交付的成品。文中的店家、乘客、司機、價格都是假資料，費率是我自己假設的示範值。

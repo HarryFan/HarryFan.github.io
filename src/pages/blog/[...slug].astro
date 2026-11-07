@@ -4,7 +4,10 @@ import BlogPost from '../../layouts/BlogPost.astro';
 import { render } from 'astro:content';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
+	// 草稿只在本機開發時產生頁面，正式建置不輸出
+	const posts = (await getCollection('blog')).filter(
+		(post) => import.meta.env.DEV || !post.data.draft
+	);
 	return posts.map((post) => ({
 		params: { slug: post.id },
 		props: post,
