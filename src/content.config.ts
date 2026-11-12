@@ -10,7 +10,7 @@ const blog = defineCollection({
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
 		heroVideo: z.string().optional(),
-		category: z.enum(['frontend', 'ai', 'events', 'career']).default('frontend'),
+		category: z.enum(['frontend', 'ai', 'events', 'career', 'reviews']).default('frontend'),
 		draft: z.boolean().optional().default(false),
 	}),
 });

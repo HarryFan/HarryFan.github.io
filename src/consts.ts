@@ -13,5 +13,6 @@ export const CATEGORIES = {
 	ai: 'AI 協作與工具',
 	events: '活動筆記',
 	career: '職涯觀點',
+	reviews: '產品心得',
 } as const;
 export type CategorySlug = keyof typeof CATEGORIES;
