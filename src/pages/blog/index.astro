@@ -8,14 +8,16 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import CategoryNav from '../../components/CategoryNav.astro';
 import { coverSvgDataUri, resolveHeroSrc } from '../../utils/contempoCover';
 
-const posts = (await getCollection('blog'))
+const allPosts = (await getCollection('blog'))
 	.filter((post) => !post.data.draft)
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const posts = allPosts.filter((post) => post.data.category !== 'reviews');
 
 const counts = Object.fromEntries(
 	Object.keys(CATEGORIES).map((slug) => [
 		slug,
-		posts.filter((p) => p.data.category === slug).length,
+		allPosts.filter((p) => p.data.category === slug).length,
 	])
 );
 ---
