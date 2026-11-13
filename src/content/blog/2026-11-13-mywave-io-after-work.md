@@ -3,7 +3,7 @@ title: '下班後留一點時間給自己：我的 MyWave iO 雲朵機日常（�
 description: '上班一整天看螢幕，下班後留一段時間給自己。這支約 40 秒的短片，記錄我使用 MyWave iO 雲朵機與美體甦活平衡膠的日常。'
 pubDate: 2026-11-13
 category: 'reviews'
-heroImage: '/blog/2026-11-13-mywave-io-after-work/mywave-io-poster.jpg'
+heroImage: '/blog/2026-11-13-mywave-io-after-work/mywave-io-cover-pixar.jpg'
 ---
 
 上班一整天看螢幕，回家後，我想先把工作的節奏放下來。
