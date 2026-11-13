@@ -3,7 +3,7 @@ title: 'Gemini 4 Hydrogen 發布：前端工程師該怎麼評估 AI Agent 的�
 description: '核對 Google 官方公告與 Gemini App 文件，釐清 Hydrogen 的速度數據、思考層級與介面差異，再從 Vue 前端工作的角度，整理一套能實際驗收 AI Agent 的方法。'
 pubDate: 2026-11-13
 category: 'ai'
-heroImage: '/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/cover.png'
+heroImage: '/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/cover-illustration.webp'
 ---
 
 一個模型能很快改完程式碼，跟一個改動能放心合併，中間還有一段距離。
@@ -33,6 +33,11 @@ Google 在 2026 年 11 月 12 日發布 Gemini 4 Hydrogen，定位包含日常 c
 
 因此，看到某個介面出現「Hydrogen Thinking」，不能直接推定它是一個獨立模型，也不能推定那顆按鈕一定對應 xhigh。要看當前產品的說明與實際設定。我目前核對到的官方文件，還不足以替所有介面做這種一對一對照。
 
+<figure>
+  <img src="/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/01-spec-vs-interface.webp" alt="窗仔拿著規格文件，小機器人拿著介面，提醒兩者不能直接畫上等號。" width="1536" height="1024" loading="lazy" decoding="async" />
+  <figcaption>模型規格與產品介面需要分別核對，不能只靠選單名稱推定設定。</figcaption>
+</figure>
+
 ## 我會先拿一個範圍清楚的 Vue 任務測試
 
 如果要評估 Hydrogen 是否適合加入前端工作流程，我會先選一個能重現、能驗收的問題。例如：
@@ -44,6 +49,11 @@ Google 在 2026 年 11 月 12 日發布 Gemini 4 Hydrogen，定位包含日常 c
 它比「幫我做一個漂亮網站」更適合拿來觀察工程能力：問題有明確觸發條件，也能檢查修正有沒有副作用。
 
 我會把任務拆成三段。
+
+<figure>
+  <img src="/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/02-stale-response.webp" alt="小機器人擋住帶著舊回應的蝸牛，保護已經抵達畫面的新結果。" width="1536" height="1024" loading="lazy" decoding="async" />
+  <figcaption>評估用的假設案例：舊請求即使較晚回來，也不應覆蓋最新結果。</figcaption>
+</figure>
 
 ### 先讀懂資料流，再提出修改
 
@@ -77,6 +87,11 @@ Google 在 2026 年 11 月 12 日發布 Gemini 4 Hydrogen，定位包含日常 c
 同樣地，畫面截圖可以提供版面線索，卻不能取代按鈕行為、鍵盤操作與錯誤狀態的驗收。看起來完成，仍需要實際操作確認。
 
 ## 我會記錄這些結果，再決定要不要換模型
+
+<figure>
+  <img src="/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/03-delivery-checklist.webp" alt="窗仔拿放大鏡檢查程式拼圖，旁邊列出範圍、測試與成本的驗收清單。" width="1536" height="1024" loading="lazy" decoding="async" />
+  <figcaption>驗收要一起看修改範圍、測試結果與整體成本。</figcaption>
+</figure>
 
 單看第一段程式碼出現得多快，還不夠。我會用相同的起始版本、任務與驗收條件，比較候選模型，記錄下列項目：
 
