@@ -1,9 +1,9 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
-type Props = HTMLAttributes<'a'>;
+type Props = HTMLAttributes<'a'> & { active?: boolean };
 
-const { href, class: className, ...props } = Astro.props;
+const { href, class: className, active, ...props } = Astro.props;
 const rawHref = typeof href === 'string' ? href : href?.toString() ?? '/';
 
 const normalizePath = (input: string) => {
@@ -18,7 +18,7 @@ const normalizePath = (input: string) => {
 const currentPath = normalizePath(Astro.url.pathname);
 const targetPath = normalizePath(rawHref);
 const currentTopLevel = `/${currentPath.split('/').filter(Boolean)[0] ?? ''}`;
-const isActive = targetPath === currentPath || (targetPath !== '/' && targetPath === currentTopLevel);
+const isActive = active ?? (targetPath === currentPath || (targetPath !== '/' && targetPath === currentTopLevel));
 
 const resolvedHref = rawHref.startsWith('/')
 	? `${import.meta.env.BASE_URL}${rawHref.slice(1)}`

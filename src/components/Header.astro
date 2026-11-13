@@ -1,13 +1,19 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+
+const path = Astro.url.pathname.replace(/\/$/, '');
+const productPosts = await getCollection('blog', ({ data }) => data.category === 'reviews' && !data.draft);
+const isProductPage = path === '/blog/category/reviews' || productPosts.some((post) => path === `/blog/${post.id}`);
 ---
 
 <header>
 	<nav>
 		<h2><a href={`${import.meta.env.BASE_URL}blog/`}>{SITE_TITLE}</a></h2>
 		<div class="internal-links">
-			<HeaderLink href="/blog/">Blog</HeaderLink>
+			<HeaderLink href="/blog/" active={!isProductPage && path.startsWith('/blog')}>Blog</HeaderLink>
+			<HeaderLink href="/blog/category/reviews/" active={isProductPage}>好好入手</HeaderLink>
 			<HeaderLink href="/works/">作品集</HeaderLink>
 			<HeaderLink href="/styles">風格圖鑑</HeaderLink>
 			<HeaderLink href="/today">互動實驗</HeaderLink>
@@ -88,7 +94,7 @@ import { SITE_TITLE } from '../consts';
 		transform: rotate(-1deg);
 	}
 
-	@media (max-width: 720px) {
+	@media (max-width: 1000px) {
 		nav {
 			min-height: auto;
 			padding: 0.75rem 0;
