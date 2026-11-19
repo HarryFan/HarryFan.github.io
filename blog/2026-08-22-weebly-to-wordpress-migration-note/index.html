@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-08-22-weebly-to-wordpress-migration-note/"><!-- Primary Meta Tags --><title>Weebly 要停止服務了？搬到 WordPress 前先做這份備份清單</title><meta name="title" content="Weebly 要停止服務了？搬到 WordPress 前先做這份備份清單"><meta name="description" content="Weebly 在包含台灣在內的 67 個國家逐步停止服務。這篇整理官方期限、資料備份、Weebly 轉 WordPress 的幾種做法，以及網域、SEO、表單、商店資料切換時最容易漏掉的地方。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-08-22-weebly-to-wordpress-migration-note/"><meta property="og:title" content="Weebly 要停止服務了？搬到 WordPress 前先做這份備份清單"><meta property="og:description" content="Weebly 在包含台灣在內的 67 個國家逐步停止服務。這篇整理官方期限、資料備份、Weebly 轉 WordPress 的幾種做法，以及網域、SEO、表單、商店資料切換時最容易漏掉的地方。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-08-22-weebly-to-wordpress-migration-note/cover.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-08-22-weebly-to-wordpress-migration-note/"><meta property="twitter:title" content="Weebly 要停止服務了？搬到 WordPress 前先做這份備份清單"><meta property="twitter:description" content="Weebly 在包含台灣在內的 67 個國家逐步停止服務。這篇整理官方期限、資料備份、Weebly 轉 WordPress 的幾種做法，以及網域、SEO、表單、商店資料切換時最容易漏掉的地方。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-08-22-weebly-to-wordpress-migration-note/cover.png"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		})();</script><link rel="stylesheet" href="/assets/about-BWB9jgRC.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 1000px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/blog/category/reviews/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 好好入手 </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-08-22-weebly-to-wordpress-migration-note/cover.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-08-22T00:00:00.000Z"> Aug 22, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>Weebly 要停止服務了？搬到 WordPress 前先做這份備份清單</h1> <hr data-astro-cid-bvzihdzo> </div>  <p>今天在 Threads 看到有人說 Weebly 即將停止服務，下面接著就是「免費搬家」、「一鍵套版」、「WordPress 主機」之類的服務文。</p>
+<p>第一反應是：這種文不能只看標題。</p>
+<p>我去查了一輪官方文件，重點是這樣：Weebly 不是全世界同一天消失，而是會在 <strong>67 個國家逐步終止服務</strong>，名單裡有台灣。官方公告寫到幾個關鍵日期：</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>時間</th>
+			<th>影響</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="時間">2026-06-29</td>
+			<td data-label="影響">受影響地區的帳號不能再發布新頁面</td>
+		</tr>
+		<tr>
+			<td data-label="時間">2026-09-27</td>
+			<td data-label="影響">現有 Weebly 網站會被取消發布</td>
+		</tr>
+		<tr>
+			<td data-label="時間">2026-12-26</td>
+			<td data-label="影響">還能登入帳號搬資料、搬網域；之後就不能登入 Weebly 帳號</td>
+		</tr>
+	</tbody>
+</table>
+<p>所以這不是「明天網站就爆炸」，但也不是可以拖到年底再想。真正要怕的不是頁面今天還在不在，而是你有沒有拿到一份完整、可驗證、能重建的資料。</p>
+<p>這篇先不談任何搬家服務怎麼賣，只整理一份我會怎麼把 Weebly 搬到 WordPress 的實戰筆記。</p>
+<h2 id="先講結論">先講結論</h2>
+<p>如果你只是五到十頁的公司形象網站，不要迷信自動轉移。最快、最乾淨的做法通常是：</p>
+<ol>
+<li>把 Weebly 站整站備份下來</li>
+<li>把每個頁面的文字、圖片、表單、SEO title、description 另外整理成清單</li>
+<li>在 WordPress 重建版型</li>
+<li>把網址結構盡量保留</li>
+<li>最後再切網域和設定 301 轉址</li>
+</ol>
+<p>如果你有大量部落格文章，可以用 WordPress.com 官方文件提到的 Weebly XML / WXR 路線，把內容匯入 WordPress。</p>
+<p>如果你是電商，事情要拆開處理：頁面、商品、訂單、會員、付款、物流、稅務、Email 名單都不是同一份備份可以解決。</p>
+<h2 id="第一步不要先搬先備份">第一步：不要先搬，先備份</h2>
+<p>Weebly 官方提供兩種資料取得方式。</p>
+<p>第一種是帳號層級的資料下載：到 <code>Account Settings > My Data > Download My Data</code>，先把帳號資料下載回來。</p>
+<p>第二種是單一網站封存：進入網站編輯器，到 <code>Settings > General</code>，找到 <code>Archive</code> 區塊，輸入 Email，Weebly 會寄一個 ZIP 下載連結給你。</p>
+<p>但這裡有一個很重要的限制：<strong>這個 ZIP 不是完整搬家包</strong>。</p>
+<p>官方備份文件有特別提醒，ZIP 可以拿來離線保存或到其他主機重建網站，但不能匯回 Weebly；而且 Blog 頁、商店頁不會包含在這份匯出裡，因為它們依賴 Weebly 的資料庫。有些元件，例如聯絡表單、輪播，也不一定能在 Weebly 編輯器外正常運作。</p>
+<p>所以備份不能只按一個下載按鈕就結束。你至少要再補這份清單：</p>
+<ul>
+<li>所有公開頁面網址</li>
+<li>每頁標題、段落文字、圖片</li>
+<li>每頁 SEO title、meta description</li>
+<li>導覽列結構</li>
+<li>頁尾資訊</li>
+<li>表單欄位、收件人、成功送出訊息</li>
+<li>嵌入碼，例如 Google Analytics、Meta Pixel、客服、地圖</li>
+<li>部落格文章清單</li>
+<li>商品、訂單、庫存、優惠券</li>
+<li>會員、訂閱者、Email 名單</li>
+<li>DNS 設定截圖，特別是 Email 用的 MX、SPF、DKIM、DMARC</li>
+</ul>
+<p>我會把這些整理成一份 Google Sheet。不是為了好看，是因為搬家到一半一定會有人問：「這頁原本網址是什麼？」「這個表單原本寄給誰？」「這張圖去哪裡了？」沒有表格就會靠記憶力救火。</p>
+<p><img src="/blog/2026-08-22-weebly-to-wordpress-migration-note/01-chuangzai-migration-checklist.png" alt="窗仔拿著搬站清單，逐項檢查網址、SEO、表單、圖片、商品、訂單和 DNS，旁邊的舊網站資料正被整理進新網站箱子"></p>
+<h2 id="第二步選-wordpress-路線">第二步：選 WordPress 路線</h2>
+<p>「搬到 WordPress」其實有兩種意思。</p>
+<p>一種是 <strong>WordPress.com</strong>：主機、更新、安全、備份由 WordPress.com 平台處理，管理成本低，但外掛和客製化能力取決於方案。</p>
+<p>另一種是 <strong>自架 WordPress</strong>：你自己買主機，安裝 WordPress.org 版本，可以完整使用外掛、佈景主題、WooCommerce、客製程式，但主機維護、安全、備份也都要自己負責。</p>
+<p>這兩條路的內容匯入概念類似，但後續管理成本不同。</p>
+<p>我自己的判斷會是：</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>網站類型</th>
+			<th>建議</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="網站類型">小型形象站</td>
+			<td data-label="建議">直接在 WordPress 重建，別硬轉版型</td>
+		</tr>
+		<tr>
+			<td data-label="網站類型">有大量部落格</td>
+			<td data-label="建議">先用 WXR 匯入文章，再人工整理版面</td>
+		</tr>
+		<tr>
+			<td data-label="網站類型">電商網站</td>
+			<td data-label="建議">商品、訂單、會員、金物流獨立規劃，不要只當成頁面搬家</td>
+		</tr>
+		<tr>
+			<td data-label="網站類型">很依賴 Weebly 拖拉版型</td>
+			<td data-label="建議">當成重新設計專案，不要期待 1:1 自動還原</td>
+		</tr>
+	</tbody>
+</table>
+<h2 id="第三步把-weebly-內容轉成-wordpress-能吃的格式">第三步：把 Weebly 內容轉成 WordPress 能吃的格式</h2>
+<p>WordPress.com 官方文件提供三種路線：</p>
+<ol>
+<li>複製貼上</li>
+<li>使用支援 Weebly 匯入的外掛</li>
+<li>建立 Weebly XML 檔，再用 WordPress 匯入器匯入</li>
+</ol>
+<p>小站用第一種就好。大型站才值得嘗試第三種。</p>
+<p>比較常見的做法是用 <code>weeblytowp.com</code> 這類轉換工具，把 Weebly 網站轉成 WordPress WXR XML 檔。WordPress.com 文件裡的流程是：</p>
+<ol>
+<li>先在 Weebly 的 <code>Settings > General</code> 關閉 SSL</li>
+<li>到 <code>weeblytowp.com</code></li>
+<li>輸入 Weebly 網站網址</li>
+<li>匯出格式選 WXR</li>
+<li>如果頁面也要匯入，記得勾選包含 pages</li>
+<li>下載產生的 XML 檔</li>
+<li>到 WordPress 後台 <code>Tools > Import</code></li>
+<li>選 WordPress 匯入器</li>
+<li>上傳 XML</li>
+<li>指派作者</li>
+<li>開始匯入</li>
+</ol>
+<p>自架 WordPress 也是類似流程。WordPress.org 的文件寫法是：到 <code>Tools > Import</code>，在 WordPress 匯入器底下安裝或執行 importer，上傳 WXR 檔，然後匯入文章、留言、分類；如果要抓附件，記得勾選下載並匯入附件。</p>
+<p>但我會先提醒一件事：<strong>不要把匯入成功當成搬家完成</strong>。</p>
+<p>WXR 比較像是把內容資料搬過去，不是把整個網站原封不動搬過去。佈景主題、版面、表單邏輯、第三方小工具、自訂網域、追蹤碼、個人設定都要重新處理。</p>
+<h2 id="部落格weebly-zip-通常救不到">部落格：Weebly ZIP 通常救不到</h2>
+<p>如果你的 Weebly 有部落格，這是最容易踩雷的地方。</p>
+<p>Weebly 的網站封存 ZIP 不包含 Blog 頁，因為 Blog 文章存在 Weebly 的資料庫裡，不是靜態 HTML 檔案而已。</p>
+<p>所以部落格有三種處理方式：</p>
+<p>第一種，文章少的話手動搬。逐篇複製標題、日期、內文、圖片、分類、slug。慢，但最穩。</p>
+<p>第二種，用 Weebly to WordPress 的 WXR 工具匯出文章，再匯入 WordPress。匯入後要抽查圖片、內部連結、分類、日期、留言。</p>
+<p>第三種，文章非常多或格式很亂，就寫爬蟲或轉檔腳本，把公開頁面解析成 WordPress XML。這比較適合工程師或有預算的網站，否則維護腳本的成本可能比手動整理還高。</p>
+<p>我會抓三種頁面做抽查：</p>
+<ul>
+<li>最新文章</li>
+<li>最舊文章</li>
+<li>圖片最多、嵌入最多的一篇文章</li>
+</ul>
+<p>這三種都正常，才比較能相信整批匯入結果。</p>
+<h2 id="電商商品和訂單要分開匯">電商：商品和訂單要分開匯</h2>
+<p>如果 Weebly 是商店，不要只備份頁面。</p>
+<p>Weebly 的商品可以透過 CSV 匯出。官方文件提到，商品匯出後會變成 CSV，每一列是一個品項；如果商品有尺寸、顏色這類選項，會依不同組合拆成多列。</p>
+<p>訂單也可以從 Orders 匯出，格式可以選 CSV，或 QuickBooks 用的 IIF。這份資料很重要，因為它是歷史交易紀錄，不一定會完整搬進 WooCommerce。</p>
+<p>搬到 WordPress / WooCommerce 時，我會把電商拆成這幾塊：</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>資料</th>
+			<th>做法</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="資料">商品</td>
+			<td data-label="做法">從 Weebly 匯出 CSV，整理欄位後匯入 WooCommerce</td>
+		</tr>
+		<tr>
+			<td data-label="資料">商品圖片</td>
+			<td data-label="做法">不要只相信 CSV 裡的圖片 URL，最好另外下載原圖</td>
+		</tr>
+		<tr>
+			<td data-label="資料">訂單</td>
+			<td data-label="做法">匯出保存，必要時再評估是否匯入 WooCommerce</td>
+		</tr>
+		<tr>
+			<td data-label="資料">會員</td>
+			<td data-label="做法">確認 Weebly 是否可匯出，並注意個資與同意狀態</td>
+		</tr>
+		<tr>
+			<td data-label="資料">付款</td>
+			<td data-label="做法">在新站重新串接金流</td>
+		</tr>
+		<tr>
+			<td data-label="資料">物流</td>
+			<td data-label="做法">在新站重新設定運費、配送方式</td>
+		</tr>
+		<tr>
+			<td data-label="資料">稅務</td>
+			<td data-label="做法">在新站重新設定稅率，不要沿用猜測</td>
+		</tr>
+		<tr>
+			<td data-label="資料">優惠券</td>
+			<td data-label="做法">逐項重建，順便淘汰過期活動</td>
+		</tr>
+	</tbody>
+</table>
+<p>最務實的做法通常是：<strong>商品可以匯，訂單先封存，付款物流重設。</strong></p>
+<h2 id="網域先確認是在-weebly-買還是只連到-weebly">網域：先確認是在 Weebly 買，還是只連到 Weebly</h2>
+<p>網域和網站是兩件事。</p>
+<p>你可能是在 Weebly 買網域，也可能是在 GoDaddy、Namecheap、Cloudflare、PChome、戰國策或其他註冊商買網域，只是把 DNS 指到 Weebly。</p>
+<p>先確認這件事，因為流程不同：</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>情況</th>
+			<th>做法</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="情況">網域在 Weebly 註冊</td>
+			<td data-label="做法">需要解除 registrar lock，取得 EPP authorization code，再到新註冊商發起轉移</td>
+		</tr>
+		<tr>
+			<td data-label="情況">網域在其他註冊商</td>
+			<td data-label="做法">不必轉移網域，只要切 DNS 到新 WordPress 主機</td>
+		</tr>
+		<tr>
+			<td data-label="情況">網域有企業信箱</td>
+			<td data-label="做法">不要亂改 nameserver，先備份 MX、SPF、DKIM、DMARC</td>
+		</tr>
+	</tbody>
+</table>
+<p>Weebly 官方文件也提醒，網域註冊後 60 天內通常不能轉移；如果你在轉移前改了註冊人聯絡資訊，也可能觸發 60 天鎖定。這件事很容易被忽略。</p>
+<p>所以我的建議是：<strong>資料先搬、WordPress 新站先做好、DNS 記錄先截圖，最後才切網域。</strong></p>
+<p>不要一開始就急著轉網域。網域轉走了，舊站還沒好，才是最尷尬的停機。</p>
+<h2 id="seo不要只求看起來一樣">SEO：不要只求「看起來一樣」</h2>
+<p>網站搬家最常見的 SEO 問題不是版面跑掉，而是 URL 掛掉。</p>
+<p>搬之前先把舊站 URL 全部盤點出來：</p>
+<ul>
+<li>首頁</li>
+<li>主要服務頁</li>
+<li>部落格文章</li>
+<li>商品頁</li>
+<li>分類頁</li>
+<li>高流量落地頁</li>
+<li>有外部連結導入的頁面</li>
+</ul>
+<p>能保留原本 slug 就保留。例如：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plain"><code><span class="line"><span>https://example.com/about.html</span></span>
+<span class="line"><span>https://example.com/services.html</span></span>
+<span class="line"><span>https://example.com/blog/my-old-post.html</span></span></code></pre>
+<p>如果 WordPress 新網址真的不同，就要設定 301 redirect。不要讓使用者和 Google 直接撞 404。</p>
+<p>切站後我會馬上檢查：</p>
+<ul>
+<li>首頁能不能正常開</li>
+<li>HTTPS 憑證是否正常</li>
+<li>舊網址是否 301 到新網址</li>
+<li>表單是否真的寄得出去</li>
+<li>Google Analytics 是否有收到 page_view</li>
+<li>Google Search Console 是否還驗證成功</li>
+<li>sitemap 是否更新</li>
+<li>robots.txt 沒有擋到正式站</li>
+<li>圖片是否有遺失</li>
+<li>手機版導覽是否正常</li>
+</ul>
+<p>這些都是搬家當天就要檢查，不是過一週流量掉了才回頭找。</p>
+<h2 id="我會怎麼排時程">我會怎麼排時程</h2>
+<p>如果網站不大，我會這樣排：</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>天數</th>
+			<th>工作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="天數">Day 1</td>
+			<td data-label="工作">匯出 Weebly 帳號資料、網站 ZIP、商品／訂單 CSV，建立 URL 清單</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 2</td>
+			<td data-label="工作">架 WordPress 測試站，選佈景主題，建立主要頁面</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 3</td>
+			<td data-label="工作">搬文字、圖片、表單、SEO metadata</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 4</td>
+			<td data-label="工作">匯入部落格或商品，逐頁抽查</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 5</td>
+			<td data-label="工作">設定 redirects、Analytics、Search Console、備份外掛</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 6</td>
+			<td data-label="工作">用暫時網址驗收手機版和表單</td>
+		</tr>
+		<tr>
+			<td data-label="天數">Day 7</td>
+			<td data-label="工作">降低 DNS TTL，切網域，觀察錯誤</td>
+		</tr>
+	</tbody>
+</table>
+<p>電商站不要用七天估。只要牽涉付款、物流、訂單紀錄、會員資料、稅務，就應該當成正式遷移專案處理。</p>
+<h2 id="搬完後不要立刻刪-weebly">搬完後不要立刻刪 Weebly</h2>
+<p>只要還能登入 Weebly，就先留著。</p>
+<p>至少等新站跑過一到兩週，確認搜尋流量、表單、訂單、Email、轉址都正常，再考慮關閉舊服務。因為搬家最怕的不是上線那一刻，而是三天後才發現某個冷門頁面、某個表單、某個商品圖片根本沒搬到。</p>
+<p>我的底線是：</p>
+<ul>
+<li>新站完整備份一份</li>
+<li>Weebly 原始備份保留一份</li>
+<li>DNS 設定截圖保留一份</li>
+<li>所有 CSV、XML、ZIP 放到雲端硬碟</li>
+<li>密碼、主機、網域、WordPress 管理員權限整理好</li>
+</ul>
+<p>這樣才算真的搬完。</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://www.weebly.com/app/help/us/en/topics/changes-to-weebly-global-operations">Weebly：Upcoming Changes to Weebly’s Global Operations</a></li>
+<li><a href="https://www.weebly.com/app/help/us/en/topics/back-up-your-site">Weebly：Back Up Your Site</a></li>
+<li><a href="https://wordpress.com/support/import/import-from-weebly/">WordPress.com：Import from Weebly</a></li>
+<li><a href="https://developer.wordpress.org/advanced-administration/wordpress/import/">WordPress.org：Importing Content</a></li>
+<li><a href="https://www.weebly.com/app/help/us/en/topics/unlock-your-domain-and-get-the-epp-code">Weebly：Unlock Your Domain and Get the EPP Code</a></li>
+<li><a href="https://www.weebly.com/app/help/topics/import-export-and-batch-update-products-with-a-csv-file">Weebly：Import, Export, and Batch Update Items with a CSV File</a></li>
+<li><a href="https://www.weebly.com/app/help/us/en/topics/export-your-store-order-history-to-csv-excel-numbers-or-quickbooks">Weebly：Export Orders</a></li>
+</ul>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>

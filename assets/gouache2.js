@@ -1,4 +1,5 @@
-import { v as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
+import { n as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.js';
+import 'clsx';
 
 const frontmatter = {
   "title": "水粉不透明畫",
@@ -129,14 +130,14 @@ function MDXContent(props = {}) {
 }
 
 const url = "src/content/styles/gouache.mdx";
-const file = "/Users/harry/Documents/Astro/harryfan.github.io/src/content/styles/gouache.mdx";
+const file = "/Users/gangshuanfan/Documents/Astro/HarryFan.github.io/src/content/styles/gouache.mdx";
 const Content = (props = {}) => MDXContent({
   ...props,
   components: { Fragment: Fragment, ...props.components, },
 });
 Content[Symbol.for('mdx-component')] = true;
 Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
-Content.moduleId = "/Users/harry/Documents/Astro/harryfan.github.io/src/content/styles/gouache.mdx";
+Content.moduleId = "/Users/gangshuanfan/Documents/Astro/HarryFan.github.io/src/content/styles/gouache.mdx";
 __astro_tag_component__(Content, 'astro:jsx');
 
 export { Content, Content as default, file, frontmatter, getHeadings, url };

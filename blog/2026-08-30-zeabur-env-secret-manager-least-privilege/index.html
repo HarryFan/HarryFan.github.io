@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/"><!-- Primary Meta Tags --><title>Zeabur ENV 外洩後：不要把部署平台當成 Secret Manager</title><meta name="title" content="Zeabur ENV 外洩後：不要把部署平台當成 Secret Manager"><meta name="description" content="你的 API key、資料庫密碼、JWT secret 很可能全在同一個抽屜。Zeabur 事件後，整理 Secret Manager、最小權限、短期憑證、自動輪替怎麼搭，並用一套多租戶後台的前端實務對照。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/"><meta property="og:title" content="Zeabur ENV 外洩後：不要把部署平台當成 Secret Manager"><meta property="og:description" content="你的 API key、資料庫密碼、JWT secret 很可能全在同一個抽屜。Zeabur 事件後，整理 Secret Manager、最小權限、短期憑證、自動輪替怎麼搭，並用一套多租戶後台的前端實務對照。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/cover.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/"><meta property="twitter:title" content="Zeabur ENV 外洩後：不要把部署平台當成 Secret Manager"><meta property="twitter:description" content="你的 API key、資料庫密碼、JWT secret 很可能全在同一個抽屜。Zeabur 事件後，整理 Secret Manager、最小權限、短期憑證、自動輪替怎麼搭，並用一套多租戶後台的前端實務對照。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/cover.png"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		})();</script><link rel="stylesheet" href="/assets/about-BWB9jgRC.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 1000px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/blog/category/reviews/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 好好入手 </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/cover.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-08-30T00:00:00.000Z"> Aug 30, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>Zeabur ENV 外洩後：不要把部署平台當成 Secret Manager</h1> <hr data-astro-cid-bvzihdzo> </div>  <p>2026 年 8 月底，Zeabur 公開了一起安全事件。根據官方 status 頁，截至 2026-08-29 21:17 UTC 的更新，攻擊者取得了一組 Zeabur 內部 AWS 管理憑證，進一步進入控制平面網路並連到主要資料庫；Zeabur 表示已確認有針對使用者專案環境變數（Variables）的查詢與匯出行為，攻擊者看起來特別鎖定 AI API keys 與其他可以直接使用的憑證。</p>
+<p>官方列出的暴露變數名稱包含 <code>OPENAI_API_KEY</code>、<code>ANTHROPIC_API_KEY</code>、<code>OPENROUTER_API_KEY</code>、<code>DATABASE_URL</code>、<code>JWT_SECRET</code>、<code>STRIPE_SECRET_KEY</code>、<code>GITHUB_TOKEN</code>、<code>AWS_ACCESS_KEY_ID</code>、<code>AWS_SECRET_ACCESS_KEY</code> 等。也就是說，這不是「某一把 API key 外洩」那麼單純，而是部署平台裡的環境變數資料被讀到。</p>
+<p>先講清楚：這篇不是要補刀 Zeabur。我用過很多部署平台，大家的開發體驗都很接近：填 env、部署、重啟、服務起來。這種模式讓小團隊跑很快，但也讓一件事被包裝得太簡單：</p>
+<p><strong>不要把部署平台的 Environment Variables 當成你的密碼保險箱。</strong></p>
+<h2 id="env-不是錯錯的是把所有秘密都丟進同一層">ENV 不是錯，錯的是把所有秘密都丟進同一層</h2>
+<p>Environment Variables 本身不是邪惡的。它是把設定從程式碼裡抽出來的好方法，也是很多平台最通用的設定介面。</p>
+<p>問題在於，我們常常把完全不同風險等級的東西都塞進 ENV：</p>
+<ul>
+<li><code>NODE_ENV=production</code></li>
+<li><code>APP_URL=https://example.com</code></li>
+<li><code>OPENAI_API_KEY=sk-...</code></li>
+<li><code>DATABASE_URL=postgres://...</code></li>
+<li><code>STRIPE_SECRET_KEY=sk_live_...</code></li>
+<li><code>JWT_SECRET=...</code></li>
+</ul>
+<p>前兩個是設定，後面幾個是可以直接換錢、讀資料、偽造身分、呼叫第三方資源的憑證。它們不應該被同一套存取權限、同一個後台畫面、同一條 API、同一個內部服務帳號完整讀出來。</p>
+<p>真正要問的問題不是「平台會不會被駭」。沒有任何平台可以保證永遠不出事。</p>
+<p>真正要問的是：</p>
+<p><strong>這一層被攻破後，攻擊者還能拿走多少東西？</strong></p>
+<p>如果答案是「所有服務、所有環境、所有第三方 API key、所有資料庫連線字串」，那架構就太脆了。</p>
+<figure>
+  <img src="/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/01-env-drawer.png" alt="窗仔站在塞滿鑰匙和資料庫圖示的 ENV 抽屜旁邊冒汗，試著把抽屜關起來" loading="lazy">
+  <figcaption>ENV 可以放設定，但不該變成所有 API key、資料庫密碼、簽章秘密的集中抽屜。</figcaption>
+</figure>
+<h2 id="secret-manager-不是把鑰匙換一個抽屜放">Secret Manager 不是把鑰匙換一個抽屜放</h2>
+<p>很多人的第一反應會是：那就全部搬去 Secret Manager。</p>
+<p>方向對，但只做一半會出事。</p>
+<p>常見的錯誤長這樣：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>部署平台 ENV:</span></span>
+<span class="line"><span>MASTER_SECRET=xxxxx</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>應用程式:</span></span>
+<span class="line"><span>用 MASTER_SECRET 去 Secret Manager 讀全部 secrets</span></span></code></pre>
+<p>這沒有解決問題。你只是從「十把鑰匙可能被偷」，變成「只要偷到一把 master key，十扇門全部打開」。</p>
+<p>Secret Manager 真正有價值的地方，不只是「集中保存秘密」，而是它可以跟 IAM、Workload Identity、短期憑證、存取紀錄、輪替機制接在一起。也就是：</p>
+<ul>
+<li>哪個服務可以讀哪一個 secret</li>
+<li>哪個環境可以讀哪一組 secret</li>
+<li>哪個 identity 在什麼時間讀了 secret</li>
+<li>secret 多久輪替一次</li>
+<li>被讀取、快過期、異常使用時能不能告警</li>
+</ul>
+<p>如果你只是把所有密碼搬到 Secret Manager，然後再用一把長期 master credential 從部署平台讀回來，本質上還是在賭那把 credential 永遠不會外洩。</p>
+<figure>
+  <img src="/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/02-master-secret.png" alt="窗仔抱著一把超大的鑰匙，前方一排資料庫、付款、程式碼、雲端、AI、鎖頭和信件門都同時打開" loading="lazy">
+  <figcaption>把十把 key 換成一把 master key，不是安全設計，只是把爆炸半徑集中到同一點。</figcaption>
+</figure>
+<h2 id="理想架構服務用身分不用長期密碼">理想架構：服務用身分，不用長期密碼</h2>
+<p>現代雲端比較理想的做法，是讓 workload 本身有身分。</p>
+<p>概念像這樣：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Service A</span></span>
+<span class="line"><span>  -> Workload Identity / IAM Role / Managed Identity</span></span>
+<span class="line"><span>  -> 只能讀 openai-production-key</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Service B</span></span>
+<span class="line"><span>  -> Workload Identity / IAM Role / Managed Identity</span></span>
+<span class="line"><span>  -> 只能讀 postgres-app-password</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Service C</span></span>
+<span class="line"><span>  -> Workload Identity / IAM Role / Managed Identity</span></span>
+<span class="line"><span>  -> 只能讀 stripe-webhook-secret</span></span></code></pre>
+<p>這裡沒有一把「可以讀全部 secrets」的 master key。每個服務只有它真的需要的權限，而且最好是短期憑證，不是永久有效的 client secret。</p>
+<p>AWS 有 Secrets Manager 搭配 IAM；Google Cloud 有 Secret Manager 搭配 Workload Identity Federation；Azure 有 Key Vault 搭配 Managed Identity。名字不同，精神一樣：</p>
+<p><strong>讓服務拿自己的身分去換有限、短期、可稽核的權限。</strong></p>
+<p>這樣做的好處是，就算 Service A 的執行環境被拿到，攻擊者也只能讀 Service A 被允許讀的那幾個 secrets。它拿不到 Service B 的資料庫密碼，也拿不到 Stripe 的 key，更不能列出整個組織所有秘密。</p>
+<p>這才是最小權限。</p>
+<figure>
+  <img src="/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/03-least-privilege.png" alt="窗仔站在中間，把 web、worker 和排程三個服務分別接到各自的 API、資料庫和付款 vault，中間有沙漏代表短期憑證" loading="lazy">
+  <figcaption>比較好的模型是每個服務只連到自己需要的 secret，中間用短期憑證、身分與存取條件隔開。</figcaption>
+</figure>
+<h2 id="但如果部署平台不支援-oidc-或雲端-secret-呢">但如果部署平台不支援 OIDC 或雲端 Secret 呢？</h2>
+<p>這是很多小團隊真正卡住的地方。</p>
+<p>你可能用的是 PaaS、低維運部署平台、shared cluster，平台只提供 Environment Variables，沒有 Workload Identity，沒有 OIDC federation，也不能直接掛雲端 IAM role。那怎麼辦？</p>
+<p>答案不是「那就沒救」。答案是分層降風險。</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>平台能力</th>
+			<th>建議做法</th>
+			<th>降低了什麼風險</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="平台能力">支援 Workload Identity / OIDC / IAM Role</td>
+			<td data-label="建議做法">不要放長期 cloud key。讓服務用平台身分向雲端換短期憑證，再依 IAM policy 讀特定 secret。</td>
+			<td data-label="降低了什麼風險">平台 ENV 被讀到時，攻擊者拿不到可長期使用的雲端 credential。</td>
+		</tr>
+		<tr>
+			<td data-label="平台能力">不支援 OIDC，但有固定 outbound IP</td>
+			<td data-label="建議做法">把資料庫、第三方 API、內部 token broker 鎖來源 IP；ENV 只放該服務需要的一小把 credential。</td>
+			<td data-label="降低了什麼風險">credential 外洩後，攻擊者不一定能從自己的機器直接使用。</td>
+		</tr>
+		<tr>
+			<td data-label="平台能力">只有 ENV，沒有固定 IP</td>
+			<td data-label="建議做法">每個服務、每個環境拆不同 key；權限縮到最低；設定額度、告警、自動輪替；不要共用 production master key。</td>
+			<td data-label="降低了什麼風險">外洩時爆炸半徑變小，費用與資料存取範圍比較容易控制。</td>
+		</tr>
+		<tr>
+			<td data-label="平台能力">第三方服務支援 scoped key</td>
+			<td data-label="建議做法">OpenAI、Stripe、GitHub、Cloudflare、資料庫帳號都拆用途和權限；不要用 owner/admin 級 key 跑應用程式。</td>
+			<td data-label="降低了什麼風險">被偷的是「只能做一件事」的 key，不是整個帳號。</td>
+		</tr>
+	</tbody>
+</table>
+<p>如果平台不支援 OIDC，你可以退而求其次：看能不能固定 IP。固定 IP 不是萬靈丹，但對資料庫、防火牆、內部 API、部分 SaaS allowlist 很有用。</p>
+<p>如果連固定 IP 都沒有，那就老實承認風險存在，然後把每把 key 的傷害範圍縮到最小。</p>
+<h2 id="最小權限不是一句口號">最小權限不是一句口號</h2>
+<p>最小權限要落地，至少要做到這幾件事。</p>
+<p>第一，每個服務一組 key。</p>
+<p>不要讓前台 web、背景 worker、admin job、cron job 共用同一組 <code>DATABASE_URL</code>、同一把 GitHub token、同一個 Stripe secret。它們需要的權限不一樣，出事時的處理方式也不一樣。</p>
+<p>第二，每個環境一組 key。</p>
+<p>Development、staging、production 不要共用 secret。測試環境不該拿得到 production 資料庫，也不該能刷 production Stripe。很多事故不是從 production 開始，是從一個比較鬆的 staging 或 preview environment 開始。</p>
+<p>第三，第三方 API key 要選最窄權限。</p>
+<p>GitHub token 不要給整個帳號所有 repo；Cloudflare token 不要給全域 admin；Stripe key 能限制用途就限制用途；資料庫帳號不要給 owner 權限；AI API key 至少要有 usage limit、budget alert、異常用量通知。</p>
+<p>第四，能鎖 IP 就鎖 IP。</p>
+<p>資料庫如果必須暴露在公網，至少限制來源 IP。後台管理介面、internal API、SSH、Redis、MongoDB 這些東西尤其不能只靠一組密碼撐著。</p>
+<p>第五，輪替要自動化。</p>
+<p>「定期輪替」如果靠人記得，就是不會發生。比較務實的做法是寫成 runbook 或 job：建立新 key、部署新 key、確認服務健康、撤銷舊 key、留下紀錄。就算不能全自動，也要做到半自動，讓事故當天不是大家手動到處點。</p>
+<h2 id="env-裡可以留下什麼">ENV 裡可以留下什麼？</h2>
+<p>現實上，多數平台還是需要 ENV。重點不是把 ENV 清空，而是只放「低敏感」或「低爆炸半徑」的東西。</p>
+<p>可以放：</p>
+<ul>
+<li>feature flag</li>
+<li>region</li>
+<li>public URL</li>
+<li>non-secret config</li>
+<li>單一服務需要的低權限 credential</li>
+<li>短期 credential 的交換設定</li>
+</ul>
+<p>盡量不要放：</p>
+<ul>
+<li>可以讀全部 secrets 的 master key</li>
+<li>owner/admin 級雲端 access key</li>
+<li>production 資料庫 owner 帳密</li>
+<li>沒有額度限制的 AI API key</li>
+<li>組織層級 GitHub PAT</li>
+<li>多個服務共用的 JWT signing secret</li>
+</ul>
+<p>特別是 <code>JWT_SECRET</code> 這種東西，很多人低估它。資料庫密碼外洩是資料被讀，JWT signing secret 外洩是身分可以被偽造。攻擊者不一定需要登入你的資料庫，能簽出 admin token 就夠了。</p>
+<h2 id="事件發生後第一小時該做什麼">事件發生後，第一小時該做什麼？</h2>
+<p>如果你收到平台通知，或懷疑自己的 ENV 曾經被讀到，順序不要亂。</p>
+<ol>
+<li>先撤銷外部可直接濫用的 API key：OpenAI、Anthropic、OpenRouter、Stripe、GitHub、Cloudflare、AWS、GCP、Azure。</li>
+<li>旋轉資料庫密碼，並檢查資料庫是否允許公網連線。如果可以，立刻加 IP allowlist。</li>
+<li>換掉 <code>JWT_SECRET</code>、session secret、webhook secret、private key。這類 secret 外洩後，舊 token 可能都要失效。</li>
+<li>查第三方服務用量、帳單、audit log，尤其是 AI API、雲端資源建立、GitHub Actions、package 發布紀錄。</li>
+<li>把所有 production secrets 依服務拆開，不要只是原樣換一批新的 key。</li>
+<li>記錄這次輪替的時間、影響範圍、誰處理了什麼，之後要寫成 runbook。</li>
+</ol>
+<p>很多團隊會犯的錯，是只做第一步：把 key 換掉。這當然要做，但如果新 key 仍然是同一把全權限 key、仍然放在同一個 ENV、仍然沒有 IP 限制、仍然沒有告警，那只是把事故往後延。</p>
+<h2 id="新系統怎麼設計">新系統怎麼設計</h2>
+<p>如果是今天才要設計新系統，我會用這個順序想：</p>
+<ol>
+<li>能不能讓 runtime 用 Workload Identity / Managed Identity / IAM Role，不放長期雲端 credential？</li>
+<li>如果不能，部署平台有沒有固定 outbound IP，可以讓資料庫和內部 API 做 allowlist？</li>
+<li>每個服務是否有獨立 service account、獨立資料庫帳號、獨立第三方 API key？</li>
+<li>每把 key 是否都能縮權限、設額度、設告警？</li>
+<li>輪替流程是否能在 30 分鐘內跑完，不靠某一個人記得所有步驟？</li>
+<li>平台被攻破時，攻擊者能不能從一個專案橫向移動到整個組織？</li>
+</ol>
+<p>這份清單比「用不用 Secret Manager」更重要。Secret Manager 是工具，威脅模型才是設計。</p>
+<h2 id="一個真實案例多租戶後台的前端怎麼分層">一個真實案例：多租戶後台的前端怎麼分層</h2>
+<p>講完原則，拿一個手上的系統對照一下。這是一套多租戶的後台管理系統，Vue 3 + Vite 的純前端 SPA，後面接 REST API。對照的目的不是證明它做得多好，而是看「前端」在這個威脅模型裡到底該負責什麼。</p>
+<p><strong>第一件事：前端的 ENV 天生公開，所以只能放設定。</strong></p>
+<p>Vite 的 <code>VITE_*</code> 變數在 build 時就被打進 bundle，任何人開 DevTools 都看得到。這套系統的 <code>.env</code> 只有這幾類：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>VITE_GLOB_APP_TITLE      # 應用標題</span></span>
+<span class="line"><span>VITE_GLOB_API_URL        # API 基底</span></span>
+<span class="line"><span>VITE_GLOB_API_URL_PREFIX</span></span>
+<span class="line"><span>VITE_GLOB_UPLOAD_URL     # 上傳路徑</span></span>
+<span class="line"><span>VITE_PUBLIC_PATH</span></span>
+<span class="line"><span>VITE_KEEP_CONSOLE        # build 是否保留 console</span></span>
+<span class="line"><span>VITE_USE_MOCK</span></span></code></pre>
+<p>全部是設定，沒有任何 credential。這不是因為團隊特別自律，而是工具鏈逼的：放進去也會外洩，所以根本沒人會放。回頭看前面那個「ENV 抽屜」的問題，前端專案反而是最不容易踩的一層，因為它連「把 secret 藏在 ENV」的幻覺都沒有。</p>
+<p><strong>第二件事：連 feature flag 都不走 ENV。</strong></p>
+<p>前面我說 ENV 可以放 feature flag。這套系統更嚴：哪個租戶看得到哪個功能，由後端回傳的權限清單決定，前端只照清單渲染選單和按鈕。沒有 <code>VITE_ENABLE_XXX</code> 這種東西。好處是 flag 是 per-tenant 的 runtime 狀態，不是 build-time 常數；壞處是一個坑——曾經有人在路由模組頂層寫 <code>const canSee = getAuthCache(USER_INFO_KEY)?.xxx</code>，模組在登入前就載入，求值一次永遠 false，隔天被撤掉改回 runtime 過濾。憑證和權限都是 runtime 狀態，別在載入期讀，跟 <code>VITE_*</code> 是同一個道理。</p>
+<p><strong>第三件事：前端只持有短期 session token，密鑰管理是後端功能。</strong></p>
+<p>前端唯一拿在手上的憑證，是登入後從 response header 取的 session token。它不是 API key，不是資料庫連線字串，過期就要重登。真正的 secret 管理全部是後端功能，前端只是操作面板：</p>
+<ul>
+<li>每個租戶一組對接密鑰，後台有「更換」「更新介面密鑰」「失效」三個獨立操作，上層租戶可以管下層的</li>
+<li>管理員帳號可綁 TOTP 兩步驗證，流程是產生 secret → 產生 QR → 校驗</li>
+<li>有 IP 黑名單與 IP 白名單；對外回調另有一道白名單驗證</li>
+<li>操作日誌記錄 IP、操作者、角色、操作類型（登入、改密碼、改安全設定……）</li>
+</ul>
+<p>對照前面的最小權限清單：每個租戶一組 key、可撤銷、IP 限制、稽核、兩步驗證，都有。這套系統上線多年，這些功能不是為了資安演練加的，是被業務逼出來的——牽涉金流的後台，這些是標配。</p>
+<p><strong>沒做到的三件事，也老實列出來：</strong></p>
+<ol>
+<li>輪替靠人。三個密鑰操作都是後台按鈕，沒有排程、沒有到期提醒。前面第五條「靠人記得就是不會發生」直接命中。要補的是 runbook 或 job，不是前端的事。</li>
+<li>session token 落在 localStorage。這是多數 admin 模板的預設，XSS 一旦成立就能讀走。改 httpOnly cookie 是後端改法，前端動不了。</li>
+<li>測試環境的 proxy 目標 host 寫在 <code>.env.development</code> 進了 git。不是 credential，但是內部主機名，屬於情報外洩。該搬去 <code>.env.development.local</code> 加 gitignore。</li>
+</ol>
+<p>第二點我之前在頻道上用白板講過一次：localStorage、cookie、記憶體三種放法各自擋得住什麼、擋不住什麼。跟這篇的結論是同一件事——token 放哪裡，決定的是被攻破時能拿走多少。</p>
+<figure>
+  <iframe src="https://www.youtube-nocookie.com/embed/tN1IOpH5xG8?rel=0" title="JWT 該存哪裡才安全？localStorage、cookie、記憶體白話解釋" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <figcaption>JWT 該存哪裡才安全？localStorage、cookie、記憶體三種放法的取捨。（一張白板）</figcaption>
+</figure>
+<p>這個案例想說的只有一件事：<strong>前端專案在這個威脅模型裡的正確姿勢，就是「什麼 secret 都不持有」</strong>。它拿短期 token 換後端授權，後端用身分和 IP 決定它能做什麼。Zeabur 事件外洩的那串 <code>DATABASE_URL</code>、<code>JWT_SECRET</code>、<code>STRIPE_SECRET_KEY</code>，在這種分層下前端根本碰不到——爆炸半徑從一開始就被切在後端那一層。</p>
+<h2 id="那前端的-env-到底該放什麼">那前端的 .env 到底該放什麼？</h2>
+<p>寫完案例，還是會有人問：所以前端 <code>.env</code> 是不是乾脆別放東西？不是。它有它的用途，只是要先弄懂一件事：</p>
+<p><strong>前端 <code>.env</code> 只放「就算印在網頁原始碼裡也無所謂」的東西。因為它本來就會被印進去。</strong></p>
+<h3 id="先搞清楚前綴的意思">先搞清楚前綴的意思</h3>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>框架</th>
+			<th>會進 bundle（公開）</th>
+			<th>只在 build / server 端</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="框架">Vite</td>
+			<td data-label="會進 bundle（公開）"><code>VITE_*</code></td>
+			<td data-label="只在 build / server 端">無前綴，build script 讀得到、bundle 讀不到</td>
+		</tr>
+		<tr>
+			<td data-label="框架">Astro</td>
+			<td data-label="會進 bundle（公開）"><code>PUBLIC_*</code></td>
+			<td data-label="只在 build / server 端">無前綴，只有 SSR、integration、build script 能讀</td>
+		</tr>
+		<tr>
+			<td data-label="框架">Next.js</td>
+			<td data-label="會進 bundle（公開）"><code>NEXT_PUBLIC_*</code></td>
+			<td data-label="只在 build / server 端">無前綴，只在 server component、API route</td>
+		</tr>
+	</tbody>
+</table>
+<p>加前綴，等於你在宣告「這個值可以公開」。但反過來，沒加前綴不等於安全——它還是在 repo 裡、在 CI log 裡、在 build 機器上。前綴只決定「會不會被打進 bundle」，不決定「是不是秘密」。</p>
+<h3 id="可以放的四類">可以放的四類</h3>
+<ol>
+<li><strong>端點與路徑</strong>：API base URL、public path、上傳路徑、CDN base。</li>
+<li><strong>識別子，不是憑證</strong>：GA4 measurement ID、Sentry DSN、Stripe publishable key、Firebase 前端 config、Google Maps browser key。這類 key 的設計本來就是給瀏覽器用的，但要記得在對方後台綁 HTTP referrer 或 domain 限制。</li>
+<li><strong>build 行為開關</strong>：要不要保留 console、要不要開 mock、要不要出 sourcemap、壓縮方式。</li>
+<li><strong>顯示用常數</strong>：應用標題、版本號、region。</li>
+</ol>
+<p>判準只有一句：這個值被拿走，攻擊者能做的事是「呼叫你本來就對全世界開放的東西」？可以放。能「以你的身分」做事？不能放。</p>
+<h3 id="不能放的就算沒前綴也一樣">不能放的，就算沒前綴也一樣</h3>
+<ul>
+<li>任何 <code>*_SECRET</code>、<code>*_PRIVATE_KEY</code>、<code>*_TOKEN</code>：GitHub PAT、OpenAI、Stripe secret key。</li>
+<li><code>DATABASE_URL</code>、<code>JWT_SECRET</code>。</li>
+<li>「前端需要直接打第三方 API」的 key。這不是 env 問題，是架構問題。解法是後端代理一層（BFF），或請第三方發短期、限範圍的 token 給前端，而不是把長期 key 塞進 bundle。refresh token 就是這個思路的一種實作：前端拿短命 access token，長命的那把留在後端或 httpOnly cookie。這題我也在頻道講過：<a href="https://www.youtube.com/watch?v=jp-mD9_U2IE" target="_blank" rel="noopener noreferrer">為什麼有些網站一個月不開還是登入狀態？refresh token 白話解釋</a>。</li>
+<li>內網主機名、測試環境帳密。放 <code>.env.local</code> 或 <code>.env.development.local</code>，gitignore 掉。案例裡那個進了 git 的 proxy host 就是這條。</li>
+</ul>
+<h3 id="不該放-env-的設定">不該放 env 的「設定」</h3>
+<p>有兩類東西看起來像設定，但放 env 是錯的：</p>
+<ul>
+<li><strong>per-user、per-tenant 的 feature flag</strong>。env 是 build-time 值，改一個 flag 要重 build 就錯了。這種東西是 runtime 狀態，該由後端權限清單或 flag service 決定，前端照清單渲染。案例那套系統就是這樣做的。</li>
+<li><strong>任何會隨登入者改變的值</strong>。同理。</li>
+</ul>
+<h3 id="檔案分工">檔案分工</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>.env                    # 所有環境共用的公開預設，進 git</span></span>
+<span class="line"><span>.env.development        # dev 專用公開值，進 git</span></span>
+<span class="line"><span>.env.production         # prod 專用公開值，進 git</span></span>
+<span class="line"><span>.env.*.local            # 個人機器、內網 host、本機開關，gitignore</span></span></code></pre>
+<p><code>.env.production</code> 進 git 沒有問題，前提是裡面真的沒有秘密。反過來說，如果你發現某個值「不太敢 commit」，那它就不該在前端 env 裡。該做的是換個地方放，不是換個檔案藏。</p>
+<h3 id="一行自檢">一行自檢</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">grep</span><span style="color:#79B8FF"> -rE</span><span style="color:#9ECBFF"> 'SECRET|TOKEN|PASSWORD|PRIVATE'</span><span style="color:#9ECBFF"> .env</span><span style="color:#79B8FF">*</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> grep</span><span style="color:#79B8FF"> -v</span><span style="color:#9ECBFF"> '\.local'</span></span></code></pre>
+<p>有輸出就該搬家。這行可以直接放進 pre-commit hook。</p>
+<h2 id="回到-zeabur-事件">回到 Zeabur 事件</h2>
+<p>Zeabur 官方已經說，事件調查還在進行中，完整報告會在內部調查與第三方鑑識完成後發布。現在外面流傳的截圖、推測、責任歸屬，都應該跟官方已確認資訊分開看。</p>
+<p>但工程端可以先學到一件事：</p>
+<p>部署平台的 ENV 是一個高價值集中點。它一旦被讀到，不只是「設定外洩」，而是整串供應鏈 credential、資料庫 credential、AI API 額度、付款系統、簽章秘密都可能一起暴露。</p>
+<p>所以現在要改的不是一句「改用 Secret Manager」而已。</p>
+<p>真正應該改的是：</p>
+<ul>
+<li>不要有 master secret</li>
+<li>每個服務只拿它需要的 secret</li>
+<li>能用 identity 就不要用長期 credential</li>
+<li>能鎖 IP 就鎖 IP</li>
+<li>能短期就不要永久</li>
+<li>能自動輪替就不要靠人手</li>
+<li>事故發生時，先問爆炸半徑，不要只問誰犯錯</li>
+</ul>
+<p>資安從來不是保證永遠不被攻破。資安是在每一層被攻破之後，讓下一層還有東西能擋，讓攻擊者拿不到全部。</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://status.zeabur.com/incident/1037896">Zeabur Status：Unauthorized Access to Project Environment Variable Data</a></li>
+<li><a href="https://zeabur.com/docs/en-US/security-practices">Zeabur Security Practices</a></li>
+<li><a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access.html">AWS Secrets Manager：Authentication and access control</a></li>
+<li><a href="https://docs.cloud.google.com/iam/docs/workload-identity-federation">Google Cloud IAM：Workload Identity Federation</a></li>
+<li><a href="https://docs.cloud.google.com/secret-manager/docs/authentication">Google Cloud Secret Manager：Authenticate to Secret Manager</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/key-vault/secrets/secure-secrets">Azure Key Vault：Secure your Azure Key Vault secrets</a></li>
+</ul>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>

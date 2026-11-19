@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-11-13-shot-director-storyboard/"><!-- Primary Meta Tags --><title>別只叫 AI 做出電影感：我用 shot-director 重剪一集應龍恐怖故事</title><meta name="title" content="別只叫 AI 做出電影感：我用 shot-director 重剪一集應龍恐怖故事"><meta name="description" content="旁白配風景不等於會說故事的影片。這次用 cinematic-skills 的 shot-director 拆分鏡，從聲音切點、空間交代到固定鏡頭，重剪一集只聞其聲、不見其形的應龍故事，整理可以直接套用的做法。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-11-13-shot-director-storyboard/"><meta property="og:title" content="別只叫 AI 做出電影感：我用 shot-director 重剪一集應龍恐怖故事"><meta property="og:description" content="旁白配風景不等於會說故事的影片。這次用 cinematic-skills 的 shot-director 拆分鏡，從聲音切點、空間交代到固定鏡頭，重剪一集只聞其聲、不見其形的應龍故事，整理可以直接套用的做法。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-11-13-shot-director-storyboard/cover.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-11-13-shot-director-storyboard/"><meta property="twitter:title" content="別只叫 AI 做出電影感：我用 shot-director 重剪一集應龍恐怖故事"><meta property="twitter:description" content="旁白配風景不等於會說故事的影片。這次用 cinematic-skills 的 shot-director 拆分鏡，從聲音切點、空間交代到固定鏡頭，重剪一集只聞其聲、不見其形的應龍故事，整理可以直接套用的做法。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-11-13-shot-director-storyboard/cover.png"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		})();</script><link rel="stylesheet" href="/assets/about-BWB9jgRC.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 1000px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/blog/category/reviews/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 好好入手 </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-11-13-shot-director-storyboard/cover.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-11-13T00:00:00.000Z"> Nov 13, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>別只叫 AI 做出電影感：我用 shot-director 重剪一集應龍恐怖故事</h1> <hr data-astro-cid-bvzihdzo> </div>  <p>最近做 The Midnight Signal Studio，我碰到一個很直接的問題：<strong>故事有了，旁白有了，畫面也漂亮，但看起來還是太像有聲投影片。</strong></p>
+<p>把靜態圖片換成影片，確實會好一點。可是山景、森林、雨景輪流播，如果只是旁白說到山就放山，說到下雨就放雨，觀眾仍然不知道自己站在哪裡、正在等什麼。</p>
+<p>這次的故事剛好很適合拿來處理這件事：應龍出現在中國山區，主角聽見吼聲，卻始終看不到牠的全貌。我給製作流程的限制更嚴格：連龍的輪廓、爪子、巨大影子都不要出現。這是一部原創虛構故事，不是目擊紀錄。</p>
+<p><strong>既然不能靠怪物出場，鏡頭就得讓觀眾願意一直聽。</strong></p>
+<h2 id="shot-director-幫的是分鏡不是按一下替你剪完">shot-director 幫的是分鏡，不是按一下替你剪完</h2>
+<p>我用的是 <a href="https://github.com/AustinZ21/cinematic-skills/tree/c462c41/skills/shot-director">cinematic-skills 裡的 shot-director</a>，這次固定參考 <code>c462c41</code> 版本。它是一份給 AI agent 閱讀的鏡頭設計指南，搭配運鏡、時間與空間、檢查清單等參考文件。</p>
+<p>它不會自己吐出影片，也不是我先前提到的 FilmOps 分析程式。這次實際做的是：讓 agent 讀指南、寫分鏡、檢查素材，再交給剪輯流程執行。</p>
+<p>我最喜歡它逼人回答的一件事：<strong>這一鏡，讓觀眾多知道了什麼，或多感受到什麼？</strong></p>
+<p>如果答案只是「這段空拍很美」，我就會再想一次它要不要留。</p>
+<h2 id="先把有電影感改成能執行的描述">先把「有電影感」改成能執行的描述</h2>
+<p>以前很容易丟這種要求：</p>
+<blockquote>
+<p>山區很神祕，鏡頭要有電影感，營造壓迫感。</p>
+</blockquote>
+<p>這些詞可以表達喜好，卻沒有告訴剪輯的人要做什麼。我現在會改成下面這樣。這是我依這次故事整理的指令範例：</p>
+<blockquote>
+<p>在第一聲吼叫前，切到窗上的雨。保持同一個視角，讓雨滴持續滑落，窗框仍留在畫面中。聲音出現時不要立刻換景，等尾音結束、留出反應的時間再切。窗外只有普通山林，不出現任何生物線索。</p>
+</blockquote>
+<p>差別在於：有了可以選素材、排時間、驗收畫面的條件。</p>
+<p>shot-director 將鏡頭描述拆成六個層次。我把它改寫成自己做素材剪輯時會問的問題：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>層次</th><th>我實際會問什麼</th></tr></thead><tbody><tr><td>主體與動作</td><td>是雨滴在流、霧在飄，還是人真的有動作？</td></tr><tr><td>景別</td><td>這裡要交代整片山，還是只看腳邊的濕地？</td></tr><tr><td>角度與高度</td><td>觀眾像站在現場，還是突然飛到山頂？</td></tr><tr><td>鏡頭與對焦</td><td>窗上的雨清楚，還是遠山清楚？原素材看得出什麼？</td></tr><tr><td>攝影機移動</td><td>原片真的在移動嗎？方向有沒有改變？</td></tr><tr><td>節奏與限制</td><td>留多久、在哪裡切、哪些東西不能出現？</td></tr></tbody></table>
+<p>這個分類來自指南的 <a href="https://github.com/AustinZ21/cinematic-skills/blob/c462c41/skills/shot-director/references/foundations.md">foundations</a>，表格中的問題則是我針對現成素材的用法。</p>
+<p>用素材庫有個現實限制：<strong>分鏡可以要求一個鏡頭，但不能假裝手上的素材已經拍到了。</strong> 看不出焦段，就不硬填 35mm；分不清是平移還是轉動，就記錄「向右重新構圖，移動方式未確認」。寫得精準，也包含承認不知道。</p>
+<h2 id="先排聲音再決定哪裡不要切">先排聲音，再決定哪裡不要切</h2>
+<figure>
+  <img src="/blog/2026-11-13-shot-director-storyboard/01-sound-led-cuts.png" alt="窗仔戴耳機查看山景、山屋與雨窗分鏡，小機器人指向下方的聲音波形，提示先聽再切。" width="1536" height="1024" loading="lazy">
+  <figcaption>概念插圖：分鏡要能回答聲音出現時，觀眾應該留在哪個位置。</figcaption>
+</figure>
+<p>這集的旁白和字幕已經做好，我不想為了新畫面把整段聲音重新生成。因此先把旁白提到地點、動作的時間，以及吼聲開始、結束的位置放在同一張表上，再安排鏡頭。</p>
+<p>指南有音樂節拍的做法，但這一集的節奏來自旁白、雨聲與等待。我沒有硬套背景音樂的拍點。</p>
+<p>以新版開場為例，前三鏡是這樣排的：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>影片時間</th><th>畫面</th><th>這一鏡的工作</th></tr></thead><tbody><tr><td>00:00–00:03.50</td><td>山峰與流動霧氣</td><td>先建立山區的距離與尺度。</td></tr><tr><td>00:03.50–00:07.25</td><td>山屋插入畫面</td><td>配合旁白第一次提到山屋，讓觀眾知道敘事者待在哪裡。</td></tr><tr><td>00:07.25–00:24.25</td><td>雨滴滑過窗玻璃</td><td>第一聲吼叫約在第 12.22 秒開始；保持同一個窗口，直到聲音結束後才離開。</td></tr></tbody></table>
+<p>第三鏡留了 17 秒。這不是忘了剪，而是這段的主角變成了聲音。</p>
+<p>若吼聲一來就連切三個山景，觀眾會忙著辨認新畫面。我想要的是讓他待在窗後，開始懷疑聲音到底從哪裡來。</p>
+<p>這是這次分鏡最實用的改變：<strong>除了標記切點，也標記不能切的區間。</strong></p>
+<h2 id="固定鏡頭不等於靜態圖片">固定鏡頭，不等於靜態圖片</h2>
+<figure>
+  <img src="/blog/2026-11-13-shot-director-storyboard/02-locked-camera.png" alt="窗仔與小機器人在固定的三腳架攝影機旁觀察雨窗，雨滴和樹葉在動，攝影機保持不動。" width="1536" height="1024" loading="lazy">
+  <figcaption>概念插圖：讓環境活動，不必每一鏡都推拉搖移。</figcaption>
+</figure>
+<p>我原本要求這集至少九成使用動態影片。重剪時更清楚一件事：這個比例要算的是<strong>真正的影片時長</strong>，不能把圖片慢慢放大，就當作實拍動態素材。</p>
+<p>固定攝影機拍到雨滴、風吹樹葉、霧穿過森林，畫面裡仍然有時間流動。尤其故事說人物停下來聽，畫面一起停止移動，環境卻繼續下雨，反而更合理。</p>
+<p>新版的分鏡安排是 104 段剪輯片段、22 個動態來源，保留 82 秒的靜態插入畫面。以約 24 分 34 秒的片長計算，動態影片約占 <strong>94.44%</strong>。這是依時間線的來源類型統計，不代表每一個像素都在移動，也不是影片品質分數。</p>
+<p>那 82 秒沒有硬湊成影片。山屋、設備、路線等特定資訊，短暫用靜態畫面交代，有時比塞一段不相干的素材更清楚。</p>
+<h2 id="先交代路在哪裡觀眾才會在乎人走不走得出去">先交代路在哪裡，觀眾才會在乎人走不走得出去</h2>
+<p>整理分鏡時，我也刪掉了幾段單看很好看的素材。</p>
+<p>故事說的是石階，素材卻出現木階梯；敘事還在濕冷的山徑，畫面突然換成湖邊公路。這些素材本身沒有問題，但放在這裡，會讓空間關係變得模糊。</p>
+<p>我的調整很簡單：山屋第一次被提到時先交代山屋；路線出現時給觀眾方向；真正到達出口，才出現出口畫面。不要為了畫面豐富，提前把故事還沒抵達的地方秀出來。</p>
+<p>這個思路參考指南的 <a href="https://github.com/AustinZ21/cinematic-skills/blob/c462c41/skills/shot-director/references/time-and-space.md">time-and-space</a>。對這集來說，空間連續性比再加一個漂亮轉場有用。</p>
+<p>素材裡的山景也不會因此變成故事地點的實拍證據。故事設定在中國山區，來源不同的景物只是敘事示意，不能包裝成真實現場。</p>
+<h2 id="我的實際工具分工">我的實際工具分工</h2>
+<p>這次流程可以寫成一行：</p>
+<p><strong>故事與既有聲音 → 聲音時間表 → shot-director 分鏡 → 挑選素材 → MoneyPrinterTurbo 組接 → 字幕與混音輸出 → 檢查。</strong></p>
+<p>其中 MoneyPrinterTurbo 實際執行了影片組接，字幕與最終音軌則由後續輸出流程處理。我沒有讓它用預設配音取代原本選好的聲音，也沒有把整個流程說成一鍵完成。</p>
+<p>檢查不只看「檔案有沒有生出來」。這次保留 413 段原字幕，核對字幕文字，並抽查輸出音軌與原混音是否有時間偏移；聲音設計中一處銜接則依劇情時間做了修正。技術比對能抓掉軌、錯位等問題，但不等於完整的人類試聽。</p>
+<p>素材整理也一起做了。下載後記錄來源頁、作者、授權資訊、內容分類，以及用在哪一集。缺少確切來源的舊檔先標成待確認，不能因為檔名寫著 Pexels 或 Pixabay，就直接當作已完成授權查核。</p>
+<p>下次要找「雨窗、固定視角、至少 15 秒」，這些紀錄比一個叫 <code>final-final-02.mp4</code> 的檔名有用得多。</p>
+<h2 id="想試的話可以先從三鏡開始">想試的話，可以先從三鏡開始</h2>
+<p>不必一開始就替半小時影片寫一百格分鏡。先挑一段 30 秒、有一個明確聲音事件的內容，寫三鏡就好。</p>
+<p>想重現我這次參考的版本，可以把整份指南放進專案參考資料夾，保留它相對路徑下的文件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">git</span><span style="color:#9ECBFF"> clone</span><span style="color:#9ECBFF"> https://github.com/AustinZ21/cinematic-skills.git</span><span style="color:#9ECBFF"> references/cinematic-skills</span></span>
+<span class="line"><span style="color:#B392F0">git</span><span style="color:#79B8FF"> -C</span><span style="color:#9ECBFF"> references/cinematic-skills</span><span style="color:#9ECBFF"> checkout</span><span style="color:#9ECBFF"> c462c412c69b45a0e2bb827f55a1555c0738c0f9</span></span></code></pre>
+<p>接著請 agent 讀取 <code>references/cinematic-skills/skills/shot-director/SKILL.md</code>。這只是固定版本的專案參考做法，不代表已經安裝成所有專案都會自動啟用的全域 skill。</p>
+<p>下面這段是我整理的起手指令，可以換成自己的故事：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>先閱讀 shot-director 的 SKILL.md 與這段影片需要的參考文件。</span></span>
+<span class="line"><span>我要剪一段 30 秒的聲音懸疑故事，16:9，使用現成影片素材。</span></span>
+<span class="line"><span>旁白與音效已確定，以它們的時間為準，不重新產生配音。</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>先寫三鏡分鏡。每鏡列出：</span></span>
+<span class="line"><span>- 觀眾新知道或感受到什麼</span></span>
+<span class="line"><span>- 開始與結束時間</span></span>
+<span class="line"><span>- 主體動作、景別、視角、對焦與實際攝影機移動</span></span>
+<span class="line"><span>- 素材需要具備的條件，以及缺少素材時的替代方案</span></span>
+<span class="line"><span>- 聲音切點，以及聲音出現後必須保持畫面的區間</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>未知焦段、拍攝地點或器材請標成未知。</span></span>
+<span class="line"><span>固定鏡頭可以保留環境動作；不要用圖片放大冒充動態素材。</span></span>
+<span class="line"><span>最後檢查地點是否連貫，以及每次切換是否有理由。</span></span></code></pre>
+<h2 id="這樣會比較有流量嗎">這樣會比較有流量嗎？</h2>
+<p>我希望會，但現在不能拿剪輯規格當成成效證明。</p>
+<p>這次做的是讓開場更快交代情境、讓聲音事件有足夠空間，以及減少沒有理由的畫面跳換。發布後才有機會從觀眾留存曲線觀察：人在哪裡離開？長時間聽聲音的段落留不留得住人？標題承諾的懸疑，開頭是否真的交付了？</p>
+<p>「每三秒切一次」或「動態比例超過九成」，都不是我已經驗證的流量公式。對一部靠聲音講故事的影片，該切的地方切、該留下來聽的地方不急著走，才是這次真正想練的事情。</p>
+<hr>
+<p>本文工具參考固定於 cinematic-skills 的 <code>c462c41</code> 版本；案例為本頻道應龍故事的 v3 重剪。封面與兩張窗仔插圖由 AI 生成，用於說明概念，並非影片截圖。文中的分鏡時間與比例來自本次製作紀錄，不代表觀看成效。</p>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>

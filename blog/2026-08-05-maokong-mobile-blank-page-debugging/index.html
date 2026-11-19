@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-08-05-maokong-mobile-blank-page-debugging/"><!-- Primary Meta Tags --><title>手機開起來一片空白，LINE 卻正常：一次挖到底的除錯日誌</title><meta name="title" content="手機開起來一片空白，LINE 卻正常：一次挖到底的除錯日誌"><meta name="description" content="同一個網址，手機 Chrome 一片空白，LINE 內建瀏覽器卻好好的。這篇是完整的除錯過程：SPA rewrite 讓死掉的檔案回 200 text/html、沒有 Error Boundary 讓例外變成白畫面、three.js 把首屏 bundle 撐到 1 MB，以及最後那個只有使用者看得見、我在自己機器上永遠重現不了的 z-fighting。中間我還自己製造了一個 regression。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-08-05-maokong-mobile-blank-page-debugging/"><meta property="og:title" content="手機開起來一片空白，LINE 卻正常：一次挖到底的除錯日誌"><meta property="og:description" content="同一個網址，手機 Chrome 一片空白，LINE 內建瀏覽器卻好好的。這篇是完整的除錯過程：SPA rewrite 讓死掉的檔案回 200 text/html、沒有 Error Boundary 讓例外變成白畫面、three.js 把首屏 bundle 撐到 1 MB，以及最後那個只有使用者看得見、我在自己機器上永遠重現不了的 z-fighting。中間我還自己製造了一個 regression。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-08-05-maokong-mobile-blank-page-debugging/cover.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-08-05-maokong-mobile-blank-page-debugging/"><meta property="twitter:title" content="手機開起來一片空白，LINE 卻正常：一次挖到底的除錯日誌"><meta property="twitter:description" content="同一個網址，手機 Chrome 一片空白，LINE 內建瀏覽器卻好好的。這篇是完整的除錯過程：SPA rewrite 讓死掉的檔案回 200 text/html、沒有 Error Boundary 讓例外變成白畫面、three.js 把首屏 bundle 撐到 1 MB，以及最後那個只有使用者看得見、我在自己機器上永遠重現不了的 z-fighting。中間我還自己製造了一個 regression。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-08-05-maokong-mobile-blank-page-debugging/cover.png"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		})();</script><link rel="stylesheet" href="/assets/about-BWB9jgRC.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 1000px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/blog/category/reviews/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 好好入手 </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-08-05-maokong-mobile-blank-page-debugging/cover.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-08-05T00:00:00.000Z"> Aug 5, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>手機開起來一片空白，LINE 卻正常：一次挖到底的除錯日誌</h1> <hr data-astro-cid-bvzihdzo> </div>  <p>貓空聚會的邀請函上線一陣子了。某天收到一句回報：</p>
+<blockquote>
+<p>用手機的 Chrome 開起來一片空白，但 LINE 的瀏覽器又正常。</p>
+</blockquote>
+<p>這句話裡有一個很珍貴的東西：<strong>對照組</strong>。同一個網址、同一支手機、兩個瀏覽器，一個死一個活。有對照組的 bug 比「它壞了」好查一百倍。</p>
+<p>結果這條線挖下去，總共挖出四個彼此無關的問題，其中一個是我在修前三個的時候自己造出來的。這篇按照實際發生的順序記錄，包含我猜錯的部分。</p>
+<h2 id="先講結論">先講結論</h2>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>問題</th>
+			<th>症狀</th>
+			<th>為什麼難查</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="問題">SPA rewrite 吃掉 404</td>
+			<td data-label="症狀">舊快取指向已刪除的 JS，伺服器回 <code>200 text/html</code></td>
+			<td data-label="為什麼難查">module 被 MIME 檢查擋掉，<strong>不執行也不報錯</strong></td>
+		</tr>
+		<tr>
+			<td data-label="問題">沒有 Error Boundary</td>
+			<td data-label="症狀">任何 render 例外 → React 卸載整棵樹</td>
+			<td data-label="為什麼難查">手機沒有 devtools，白畫面等於零資訊</td>
+		</tr>
+		<tr>
+			<td data-label="問題"><code>localStorage</code> 會 throw</td>
+			<td data-label="症狀">瀏覽器封鎖 site data 時 <code>getItem</code> 丟 <code>SecurityError</code></td>
+			<td data-label="為什麼難查">錯在 <code>useEffect</code> 裡，直接炸掉整頁</td>
+		</tr>
+		<tr>
+			<td data-label="問題">z-fighting</td>
+			<td data-label="症狀">桌面第三道山一直閃</td>
+			<td data-label="為什麼難查">我在自己機器上<strong>永遠重現不了</strong></td>
+		</tr>
+	</tbody>
+</table>
+<h2 id="一vercel-的-spa-rewrite-是靜默失敗製造機">一、Vercel 的 SPA rewrite 是靜默失敗製造機</h2>
+<p><code>vercel.json</code> 原本長這樣，是每個 SPA 教學都會叫你貼的那段：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "rewrites"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    { </span><span style="color:#79B8FF">"source"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"/(.*)"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"destination"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"/index.html"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>它的用途是讓 <code>/gallery</code>、<code>/rsvp</code> 這種前端路由不要 404。但 <code>/(.*)</code>  的意思是<strong>所有路徑</strong>，包含 <code>/assets/index-abc123.js</code>。</p>
+<p>於是我試著打一個不存在的檔案：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -sI</span><span style="color:#9ECBFF"> https://</span><span style="color:#F97583">&#x3C;</span><span style="color:#9ECBFF">站</span><span style="color:#E1E4E8">台</span><span style="color:#F97583">></span><span style="color:#9ECBFF">/assets/index-OLDHASH.js</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>HTTP/2 200</span></span>
+<span class="line"><span>content-type: text/html; charset=utf-8</span></span></code></pre>
+<p><strong>200，而且 content-type 是 <code>text/html</code>。</strong> 內容是 <code>index.html</code>。</p>
+<p>這就是空白頁的機制。瀏覽器留著舊版的 <code>index.html</code>，裡面寫著上一次部署的檔名雜湊；那個檔已經被刪了，伺服器把首頁當成 JS 餵回去。而 <code>&#x3C;script type="module"></code> 有嚴格的 MIME 檢查：拿到 <code>text/html</code> 就<strong>直接拒絕執行</strong>。</p>
+<p>不執行。不報錯。畫面全白。</p>
+<p><img src="/blog/2026-08-05-maokong-mobile-blank-page-debugging/01-html-instead-of-js.png" alt="我伸手去要一份腳本，櫃台遞出來的是一張網頁，還蓋章說成功"></p>
+<p>LINE 的內建瀏覽器有自己獨立的快取，第一次開就是全新載入，拿到的是正確的檔名——所以它好好的。對照組解釋完畢。</p>
+<p>修法是把 <code>/assets</code> 排除在 rewrite 之外，讓不存在的檔案回真正的 404：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "rewrites"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    { </span><span style="color:#79B8FF">"source"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"/((?!assets/).*)"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"destination"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"/index.html"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#79B8FF">  "headers"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "source"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"/assets/(.*)"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "headers"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">        { </span><span style="color:#79B8FF">"key"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Cache-Control"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"value"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"public, max-age=31536000, immutable"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">      ]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>順手把 <code>/assets</code> 標成 <code>immutable</code>——檔名本來就帶內容雜湊，永遠不需要重新驗證。Vercel 預設給的是 <code>max-age=0, must-revalidate</code>，等於每次都多一趟往返。</p>
+<p>這個修正<strong>沒辦法在本機驗證</strong>（起不了 Vercel 的路由層），只能部署後 curl 確認。上線後回 <code>404 text/plain</code>，同時 <code>/gallery</code> 還是回 <code>200 text/html</code>——兩邊都要驗，只驗一邊很容易改壞路由。</p>
+<h2 id="二白畫面的真正問題是它不會說話">二、白畫面的真正問題是它不會說話</h2>
+<p>上面那個修好了，但我意識到更嚴重的事：<strong>這個網站沒有任何機制能告訴使用者出了什麼事。</strong></p>
+<p>React 只要在 render 或 lifecycle 裡拋出例外，就會卸載整棵樹。手機上沒有 devtools，使用者看到的永遠是一片白，回報回來也永遠是「打不開」。</p>
+<p>所以加了兩層。第一層是 React 的 Error Boundary，這個很標準。第二層比較少見，但它才是真正救到這次的關鍵——<strong>一段跑在 module 之前的 classic script</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> booted </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> timer </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> show</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">title</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">detail</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* 把訊息塞進 #root */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // main.tsx 執行到就會呼叫，代表 module 成功載入</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">__maokongBooted</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      booted </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (timer) </span><span style="color:#B392F0">clearTimeout</span><span style="color:#E1E4E8">(timer);</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'error'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      var</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.target;</span></span>
+<span class="line"><span style="color:#6A737D">      // 資源載入失敗（script/link）沒有 e.error，只有 target</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (t </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> window </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> (t.tagName </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'SCRIPT'</span><span style="color:#F97583"> ||</span><span style="color:#E1E4E8"> t.tagName </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'LINK'</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#B392F0">        show</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'資源載入失敗'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'無法載入：'</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> (t.src </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> t.href));</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#B392F0">      show</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'程式發生錯誤'</span><span style="color:#E1E4E8">, (e.error </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> e.error.stack) </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> e.message);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    timer </span><span style="color:#F97583">=</span><span style="color:#B392F0"> setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#B392F0">      show</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'頁面沒有載入完成'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'主程式在 10 秒內沒有啟動。</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">UA: '</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> navigator.userAgent);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }, </span><span style="color:#79B8FF">10000</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  })();</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>關鍵在<strong>它必須是 classic script</strong>。第一個問題的失敗模式是 module 根本沒被執行——這時候 Error Boundary 連載入都還沒載入，救不了任何東西。只有一段不依賴 module 系統的程式碼才攔得到。</p>
+<p>順便把 UA 印出來。使用者截個圖，我就知道是哪個瀏覽器哪個版本。</p>
+<p><img src="/blog/2026-08-05-maokong-mobile-blank-page-debugging/02-white-page-cannot-speak.png" alt="我裝了一個土炮計時器，十秒內沒動靜就自動把原因蓋印到那面白板上"></p>
+<h2 id="三localstorage-是會拋例外的">三、<code>localStorage</code> 是會拋例外的</h2>
+<p>這是查第二層的時候順手發現的。原本的程式碼：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> stored</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> localStorage.</span><span style="color:#B392F0">getItem</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">STORAGE_KEY</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">stored) { </span><span style="color:#6A737D">/* ... */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  setAttendees</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(stored));</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  setAttendees</span><span style="color:#E1E4E8">(seed);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>JSON.parse</code> 有包 try/catch，<code>getItem</code> 沒有。但 <code>getItem</code> 本身就會拋：瀏覽器封鎖該站 site data 時（Chrome 的「封鎖所有 Cookie」、某些企業政策、沙箱化的 iframe），它丟的是 <code>SecurityError</code>，不是回傳 <code>null</code>。</p>
+<p>而這行在 <code>useEffect</code> 裡。一拋，整棵樹卸載，白畫面。</p>
+<p>改成一律走安全層：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> readStorage</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">key</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> localStorage.</span><span style="color:#B392F0">getItem</span><span style="color:#E1E4E8">(key);</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (err) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">warn</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`[safeStorage] 無法讀取 ${</span><span style="color:#E1E4E8">key</span><span style="color:#9ECBFF">}，改用記憶體模式：`</span><span style="color:#E1E4E8">, err);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>讀失敗回 <code>null</code>，寫失敗靜默略過。</strong> 功能降級（勾選狀態不會保留），但頁面必須活著。裝飾性的持久化不值得拿整頁去換。</p>
+<h2 id="四手機根本不該跑那個-webgl-背景">四、手機根本不該跑那個 WebGL 背景</h2>
+<p>到這裡使用者提出另一個方向：會不會是效能問題？</p>
+<p>量了才知道有多誇張：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>dist/assets/index-xxxx.js   1,049.42 kB │ gzip: 309.62 kB</span></span></code></pre>
+<p><strong>單一 chunk 1 MB，其中三分之二是 three.js。</strong> 而且每一台裝置——包含所有手機——都會下載它、解析它，然後跑一個全螢幕的 WebGL render loop。低階 Android 上，這個組合足以讓分頁被系統回收。回收之後看到的是什麼？一片白。</p>
+<p>使用者的要求很明確：手機不用這麼 fancy，桌面保留。這是對的取捨，而且做法很直接。</p>
+<p>先把判斷抽出來：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> shouldRenderWebGLScene</span><span style="color:#E1E4E8">()</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> boolean</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> window </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'undefined'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (window.</span><span style="color:#B392F0">matchMedia</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'(prefers-reduced-motion: reduce)'</span><span style="color:#E1E4E8">).matches) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> conn</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (navigator </span><span style="color:#F97583">as</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">).connection;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (conn?.saveData </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> conn?.effectiveType </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'string'</span><span style="color:#F97583"> &#x26;&#x26;</span><span style="color:#9ECBFF"> /</span><span style="color:#DBEDFF">(</span><span style="color:#F97583">^|</span><span style="color:#DBEDFF">-)2g</span><span style="color:#F97583">$</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">test</span><span style="color:#E1E4E8">(conn.effectiveType)) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 觸控 + 窄螢幕 = 手機</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> isPhone</span><span style="color:#F97583"> =</span></span>
+<span class="line"><span style="color:#E1E4E8">      window.</span><span style="color:#B392F0">matchMedia</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'(pointer: coarse)'</span><span style="color:#E1E4E8">).matches </span><span style="color:#F97583">&#x26;&#x26;</span></span>
+<span class="line"><span style="color:#E1E4E8">      window.</span><span style="color:#B392F0">matchMedia</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'(max-width: 900px)'</span><span style="color:#E1E4E8">).matches;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (isPhone) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> mem</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (navigator </span><span style="color:#F97583">as</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">).deviceMemory;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> mem </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'number'</span><span style="color:#F97583"> &#x26;&#x26;</span><span style="color:#E1E4E8"> mem </span><span style="color:#F97583">&#x3C;=</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> navigator.hardwareConcurrency </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'number'</span><span style="color:#F97583"> &#x26;&#x26;</span><span style="color:#E1E4E8"> navigator.hardwareConcurrency </span><span style="color:#F97583">&#x3C;=</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>偵測失敗一律回 <code>false</code>。</strong> 寧可少一層裝飾，也不要因為讀不到某個非標準 API 就讓頁面掛掉。</p>
+<p>然後讓 three.js 成為獨立 chunk，手機根本不會去要它：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> SceneBackground</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> lazy</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#F97583"> import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'./SceneBackground'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// ...</span></span>
+<span class="line"><span style="color:#E1E4E8">{use3D </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#79B8FF">Suspense</span><span style="color:#B392F0"> fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&#x3C;</span><span style="color:#79B8FF">StaticSceneBackground</span><span style="color:#B392F0"> mode</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{weatherMode} />}></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#79B8FF">SceneBackground</span><span style="color:#B392F0"> mode</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{weatherMode} /></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">) </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#79B8FF">StaticSceneBackground</span><span style="color:#B392F0"> mode</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{weatherMode} /></span></span>
+<span class="line"><span style="color:#E1E4E8">)}</span></span></code></pre>
+<p><code>StaticSceneBackground</code> 是一張 inline SVG，構圖跟 3D 版完全一致——四道山、太陽、山霧，共用同一組色票，晴雨切換用 CSS transition。手機看到的不是「陽春版」，是同一個設計的靜態版本。<strong>零額外 JS、零 render loop。</strong></p>
+<p>同一份 SVG 也當 Suspense 的 fallback，所以桌面在載入 three.js 那段期間，背景不會先空一塊再跳出來。</p>
+<p>順手把四個頁面改成 route-level lazy。切分結果：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>index.js            403.44 kB │ gzip: 129.32 kB   ← 手機只下載這個</span></span>
+<span class="line"><span>SceneBackground.js  496.28 kB │ gzip: 127.00 kB   ← 桌面才要</span></span>
+<span class="line"><span>GalleryPage.js       90.94 kB │ gzip:  35.92 kB</span></span>
+<span class="line"><span>ItineraryPage.js     38.28 kB │ gzip:  14.01 kB</span></span>
+<span class="line"><span>RsvpPage.js          22.00 kB │ gzip:   5.86 kB</span></span></code></pre>
+<p>手機首屏 JS：<strong>1049 kB → 403 kB</strong>（gzip 309 → 129 kB，減 58%）。</p>
+<p>驗證方式是用 CDP 開真正的行動裝置模擬（390×844、touch、Pixel UA），確認網路請求裡<strong>沒有 three.js 那個 chunk</strong>。不是看程式碼推論，是看實際發出的請求。</p>
+<h2 id="五然後我自己造了一個-regression">五、然後我自己造了一個 regression</h2>
+<p>改效能的時候我順手做了這件事：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#6A737D">// 「高 DPR 螢幕本身就有足夠取樣密度，MSAA 邊際效益低但成本高」</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> dpr</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">min</span><span style="color:#E1E4E8">(window.devicePixelRatio </span><span style="color:#F97583">||</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1.5</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">renderer </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> THREE</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">WebGLRenderer</span><span style="color:#E1E4E8">({ antialias: dpr </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 1.5</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">/* ... */</span><span style="color:#E1E4E8"> });</span></span></code></pre>
+<p>聽起來很合理。<strong>它是錯的。</strong></p>
+<p>回報馬上來了：桌面山巒開始閃。查線上實際的 context 屬性：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">"antialias"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"SAMPLES"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"backing"</span><span style="color:#E1E4E8">: [</span><span style="color:#79B8FF">2160</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1350</span><span style="color:#E1E4E8">], </span><span style="color:#79B8FF">"dpr"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>問題在那個 <code>Math.min(..., 1.5)</code>。DPR 被鎖在 1.5，而 Retina 原生是 2——backing store 是 2160×1350，要放大到 2880×1800 的裝置像素。<strong>畫面本來就已經是不足取樣了。</strong> 山稜是高對比硬邊、又隨視差持續移動，MSAA 正是在壓這個。我把唯一的補償拿掉了。</p>
+<p>改回 <code>antialias: true</code>。而且手機現在走 SVG，WebGL 只在桌面跑，MSAA 的成本完全付得起。</p>
+<p>教訓不是「不要關 MSAA」，是<strong>我把一個沒有量過的假設寫成了註解</strong>。那句「高 DPR 取樣密度已足夠」讀起來像根據，其實是我腦補的——而且旁邊三行就寫著 <code>Math.min(dpr, 1.5)</code>，證據就在原地，我沒看。</p>
+<h2 id="六真正的元凶我永遠重現不了的那個">六、真正的元凶：我永遠重現不了的那個</h2>
+<p>MSAA 修好部署上線，回報是：<strong>還是在閃。</strong></p>
+<p>這時候我做了整個過程中唯一正確的一件事：<strong>停止猜測，開始量。</strong></p>
+<p>先排除掛載問題。用 CDP 在 25 個取樣點上記錄：</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>檢查</th>
+			<th>結果</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="檢查">canvas 數量</td>
+			<td data-label="結果">恆為 1</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">canvas 節點</td>
+			<td data-label="結果">沒被重建</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">context lost</td>
+			<td data-label="結果">0 次</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">console 錯誤</td>
+			<td data-label="結果">無</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">靜止逐幀變動</td>
+			<td data-label="結果">平均 0.11%，最大 0.13%</td>
+		</tr>
+		<tr>
+			<td data-label="檢查">捲動頁面高度</td>
+			<td data-label="結果">恆定，視差無跳動</td>
+		</tr>
+	</tbody>
+</table>
+<p><strong>我測不到那個閃。</strong> 在我的環境裡它不存在。</p>
+<p>這是很多人會開始亂改的時刻——反正改一改推上去問使用者好了。但每次「猜一個、推上去、等回報」的循環都很貴，而且會累積一堆沒有根據的改動。</p>
+<p>所以我改成問，而且問能夠<strong>分辨假設</strong>的問題：是邊緣毛毛的像在爬，還是整片山突然變色？靜止時會不會？捲動才會？</p>
+<p>回答只有一句，但它值一千次猜測：</p>
+<blockquote>
+<p>由上而下第三個山有時候會一閃一閃。完全靜止不動時也會。</p>
+</blockquote>
+<p><strong>第三個。</strong> 打開座標表：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> RIDGES</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  { depth: </span><span style="color:#F97583">-</span><span style="color:#79B8FF">18</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#E1E4E8"> },  </span><span style="color:#6A737D">// 由上而下第一道</span></span>
+<span class="line"><span style="color:#E1E4E8">  { depth: </span><span style="color:#F97583">-</span><span style="color:#79B8FF">12</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#E1E4E8"> },  </span><span style="color:#6A737D">// 第二道</span></span>
+<span class="line"><span style="color:#E1E4E8">  { depth:  </span><span style="color:#F97583">-</span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#E1E4E8"> },  </span><span style="color:#6A737D">// 第三道 ← 就是它</span></span>
+<span class="line"><span style="color:#E1E4E8">  { depth:  </span><span style="color:#F97583">-</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
+<p>再看山霧：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#E1E4E8">m.position.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(x, </span><span style="color:#F97583">-</span><span style="color:#79B8FF">2</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.8</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">-</span><span style="color:#79B8FF">4</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// i=0 → z = -4</span></span>
+<span class="line"><span style="color:#6A737D">// i=1 → z = -7   ← 跟第三道山完全共面</span></span>
+<span class="line"><span style="color:#6A737D">// i=2 → z = -10</span></span></code></pre>
+<p><strong>第二片山霧和第三道山脊都在 z = -7，完全共面。</strong></p>
+<p>而且兩者都設了 <code>transparent: true</code>，所以都跑進 three.js 的 transparent pass，共用同一套深度排序與深度測試。24-bit 的深度緩衝分不開兩個共面的表面——重疊處就開始 z-fighting。</p>
+<p>山霧會持續橫向飄移、山脊本身還有一個 <code>Math.sin</code> 的微幅呼吸位移，所以<strong>就算使用者完全不動，重疊區域也一直在變</strong>。這解釋了「靜止時也會閃」。也解釋了為什麼晴天雨天都閃——這是幾何問題，跟色盤無關。</p>
+<p>至於為什麼我測不到：我用的是 headless 的軟體渲染，深度精度比實體 GPU 高。這種 bug 只在真的 GPU 上發生。</p>
+<p>兩處都改，各解一半：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#6A737D">// 山巒改成不透明：transparent:true + opacity:0.98 視覺上跟不透明沒差別，</span></span>
+<span class="line"><span style="color:#6A737D">// 卻把山脊丟進 transparent pass 跟山霧混在一起</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> mat</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> THREE</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">MeshBasicMaterial</span><span style="color:#E1E4E8">({ color: pal0.ridges[i] });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 山霧 z 避開 RIDGES 的 -18 / -12 / -7 / -3</span></span>
+<span class="line"><span style="color:#E1E4E8">m.position.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(x, </span><span style="color:#F97583">-</span><span style="color:#79B8FF">2</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.8</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">-</span><span style="color:#79B8FF">5.5</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 2.6</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">// → -5.5 / -8.1 / -10.7</span></span></code></pre>
+<p>新的間距最小 1.1 個單位。而山脊改成不透明之後，它們走 opaque pass（由近到遠、正常寫深度），完全退出那個排序，根本不再有機會跟山霧爭。</p>
+<p><code>opacity: 0.98</code> 這種「幾乎不透明」是很經典的陷阱：<strong>視覺上你看不出 2% 的差別，但它足以把物件丟進完全不同的渲染路徑。</strong> 半透明不是一個視覺參數，是一個架構決定。</p>
+<h2 id="這次學到什麼">這次學到什麼</h2>
+<p><strong>一、讓失敗大聲。</strong> 三個問題裡有兩個的症狀是同一片白畫面。Error Boundary 和那段 bootstrap 看門狗沒有修好任何 bug，但它們把「未知的白畫面」變成「畫面上寫著原因和 UA」。這個轉換的價值比任何單一修正都高。</p>
+<p><strong>二、重現不了就不要改。</strong> 我在測不到的情況下改了 MSAA，結果是製造第四個 bug。等到真的量了 25 個取樣點、確認自己環境裡沒有這個現象，才去問使用者要區辨性資訊——「第三個山」這五個字直接把問題定位到一行座標。</p>
+<p><strong>三、註解裡的理由要能被檢查。</strong> 「高 DPR 取樣密度已足夠」寫在程式碼裡看起來很專業，實際上是我沒有驗證的假設，而且推翻它的證據就在同一個函式裡。註解應該寫<strong>為什麼這樣做</strong>，但那個「為什麼」本身要站得住。</p>
+<p><strong>四、有對照組的回報是禮物。</strong> 「手機 Chrome 空白但 LINE 正常」和「由上而下第三個山」，這兩句話各自省掉我好幾個小時。使用者不需要懂技術，但他們能提供你在自己機器上永遠拿不到的觀測。</p>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>

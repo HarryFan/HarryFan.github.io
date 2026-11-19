@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/"><!-- Primary Meta Tags --><title>Gemini 4 Hydrogen 發布：前端工程師該怎麼評估 AI Agent 的交付能力？</title><meta name="title" content="Gemini 4 Hydrogen 發布：前端工程師該怎麼評估 AI Agent 的交付能力？"><meta name="description" content="核對 Google 官方公告與 Gemini App 文件，釐清 Hydrogen 的速度數據、思考層級與介面差異，再從 Vue 前端工作的角度，整理一套能實際驗收 AI Agent 的方法。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/"><meta property="og:title" content="Gemini 4 Hydrogen 發布：前端工程師該怎麼評估 AI Agent 的交付能力？"><meta property="og:description" content="核對 Google 官方公告與 Gemini App 文件，釐清 Hydrogen 的速度數據、思考層級與介面差異，再從 Vue 前端工作的角度，整理一套能實際驗收 AI Agent 的方法。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/cover-illustration.webp"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/"><meta property="twitter:title" content="Gemini 4 Hydrogen 發布：前端工程師該怎麼評估 AI Agent 的交付能力？"><meta property="twitter:description" content="核對 Google 官方公告與 Gemini App 文件，釐清 Hydrogen 的速度數據、思考層級與介面差異，再從 Vue 前端工作的角度，整理一套能實際驗收 AI Agent 的方法。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/cover-illustration.webp"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		})();</script><link rel="stylesheet" href="/assets/about-BWB9jgRC.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 1000px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/blog/category/reviews/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 好好入手 </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/cover-illustration.webp" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-11-13T00:00:00.000Z"> Nov 13, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>Gemini 4 Hydrogen 發布：前端工程師該怎麼評估 AI Agent 的交付能力？</h1> <hr data-astro-cid-bvzihdzo> </div>  <p>一個模型能很快改完程式碼，跟一個改動能放心合併，中間還有一段距離。</p>
+<p>站在前端工程師的角度，我對新模型最在意的事情是：它能不能讀懂既有專案、限制修改範圍，並拿出「這次修改沒有弄壞其他流程」的證據？</p>
+<p>Google 在 2026 年 11 月 12 日發布 Gemini 4 Hydrogen，定位包含日常 coding 與 agentic workflows。<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/">Google 官方發布公告</a></p>
+<p><strong>這篇是截至 2026/11/13 的官方資料核實與工程觀點，不是我已完成 Hydrogen 專案實測的心得。</strong> 下面會先區分可以確認的規格，再說明我會怎麼驗收它。</p>
+<h2 id="先把官方說法與使用介面分開">先把官方說法與使用介面分開</h2>
+<p>依 Google 發布公告，可確認的重點如下。表內效能數據都是官方報告，不能直接視為你我專案的結果。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>項目</th><th>官方資訊</th></tr></thead><tbody><tr><td>任務速度</td><td>相較 Gemini 3.8 Flash，在預設 high 設定下，官方報告任務完成快 2.5 倍</td></tr><tr><td>可靠性</td><td>官方稱 fabricated claims 減少超過 5 倍；不代表所有領域都有同樣幅度的「幻覺率下降」</td></tr><tr><td>上下文與多模態</td><td>100 萬 token 上下文；公告包含文件、圖表、音訊與影片的處理案例</td></tr><tr><td>思考深度</td><td>low、medium、high、xhigh；模型公告的預設為 high</td></tr></tbody></table>
+<p>來源：<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/">Google：Introducing Gemini 4 Hydrogen</a>。</p>
+<p>有兩個容易混淆的地方，我會先保留界線。</p>
+<p>首先，「取代 Flash 命名」不能理解成 Flash 全線消失。Google 仍在 Gemini App 說明中列出 Flash-Lite。其次，官方 App 文件把模型選擇與思考層級分開，列出 Low、Medium、High，且說明未選擇時預設為 Low；這與模型發布公告的四檔設定、預設 high 並不相同。<a href="https://support.google.com/gemini/answer/18648722">Gemini Apps：About Gemini models</a></p>
+<p>因此，看到某個介面出現「Hydrogen Thinking」，不能直接推定它是一個獨立模型，也不能推定那顆按鈕一定對應 xhigh。要看當前產品的說明與實際設定。我目前核對到的官方文件，還不足以替所有介面做這種一對一對照。</p>
+<figure>
+  <img src="/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/01-spec-vs-interface.webp" alt="窗仔拿著規格文件，小機器人拿著介面，提醒兩者不能直接畫上等號。" width="1536" height="1024" loading="lazy" decoding="async">
+  <figcaption>模型規格與產品介面需要分別核對，不能只靠選單名稱推定設定。</figcaption>
+</figure>
+<h2 id="我會先拿一個範圍清楚的-vue-任務測試">我會先拿一個範圍清楚的 Vue 任務測試</h2>
+<p>如果要評估 Hydrogen 是否適合加入前端工作流程，我會先選一個能重現、能驗收的問題。例如：</p>
+<blockquote>
+<p>Vue 後台的查詢頁，連續切換篩選條件時，舊請求晚回來，把新結果蓋掉。</p>
+</blockquote>
+<p>這是用來設計評估的假設案例，不是本次已執行的測試。</p>
+<p>它比「幫我做一個漂亮網站」更適合拿來觀察工程能力：問題有明確觸發條件，也能檢查修正有沒有副作用。</p>
+<p>我會把任務拆成三段。</p>
+<figure>
+  <img src="/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/02-stale-response.webp" alt="小機器人擋住帶著舊回應的蝸牛，保護已經抵達畫面的新結果。" width="1536" height="1024" loading="lazy" decoding="async">
+  <figcaption>評估用的假設案例：舊請求即使較晚回來，也不應覆蓋最新結果。</figcaption>
+</figure>
+<h3 id="先讀懂資料流再提出修改">先讀懂資料流，再提出修改</h3>
+<p>請它找出篩選條件、請求發送與畫面更新的關係，說明哪一段會造成舊結果覆蓋新結果。要求列出實際讀過的檔案與依據。</p>
+<p>如果它只看到錯誤描述，就立刻建議重寫整個狀態管理，我會先讓它回到問題本身。局部問題要先有局部假設。</p>
+<h3 id="只改能解決問題的地方">只改能解決問題的地方</h3>
+<p>請它提出最小修正方案，說明取捨。例如取消舊請求，或只允許最新請求更新畫面；選哪種做法，要配合現有 API client 和元件生命週期。</p>
+<p>不要順便換套件、改 API 契約或大幅整理不相關檔案。範圍擴大，review 成本也跟著增加。</p>
+<h3 id="驗收失敗情境而不只看成功畫面">驗收失敗情境，而不只看成功畫面</h3>
+<p>除了正常查詢，我會檢查快速切換、請求失敗、空結果，以及離開頁面後請求才回來的情況。</p>
+<p>測試若失敗，要區分「原本就失敗」和「這次修改造成」。測試若根本跑不了，就回報卡住的原因，不能把未執行寫成通過。</p>
+<h2 id="長上下文要搭配清楚的閱讀順序">長上下文要搭配清楚的閱讀順序</h2>
+<p>能放進更多資料，對大型專案有幫助。但在我的評估方式裡，還是會先準備：</p>
+<ul>
+<li>任務目標與重現步驟。</li>
+<li>相關元件、API 契約與既有測試。</li>
+<li>允許修改的範圍。</li>
+<li>明確的完成條件。</li>
+</ul>
+<p>不必一開始就把整個 repository 當成一份沒有重點的附件。先讓模型知道要解決什麼，再提供能驗證假設的上下文，會更容易追查它為什麼做出某個修改。</p>
+<p>同樣地，畫面截圖可以提供版面線索，卻不能取代按鈕行為、鍵盤操作與錯誤狀態的驗收。看起來完成，仍需要實際操作確認。</p>
+<h2 id="我會記錄這些結果再決定要不要換模型">我會記錄這些結果，再決定要不要換模型</h2>
+<figure>
+  <img src="/blog/2026-11-13-gemini-4-hydrogen-frontend-agent-workflow/03-delivery-checklist.webp" alt="窗仔拿放大鏡檢查程式拼圖，旁邊列出範圍、測試與成本的驗收清單。" width="1536" height="1024" loading="lazy" decoding="async">
+  <figcaption>驗收要一起看修改範圍、測試結果與整體成本。</figcaption>
+</figure>
+<p>單看第一段程式碼出現得多快，還不夠。我會用相同的起始版本、任務與驗收條件，比較候選模型，記錄下列項目：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>評估項目</th><th>我想回答的問題</th></tr></thead><tbody><tr><td>到驗收完成的總時間</td><td>把測試、修正與人工 review 算進去後，真的比較快嗎？</td></tr><tr><td>修改範圍</td><td>有沒有改到不相關的檔案或功能？</td></tr><tr><td>驗證結果</td><td>能否重現問題？修正後相關流程是否通過？</td></tr><tr><td>人工補救</td><td>我還需要修掉多少錯誤，才能接受這個改動？</td></tr><tr><td>使用成本</td><td>包含重試與失敗嘗試後，整個任務花了多少？</td></tr></tbody></table>
+<p>這些是我的評估方法，不是 Google 的測試結果，也不是 Hydrogen 已達成的成績。</p>
+<p>對我來說，AI 協作裡值得累積的專業能力，包括把需求講清楚、拆出可驗證的任務，以及判斷改動是否值得合併。模型能力提升時，這些工作仍然決定最後交付的品質。</p>
+<p>Hydrogen 值得放進候選清單。接下來要回答的，是它在自己的專案裡，能不能讓「從需求到驗收」這整段工作做得更好。</p>
+<p>你在評估 coding agent 時，最常卡在讀懂既有程式、控制修改範圍，還是驗收與除錯？歡迎交流實際碰到的問題。</p>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>

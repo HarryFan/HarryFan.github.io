@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-11-05-railway-incident-credential-rotation/"><!-- Primary Meta Tags --><title>Railway 環境變數外洩之後：我花 13 分鐘換掉一個同步服務的所有金鑰</title><meta name="title" content="Railway 環境變數外洩之後：我花 13 分鐘換掉一個同步服務的所有金鑰"><meta name="description" content="2026 年 10 月 Railway 公告環境變數可能遭未授權存取。我維護的一個電商會員同步服務照官方建議輪替了全部憑證：盤點、備份、把中斷壓到 13 分鐘、驗證、收尾，還順便挖出更早就存在的外洩跟一個沉默了好幾個月的 bug。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-11-05-railway-incident-credential-rotation/"><meta property="og:title" content="Railway 環境變數外洩之後：我花 13 分鐘換掉一個同步服務的所有金鑰"><meta property="og:description" content="2026 年 10 月 Railway 公告環境變數可能遭未授權存取。我維護的一個電商會員同步服務照官方建議輪替了全部憑證：盤點、備份、把中斷壓到 13 分鐘、驗證、收尾，還順便挖出更早就存在的外洩跟一個沉默了好幾個月的 bug。"><meta property="og:image" content="https://harryfan.github.io/blog-placeholder-1.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-11-05-railway-incident-credential-rotation/"><meta property="twitter:title" content="Railway 環境變數外洩之後：我花 13 分鐘換掉一個同步服務的所有金鑰"><meta property="twitter:description" content="2026 年 10 月 Railway 公告環境變數可能遭未授權存取。我維護的一個電商會員同步服務照官方建議輪替了全部憑證：盤點、備份、把中斷壓到 13 分鐘、驗證、收尾，還順便挖出更早就存在的外洩跟一個沉默了好幾個月的 bug。"><meta property="twitter:image" content="https://harryfan.github.io/blog-placeholder-1.jpg"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		})();</script><link rel="stylesheet" href="/assets/about-BWB9jgRC.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 1000px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/blog/category/reviews/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 好好入手 </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221440%22%20height%3D%22720%22%20viewBox%3D%220%200%201440%20720%22%3E%0A%09%09%3Cdefs%3E%0A%09%09%09%3Cpattern%20id%3D%22stripes%22%20width%3D%2226%22%20height%3D%2226%22%20patternUnits%3D%22userSpaceOnUse%22%20patternTransform%3D%22rotate(32)%22%3E%0A%09%09%09%09%3Crect%20width%3D%2226%22%20height%3D%2226%22%20fill%3D%22%23f4e6cf%22%2F%3E%0A%09%09%09%09%3Crect%20width%3D%2213%22%20height%3D%2226%22%20fill%3D%22%231f1b17%22%2F%3E%0A%09%09%09%3C%2Fpattern%3E%0A%09%09%09%3Cfilter%20id%3D%22paper%22%3E%0A%09%09%09%09%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.9%22%20numOctaves%3D%222%22%20stitchTiles%3D%22stitch%22%2F%3E%0A%09%09%09%09%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22%2F%3E%0A%09%09%09%09%3CfeComponentTransfer%3E%0A%09%09%09%09%09%3CfeFuncA%20type%3D%22table%22%20tableValues%3D%220%200.045%22%2F%3E%0A%09%09%09%09%3C%2FfeComponentTransfer%3E%0A%09%09%09%3C%2Ffilter%3E%0A%09%09%3C%2Fdefs%3E%0A%09%09%3Crect%20width%3D%221440%22%20height%3D%22720%22%20fill%3D%22%23f4e6cf%22%2F%3E%0A%09%09%3Crect%20width%3D%221440%22%20height%3D%22720%22%20filter%3D%22url(%23paper)%22%20opacity%3D%220.55%22%2F%3E%0A%09%09%3Crect%20x%3D%2272%22%20y%3D%2272%22%20width%3D%221296%22%20height%3D%22576%22%20fill%3D%22none%22%20stroke%3D%22%231f1b17%22%20stroke-width%3D%228%22%2F%3E%0A%09%09%3Crect%20x%3D%22930%22%20y%3D%2282%22%20width%3D%22330%22%20height%3D%22330%22%20fill%3D%22url(%23stripes)%22%20stroke%3D%22%231f1b17%22%20stroke-width%3D%228%22%20transform%3D%22rotate(-3%201095%20247)%22%2F%3E%0A%09%09%3Crect%20x%3D%22790%22%20y%3D%22252%22%20width%3D%22410%22%20height%3D%22220%22%20fill%3D%22%23137f73%22%20stroke%3D%22%231f1b17%22%20stroke-width%3D%228%22%20transform%3D%22rotate(3%20995%20362)%22%2F%3E%0A%09%09%3Ccircle%20cx%3D%221215%22%20cy%3D%22510%22%20r%3D%22108%22%20fill%3D%22%23df3f31%22%20stroke%3D%22%231f1b17%22%20stroke-width%3D%228%22%2F%3E%0A%09%09%3Crect%20x%3D%22116%22%20y%3D%22112%22%20width%3D%22300%22%20height%3D%2258%22%20fill%3D%22%23df3f31%22%20stroke%3D%22%231f1b17%22%20stroke-width%3D%226%22%20transform%3D%22rotate(-2%20266%20141)%22%2F%3E%0A%09%09%3Ctext%20x%3D%22142%22%20y%3D%22151%22%20fill%3D%22%23fbf3e5%22%20font-family%3D%22Atkinson%2C%20ui-sans-serif%2C%20system-ui%2C%20sans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2224%22%20letter-spacing%3D%228%22%3EHARRY%20%2F%20TECH%3C%2Ftext%3E%0A%09%09%3Crect%20x%3D%22116%22%20y%3D%22190%22%20width%3D%22185%22%20height%3D%2248%22%20fill%3D%22%23edbd37%22%20stroke%3D%22%231f1b17%22%20stroke-width%3D%225%22%2F%3E%0A%09%09%3Ctext%20x%3D%22138%22%20y%3D%22222%22%20fill%3D%22%231f1b17%22%20font-family%3D%22Atkinson%2C%20ui-sans-serif%2C%20system-ui%2C%20sans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2218%22%20letter-spacing%3D%225%22%3EFIELD%20CC572C%3C%2Ftext%3E%0A%09%09%3Ctext%20x%3D%22116%22%20y%3D%22575%22%20fill%3D%22%231f1b17%22%20font-family%3D%22Georgia%2C%20Times%20New%20Roman%2C%20serif%22%20font-weight%3D%22800%22%20font-size%3D%2264%22%3ERailway%20%E7%92%B0%E5%A2%83%E8%AE%8A%E6%95%B8%E5%A4%96%E6%B4%A9%E4%B9%8B%E5%BE%8C%EF%BC%9A%E6%88%91%E8%8A%B1%2013%20%E5%88%86%E9%90%98%E6%8F%9B%E6%8E%89%E4%B8%80%E5%80%8B%E5%90%8C%E6%AD%A5%E6%9C%8D%E5%8B%99%E7%9A%84%E6%89%80%E6%9C%89%E9%87%91%E9%91%B0%3C%2Ftext%3E%0A%09%09%3Cpath%20d%3D%22M116%20610H760%22%20stroke%3D%22%23137f73%22%20stroke-width%3D%2212%22%2F%3E%0A%09%3C%2Fsvg%3E" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-11-05T00:00:00.000Z"> Nov 5, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>Railway 環境變數外洩之後：我花 13 分鐘換掉一個同步服務的所有金鑰</h1> <hr data-astro-cid-bvzihdzo> </div>  <blockquote>
+<p>本文的專案已去識別化：不提客戶、品牌與平台帳號細節，只保留技術流程。文中不含任何真實金鑰。</p>
+</blockquote>
+<p>先講結論：<strong>平台說「事故已經處理完」，不代表你放在上面的金鑰是安全的。</strong> 該換的還是要換，而且真正動手之後，你會發現風險常常不只來自平台。</p>
+<p>這次我換掉一個小型同步服務的四組憑證，同步只中斷 13 分鐘，沒有漏資料。過程中還挖出兩件更早就存在的事：舊憑證早就躺在 Git 歷史裡，以及「即時同步」其實從來沒有運作過。</p>
+<hr>
+<h2 id="事情是怎麼開始的">事情是怎麼開始的</h2>
+<p>2026 年 10 月 21 日，Railway 公告：攻擊者取得內部系統存取權，查詢了加密的環境變數，其中一部分被解密。官方說受影響的最多是 1.85% 的 workspace，但沒辦法確定是哪幾把 key 被讀到，所以建議 <strong>10/21 以前註冊的用戶，把放在 Railway 的敏感變數全部換掉</strong>。</p>
+<p>10/26 官方更新說事故已經對既有用戶解除、部署也恢復了。</p>
+<p>很多人看到「已解除」就鬆一口氣。但仔細看，這句話的意思是「平台現在安全了」，不是「你之前那幾把 key 沒被拿走」。被讀走的 key，平台修好也收不回來。</p>
+<p>我維護的服務剛好就在 Railway 上：一個把電商平台會員資料同步到客服 CRM 的中介程式，Node.js + PostgreSQL，Webhook 加上每 15 分鐘輪詢。規模不大，但裡面有四組敏感憑證：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>憑證</th><th>用途</th></tr></thead><tbody><tr><td>電商平台存取權杖</td><td>讀會員資料、註冊 Webhook</td></tr><tr><td>電商平台 App Secret</td><td>驗證 Webhook 簽章</td></tr><tr><td>CRM API Token</td><td>寫入會員資料</td></tr><tr><td>資料庫密碼</td><td>同步紀錄、重試佇列、輪詢進度</td></tr></tbody></table>
+<p>四組都要換。</p>
+<hr>
+<h2 id="第一步不是換是盤點">第一步不是換，是盤點</h2>
+<p>我一開始以為「換金鑰」就是到後台按「重新產生」，然後貼回去。</p>
+<p>實際盤點完才發現，<strong>三個平台的換法完全不一樣，而這直接決定了切換順序</strong>：</p>
+<p><strong>資料庫密碼：可以重新產生。</strong> Railway Postgres 有 Regenerate Password，一鍵搞定。但同步服務的 <code>DATABASE_URL</code> 是寫死的字串，不會跟著自動更新。重產的那一刻，服務就連不上資料庫了。</p>
+<p><strong>電商平台的權杖跟 App Secret：不能重新產生。</strong> 後台只有「複製」和「解除安裝」。官方文件寫得很清楚：外洩時要建一個新的自訂 App，換好設定，再把舊 App 解除安裝。好消息是新舊 App 可以並存，建新 App 的時候，同步完全不受影響。</p>
+<p><strong>CRM 的 API Token：上限一個。</strong> 「新增 Token」按鈕是灰的，因為方案只允許一個。也就是說，<strong>一定要先刪舊的才能建新的</strong>，刪掉那一刻同步就斷了，而且回不去。</p>
+<figure>
+  <img src="/blog/2026-11-05-railway-incident-credential-rotation/01-three-keys.png" alt="窗仔面前有三扇門：第一扇門上有「重產」按鈕，第二扇門旁邊站著一扇一模一樣的新門，第三扇門前面只能放一把鑰匙，窗仔拿著清單在旁邊做筆記" loading="lazy">
+  <figcaption>三把鑰匙，三種換法。先搞清楚哪一把換了就回不去。</figcaption>
+</figure>
+<p>盤點還順便確認了幾件事：線上 <code>DATABASE_URL</code> 走的是內網、CRM Token 設定「允許所有 IP」（Railway 沒有固定出口 IP，鎖 IP 反而會讓新 Token 被擋），以及 Railway 這個方案在後台<strong>不能建立新備份</strong>。</p>
+<hr>
+<h2 id="第二個發現外洩早就發生了">第二個發現：外洩早就發生了</h2>
+<p>盤點時我順手掃了一遍 repo，比對本機 <code>.env</code> 裡的值有沒有出現在 Git 歷史。</p>
+<p>結果四組全中。</p>
+<p>半年前寫運維手冊時，為了方便，把環境變數連值一起貼了進去。後來雖然遮蔽了，但 commit 已經推上去了。另一份歸檔的整合筆記裡，甚至有電商後台的<strong>登入密碼明文</strong>。</p>
+<p>這就是很多事故的真相：<strong>大家盯著平台被駭，但自己的 Git 歷史可能早就外洩更久了。</strong> 把檔案裡的字刪掉不等於憑證失效，只有到來源端撤銷、換新，才算數。</p>
+<p>所以這次輪替不只是因為 Railway。就算 Railway 沒出事，這四組也早該換了。</p>
+<figure>
+  <img src="/blog/2026-11-05-railway-incident-credential-rotation/02-git-history.png" alt="窗仔用橡皮擦擦掉紙上的一行密碼，但紙的背後有一疊標著 commit 的舊紙張，每一張上面都還印著那行字" loading="lazy">
+  <figcaption>擦掉這一頁，前面幾頁都還在。</figcaption>
+</figure>
+<hr>
+<h2 id="備份平台不給就自己來">備份：平台不給，就自己來</h2>
+<p>Railway 這個方案只看得到一份平台自己做的舊備份，要新增得升級方案。</p>
+<p>所以最新備份只能在本機用 <code>pg_dump</code> 經過公開入口做。有兩個小坑：</p>
+<p>連線字串一定要用 <code>read -rs</code> 讀進變數，不要直接貼成指令。我就不小心貼了兩次，第二次被 zsh 當成指令執行，結果連線字串（含密碼）留在了 <code>~/.zsh_history</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#79B8FF">read</span><span style="color:#79B8FF"> -rs</span><span style="color:#9ECBFF"> "PGURL?貼上 DATABASE_PUBLIC_URL："</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">echo</span></span>
+<span class="line"><span style="color:#E1E4E8">PGSSLMODE</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">require</span><span style="color:#B392F0"> pg_dump</span><span style="color:#9ECBFF"> "</span><span style="color:#E1E4E8">$PGURL</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF"> -Fc</span><span style="color:#79B8FF"> -f</span><span style="color:#9ECBFF"> "$(</span><span style="color:#B392F0">date</span><span style="color:#9ECBFF"> +%Y%m%d-%H%M%S).dump"</span></span>
+<span class="line"><span style="color:#79B8FF">unset</span><span style="color:#9ECBFF"> PGURL</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 不小心進了歷史的話（先關掉其他終端機分頁，不然關閉時會寫回去）</span></span>
+<span class="line"><span style="color:#E1E4E8">LC_ALL</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">C</span><span style="color:#B392F0"> sed</span><span style="color:#79B8FF"> -i</span><span style="color:#9ECBFF"> ''</span><span style="color:#9ECBFF"> '/proxy\.rlwy\.net/d'</span><span style="color:#9ECBFF"> ~/.zsh_history</span></span></code></pre>
+<p>macOS 的 sed 碰到歷史檔裡的中文會報 <code>illegal byte sequence</code>，加 <code>LC_ALL=C</code> 就好。</p>
+<p>備份做完要驗證：<code>pg_restore --list</code> 確認每張表的資料都在，<code>pg_restore -f /dev/null</code> 確認能完整解碼。<strong>沒驗過的備份只是一個檔案。</strong></p>
+<hr>
+<h2 id="切換把中斷壓在最小的窗口">切換：把中斷壓在最小的窗口</h2>
+<p>盤點完，順序就很清楚了：<strong>能並存的先準備好，回不去的放在最後，所有變更一次部署。</strong></p>
+<p>不中斷的準備：</p>
+<ol>
+<li>本機備份、跑一次唯讀預檢腳本，記錄切換前的狀態。</li>
+<li>電商平台建新 App，權限只勾「讀取客戶」。舊 App 照常運作。</li>
+</ol>
+<p>中斷窗口：</p>
+<ol>
+<li>刪掉 CRM 舊 Token、建新的。<strong>同步從這裡開始中斷。</strong></li>
+<li>新的三個值貼進 Railway 變數，<strong>先不部署</strong>。Railway 會顯示「Apply 3 changes」，變數暫存著不生效。</li>
+<li>重產資料庫密碼，把新的內網 <code>DATABASE_URL</code> 貼進服務變數。</li>
+<li>確認「Apply 4 changes」，一次 Deploy。</li>
+</ol>
+<p>部署起來後，啟動日誌出現兩行我最在意的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Database schema initialized</span></span>
+<span class="line"><span>[InitialSync] Initial sync already completed. Skipping.</span></span></code></pre>
+<p>第一行代表新密碼連得上。第二行代表初始同步的狀態有保留，<strong>不會因為重啟就把全部會員重灌一次</strong>。這個服務啟動時如果找不到這個狀態，會自動跑全量同步，所以這行沒出現要立刻停下來。</p>
+<p>最後在本機幫新 App 註冊 Webhook，順序是「先查、再註冊、再查」：先確認新 App 的訂閱是 0 筆，註冊完確認變成 2 筆、沒有重複的 topic。</p>
+<p><strong>實際中斷：17:28 到 17:41，13 分鐘。</strong></p>
+<figure>
+  <img src="/blog/2026-11-05-railway-incident-credential-rotation/03-one-deploy.png" alt="窗仔把四把新鑰匙一起放進一個寫著「Deploy」的大按鈕旁的托盤，旁邊的小機器人拿著碼表，碼表上寫著 13 分" loading="lazy">
+  <figcaption>變數先暫存，最後一次部署。中斷只算真正回不去的那一段。</figcaption>
+</figure>
+<hr>
+<h2 id="驗證不要相信-200">驗證：不要相信 200</h2>
+<p>這個服務的 <code>/health</code> 只代表程式還活著，Webhook handler 就算同步失敗也會回 200。這兩個都不能拿來當驗收。</p>
+<p>我用的驗收方式很土：在電商平台建一筆標明「測試用、可刪除」的測試客戶，看它有沒有真的出現在 CRM。</p>
+<p>結果它出現了，但不是 Webhook 送來的，是下一輪輪詢抓到的。</p>
+<p>我回頭查 Railway 的 HTTP 日誌：新 Webhook 註冊後，建客戶、改客戶，<strong>一筆 POST 都沒有</strong>。再往回翻資料庫裡近一週一千筆同步紀錄，連一筆「Webhook received」都沒有。</p>
+<p>也就是說，這個服務一直以來都是靠輪詢在同步，Webhook 不知道從什麼時候開始就沒在運作了。資料沒掉，只是「即時」變成了「最慢 15 分鐘」，而且沒有人發現。</p>
+<p>這件事讓我想了很久。當初設計 Webhook 加輪詢雙軌，就是怕 Webhook 漏接。結果雙軌確實救了資料，但也剛好把問題藏得太好。<strong>有備援是對的，但你得知道備援什麼時候正在扛全部的量。</strong> 這已經列進下一步要修的清單。</p>
+<hr>
+<h2 id="那三封deploy-crashed">那三封「Deploy Crashed」</h2>
+<p>切換當天，我收到三封 Railway 的「Deploy Crashed」信，分別是 17:41、17:55、18:07。晚上整理信件的助理還很緊張地說「正式環境連續崩潰，沒看到恢復通知」。</p>
+<p>實際上那三封對應的都是<strong>舊版本被新部署取代</strong>：17:41 那封是換金鑰後的部署，17:55 跟 18:07 是我推文件 commit 觸發的自動部署。舊容器被關掉時，Railway 就寄一封 crashed。而 Railway 不會寄「恢復」通知。</p>
+<p>判斷方式很簡單：到 Deployments 頁看最上面 ACTIVE 那筆。顯示「Deployment successful」、日誌正常，就不用管。<strong>不要看到信就按信裡的 Restart。</strong></p>
+<hr>
+<h2 id="讓-ai-幫忙但不讓它碰鑰匙">讓 AI 幫忙，但不讓它碰鑰匙</h2>
+<p>這次很多盤點是我讓 AI agent 在瀏覽器裡做的：讀 Railway 的部署跟變數設定、看兩邊後台的 App 權限跟 Token 設定、比對 Git 歷史、寫唯讀預檢腳本、最後整理文件。</p>
+<p>我給它的規則是這樣的：</p>
+<ul>
+<li><strong>唯讀檢查隨便做</strong>，但讀到金鑰的頁面不截圖，用腳本把長字串遮掉才回傳；<code>DATABASE_URL</code> 只回報「內網／公網」分類。</li>
+<li><strong>不可逆的步驟一律先停下來問我</strong>：刪 Token、重產密碼、解除安裝舊 App，每一步都等我說好。</li>
+<li><strong>金鑰由我自己複製貼上</strong>，不經過對話。</li>
+</ul>
+<p>最後它還是幫了倒忙一次：我自己把連線字串貼進了對話。好在那組密碼本來就排在幾分鐘後要重產。但這也提醒我，流程設計得再好，最容易出錯的還是人。</p>
+<hr>
+<h2 id="如果你也在-railway或任何-paas上">如果你也在 Railway（或任何 PaaS）上</h2>
+<p>這次的流程我整理成一份 SOP 放進專案。濃縮成幾句話：</p>
+<ol>
+<li><strong>先盤點每把憑證怎麼換</strong>：能不能重產、有沒有數量上限、有沒有 IP 白名單。這決定了順序跟中斷時間。</li>
+<li><strong>順便掃 Git 歷史</strong>。用 <code>git log -S"&#x3C;值>"</code> 比對你現在的金鑰，有出現就代表平台不是唯一的風險。</li>
+<li><strong>先備份、驗證備份，再動資料庫密碼</strong>。平台不給備份就自己 <code>pg_dump</code>。</li>
+<li><strong>能並存的先建好，變數先暫存，最後一次部署</strong>。中斷時間只算真正回不去的那一段。</li>
+<li><strong>寫死的連線字串不會跟著重產更新</strong>，記得手動換。</li>
+<li><strong>用真實資料驗收</strong>，不要看 <code>/health</code> 或 HTTP 200。驗收時順便看看你的備援是不是正在扛全部的量。</li>
+<li><strong>收尾要撤掉舊的</strong>：舊 App 解除安裝、舊 Token 刪掉，確認舊憑證真的失效。</li>
+</ol>
+<p>平台出事，是提醒你檢查自己的好時機。我這次換完金鑰，收穫最大的反而是那兩個早就存在、卻一直沒人發現的問題。</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://blog.railway.com/p/preliminary-report-october-security-incident">Preliminary Report: Oct 21st Security Incident（Railway）</a></li>
+<li><a href="https://blog.railway.com/p/security-disclosure-wednesday-october-21st">Security Disclosure, Wednesday October 21st（Railway）</a></li>
+<li><a href="https://blog.gitguardian.com/railway-october-2026-incident-environment-variables/">Railway October 2026 Incident: Treat Every Environment Variable as Exposed（GitGuardian）</a></li>
+<li><a href="/blog/2026-08-30-zeabur-env-secret-manager-least-privilege/">Zeabur ENV 外洩後：不要把部署平台當成 Secret Manager（本站）</a></li>
+</ul>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>

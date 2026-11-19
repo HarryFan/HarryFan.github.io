@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.18.2"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context/"><!-- Primary Meta Tags --><title>為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決</title><meta name="title" content="為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決"><meta name="description" content="新開一個 AI 對話，它就是不認識你的專案，這是團隊用 AI 修 bug 最大的幻覺來源。這篇記錄我們前端團隊怎麼用 Repomix 把模組程式碼打包成單一上下文檔，搭配 .cursor/rules 形成固定工作流：每模組一份設定、@ 一下就把整個模組餵給 AI，還附上我們實際的 bug 報告模板。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context/"><meta property="og:title" content="為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決"><meta property="og:description" content="新開一個 AI 對話，它就是不認識你的專案，這是團隊用 AI 修 bug 最大的幻覺來源。這篇記錄我們前端團隊怎麼用 Repomix 把模組程式碼打包成單一上下文檔，搭配 .cursor/rules 形成固定工作流：每模組一份設定、@ 一下就把整個模組餵給 AI，還附上我們實際的 bug 報告模板。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context/"><meta property="twitter:title" content="為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決"><meta property="twitter:description" content="新開一個 AI 對話，它就是不認識你的專案，這是團隊用 AI 修 bug 最大的幻覺來源。這篇記錄我們前端團隊怎麼用 Repomix 把模組程式碼打包成單一上下文檔，搭配 .cursor/rules 形成固定工作流：每模組一份設定、@ 一下就把整個模組餵給 AI，還附上我們實際的 bug 報告模板。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context.png"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context/"><!-- Primary Meta Tags --><title>為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決</title><meta name="title" content="為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決"><meta name="description" content="新開一個 AI 對話，它就是不認識你的專案，這是團隊用 AI 修 bug 最大的幻覺來源。這篇記錄我們前端團隊怎麼用 Repomix 把模組程式碼打包成單一上下文檔，搭配 .cursor/rules 形成固定工作流：一支腳本按頁面自動打包、@ 一下就把整個模組餵給 AI，還附上我們實際的 bug 報告模板。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context/"><meta property="og:title" content="為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決"><meta property="og:description" content="新開一個 AI 對話，它就是不認識你的專案，這是團隊用 AI 修 bug 最大的幻覺來源。這篇記錄我們前端團隊怎麼用 Repomix 把模組程式碼打包成單一上下文檔，搭配 .cursor/rules 形成固定工作流：一支腳本按頁面自動打包、@ 一下就把整個模組餵給 AI，還附上我們實際的 bug 報告模板。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context/"><meta property="twitter:title" content="為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決"><meta property="twitter:description" content="新開一個 AI 對話，它就是不認識你的專案，這是團隊用 AI 修 bug 最大的幻覺來源。這篇記錄我們前端團隊怎麼用 Repomix 把模組程式碼打包成單一上下文檔，搭配 .cursor/rules 形成固定工作流：一支腳本按頁面自動打包、@ 一下就把整個模組餵給 AI，還附上我們實際的 bug 報告模板。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-07-20-repomix-team-ai-context.png"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
 
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
 			gtag('js', new Date());
 			gtag('config', GA_MEASUREMENT_ID);
-		})();</script><link rel="stylesheet" href="/assets/about-D-NnBaCX.css">
-<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media(max-width:720px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
-main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media(max-width:720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
-</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-07-20-repomix-team-ai-context.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-07-20T00:00:00.000Z"> Jul 20, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決</h1> <hr data-astro-cid-bvzihdzo> </div>  <p>我們團隊維護兩個中大型電商管理後台（Vue 3 + Vite + TypeScript + ant-design-vue），最近把 <a href="https://github.com/yamadashy/repomix">Repomix</a> 正式納入團隊工作流。這篇記錄為什麼要用、怎麼用，以及我們實際落地的設定方式。</p>
+		})();</script><link rel="stylesheet" href="/assets/about-BWB9jgRC.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 1000px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/blog/category/reviews/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 好好入手 </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-07-20-repomix-team-ai-context.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-07-20T00:00:00.000Z"> Jul 20, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>為什麼我們團隊開始用 Repomix：把「AI 沒看過我們的 code」這件事一次解決</h1> <hr data-astro-cid-bvzihdzo> </div>  <p>我們團隊維護兩個中大型電商管理後台（Vue 3 + Vite + TypeScript + ant-design-vue），最近把 <a href="https://github.com/yamadashy/repomix">Repomix</a> 正式納入團隊工作流。這篇記錄為什麼要用、怎麼用，以及我們實際落地的設定方式。</p>
 <h2 id="問題新對話的-ai-不認識你的專案">問題：新對話的 AI 不認識你的專案</h2>
 <p>用 Cursor 或 Claude 修 bug 的人都遇過這個循環：</p>
 <ol>
@@ -45,74 +45,104 @@ main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width
 <span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> repomix@latest</span><span style="color:#79B8FF"> --style</span><span style="color:#9ECBFF"> markdown</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#6A737D"># 用設定檔</span></span>
-<span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> repomix@latest</span><span style="color:#79B8FF"> -c</span><span style="color:#9ECBFF"> repomix/repomix.config.order.json</span></span></code></pre>
+<span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> repomix@latest</span><span style="color:#79B8FF"> -c</span><span style="color:#9ECBFF"> repomix/repomix.config.json</span></span></code></pre>
 <p>跑完會印出檔案數、總 token 數、疑似敏感資訊警告。先看 token 數，再決定要不要縮範圍。</p>
 <h2 id="設定檔逐欄位解說">設定檔逐欄位解說</h2>
-<p>以訂單模組為例，一份我們實際在用的 <code>repomix.config.order.json</code>：</p>
+<p>一份我們實際在用的整站設定 <code>repomix/repomix.config.json</code>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="jsonc"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
-<span class="line"><span style="color:#6A737D">  // 打包範圍：頁面 + API 層 + 模組共用元件——bug 常跨這三層</span></span>
+<span class="line"><span style="color:#79B8FF">  "$schema"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"https://repomix.com/schemas/latest/schema.json"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">  "output"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#6A737D">    // 產出路徑：集中放 repomix/，好加 .gitignore、@ 引用也好記</span></span>
+<span class="line"><span style="color:#79B8FF">    "filePath"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"repomix/repomix-output.xml"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // xml | markdown | plain。XML 給 LLM 解析最穩，我們統一用 xml</span></span>
+<span class="line"><span style="color:#79B8FF">    "style"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"xml"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 附檔案摘要與目錄樹，AI 先看結構再看 code</span></span>
+<span class="line"><span style="color:#79B8FF">    "fileSummary"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "directoryStructure"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "files"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 移除註解/空行可以省 token；我們選擇保留——註解常是業務規則所在</span></span>
+<span class="line"><span style="color:#79B8FF">    "removeComments"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "removeEmptyLines"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // tree-sitter 壓縮。Vue 專案開了反而變大，後面「進階」會講</span></span>
+<span class="line"><span style="color:#79B8FF">    "compress"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 摘要列出最大的 10 個檔案，先抓出 token 大戶</span></span>
+<span class="line"><span style="color:#79B8FF">    "topFilesLength"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 截斷內嵌 base64（圖片、字型），這種東西 AI 讀不懂還超佔 token</span></span>
+<span class="line"><span style="color:#79B8FF">    "truncateBase64"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 打包範圍：原始碼 + 型別 + 規則檔 + 依賴清單</span></span>
 <span class="line"><span style="color:#79B8FF">  "include"</span><span style="color:#E1E4E8">: [</span></span>
-<span class="line"><span style="color:#9ECBFF">    "src/views/orderManage/**"</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#9ECBFF">    "src/api/order/**"</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#9ECBFF">    "src/components/order/**"</span></span>
+<span class="line"><span style="color:#9ECBFF">    "src/**/*.{vue,ts,tsx,js,jsx}"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "types/**/*.d.ts"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    ".cursor/rules/**/*.mdc"</span><span style="color:#E1E4E8">,   </span><span style="color:#6A737D">// 規矩一起進包，跨 IDE 也吃得到</span></span>
+<span class="line"><span style="color:#9ECBFF">    "package.json"</span><span style="color:#E1E4E8">,             </span><span style="color:#6A737D">// 讓 AI 知道有哪些依賴、什麼版本</span></span>
+<span class="line"><span style="color:#9ECBFF">    "README.zh-CN.md"</span></span>
 <span class="line"><span style="color:#E1E4E8">  ],</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#79B8FF">  "ignore"</span><span style="color:#E1E4E8">: {</span></span>
 <span class="line"><span style="color:#6A737D">    // 續用 .gitignore 的排除規則（預設 true，保持就好）</span></span>
 <span class="line"><span style="color:#79B8FF">    "useGitignore"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#6A737D">    // 額外排除：測試、mock、快照</span></span>
-<span class="line"><span style="color:#79B8FF">    "customPatterns"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"**/*.spec.ts"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"**/__mocks__/**"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"**/*.snap"</span><span style="color:#E1E4E8">]</span></span>
-<span class="line"><span style="color:#E1E4E8">  },</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#79B8FF">  "output"</span><span style="color:#E1E4E8">: {</span></span>
-<span class="line"><span style="color:#6A737D">    // 產出路徑：集中放 repomix/，好加 .gitignore、@ 引用也好記</span></span>
-<span class="line"><span style="color:#79B8FF">    "filePath"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"repomix/repomix-output-order.xml"</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#6A737D">    // xml | markdown | plain。XML 給 LLM 解析最穩，我們統一用 xml</span></span>
-<span class="line"><span style="color:#79B8FF">    "style"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"xml"</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#6A737D">    // 附目錄樹，AI 先看結構再看 code</span></span>
-<span class="line"><span style="color:#79B8FF">    "directoryStructure"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#6A737D">    // 移除註解/空行可以省 token；我們選擇保留——註解常是業務規則所在</span></span>
-<span class="line"><span style="color:#79B8FF">    "removeComments"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#79B8FF">    "removeEmptyLines"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#6A737D">    // 每個檔案附行號，AI 回報位置更準</span></span>
-<span class="line"><span style="color:#79B8FF">    "showLineNumbers"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#79B8FF">    "useDefaultPatterns"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 額外排除：跟邏輯無關、量又大的目錄</span></span>
+<span class="line"><span style="color:#79B8FF">    "customPatterns"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">      "src/locales/**"</span><span style="color:#E1E4E8">,   </span><span style="color:#6A737D">// 多語系字典，幾千行 key-value</span></span>
+<span class="line"><span style="color:#9ECBFF">      "src/assets/**"</span><span style="color:#E1E4E8">,    </span><span style="color:#6A737D">// 靜態資源</span></span>
+<span class="line"><span style="color:#9ECBFF">      "mock/**"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "docs/**"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "repomix/**"</span><span style="color:#E1E4E8">,       </span><span style="color:#6A737D">// 別把上一次的產出又打進下一包</span></span>
+<span class="line"><span style="color:#9ECBFF">      ".env"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      ".env.*"</span><span style="color:#6A737D">            // 環境變數絕不進包</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
 <span class="line"><span style="color:#E1E4E8">  },</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#79B8FF">  "security"</span><span style="color:#E1E4E8">: {</span></span>
 <span class="line"><span style="color:#6A737D">    // Secretlint 掃描，防 key/token 進打包檔（預設開，別關）</span></span>
 <span class="line"><span style="color:#79B8FF">    "enableSecurityCheck"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
-<span class="line"><span style="color:#E1E4E8">  },</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#79B8FF">  "tokenCount"</span><span style="color:#E1E4E8">: {</span></span>
-<span class="line"><span style="color:#6A737D">    // token 估算用的 tokenizer</span></span>
-<span class="line"><span style="color:#79B8FF">    "encoding"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"o200k_base"</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
 <span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>幾個踩過的點：</p>
 <ul>
-<li><strong><code>include</code> 記得把 API 層框進來</strong>。只打包 view，AI 就會開始幻想 API 函式簽名。</li>
+<li><strong>框範圍時記得把 API 層帶上</strong>。只打包 view，AI 就會開始幻想 API 函式簽名。</li>
 <li><strong><code>removeComments</code> 別急著開</strong>。省下的 token 不多，但註解裡的業務規則（「後端這個欄位可能回字串」）正是 AI 最需要的。</li>
-<li><strong>產出集中放一個目錄</strong>。<code>.gitignore</code> 一行解決，同事 <code>@</code> 引用時路徑也統一。</li>
+<li><strong>產出集中放一個目錄，並把它自己 ignore 掉</strong>。<code>.gitignore</code> 一行解決，同事 <code>@</code> 引用時路徑也統一；<code>customPatterns</code> 記得排除 <code>repomix/**</code>，不然上次的 xml 會被打進這次的包裡，大小直接翻倍。</li>
+<li><strong><code>truncateBase64</code> 開起來</strong>。內嵌圖片的 base64 對 AI 是純噪音。</li>
 </ul>
-<h2 id="我們的落地方式每模組一份設定">我們的落地方式：每模組一份設定</h2>
-<p>整包打出來還是太大，而且修訂單的 bug 根本不需要金流模組的 code。所以我們按業務模組拆設定：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>repomix/</span></span>
-<span class="line"><span>├── repomix.config.json               # 整站（少用）</span></span>
-<span class="line"><span>├── repomix.config.order.json         # 訂單模組</span></span>
-<span class="line"><span>├── repomix.config.product.json       # 商品模組</span></span>
-<span class="line"><span>├── repomix.config.statistics.json    # 報表模組</span></span>
-<span class="line"><span>├── repomix.config.permissionManage.json</span></span>
-<span class="line"><span>└── repomix-output-*.xml              # 產出（.gitignore 排除）</span></span></code></pre>
+<h2 id="我們的落地方式一支打包腳本按頁面自動切">我們的落地方式：一支打包腳本，按頁面自動切</h2>
+<p>整包打出來還是太大，而且修訂單的 bug 根本不需要金流模組的 code。一開始我們是按業務模組手寫多份設定檔（<code>repomix.config.order.json</code>、<code>repomix.config.product.json</code>……），後來設定檔越長越多、每加一個頁面就得維護一份，乾脆收斂成一支打包腳本 <code>scripts/repomix-builder.mjs</code>：掃 <code>src/views</code> 的目錄結構，自動幫每個「模組／頁面」產一包，不用再手寫設定。掛進 <code>package.json</code> 之後只剩三個指令：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 只打包指定檔案/資料夾（日常最常用，需要時自己產）</span></span>
+<span class="line"><span style="color:#B392F0">pnpm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> pack</span><span style="color:#9ECBFF"> src/views/orderManage/orderList</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 全站打包：掃 src/views 每個頁面 + api，各自成包</span></span>
+<span class="line"><span style="color:#B392F0">pnpm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> pack:all</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 監聽 src/views、src/api，存檔自動重打對應那一包</span></span>
+<span class="line"><span style="color:#B392F0">pnpm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> pack:watch</span></span></code></pre>
 <p><img src="/blog/2026-07-20-repomix-team-ai-context/03-one-box-per-module.webp" alt="整包打出來太大推不動，按業務模組拆成每模組一箱"></p>
-<p>每份設定除了模組頁面，還會把對應的 <code>src/api/</code>、共用元件一起框進來，因為 bug 常常跨這三層。</p>
-<p>產出的 <code>repomix-output-*.xml</code> 是 build 產物，進 <code>.gitignore</code> 不進版控（我們為這個往返過一輪：一開始有人把 92,000 行的 xml commit 上去了）。要用之前跑一次指令重新產，保證上下文是最新的。</p>
+<p>產出鏡射 <code>src/views</code> 的目錄結構，路徑好記、<code>@</code> 起來直覺：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>repomix/</span></span>
+<span class="line"><span>├── api.xml                  # 全域 API 獨立一包（需要才掛）</span></span>
+<span class="line"><span>├── orderManage/</span></span>
+<span class="line"><span>│   ├── orderList.xml        # 一頁一包</span></span>
+<span class="line"><span>│   └── orderSearch.xml</span></span>
+<span class="line"><span>├── productManage/</span></span>
+<span class="line"><span>│   └── ...</span></span>
+<span class="line"><span>└── ...                      # 全部 .gitignore 排除</span></span></code></pre>
+<p>腳本裡藏了幾個取捨：</p>
+<ul>
+<li><strong>頁面包自動夾帶模組層的 <code>components/</code>、<code>hooks/</code> 等共用目錄</strong>——bug 常常跨頁面與共用元件</li>
+<li><strong>每包都附上 <code>.cursor/rules/**/*.mdc</code></strong>——Cursor 以外的工具（網頁版 Claude、Copilot）拿到快照時，規矩也一起進上下文</li>
+<li><strong><code>pnpm run pack &#x3C;路徑></code> 會順便夾帶全域 API 與規則檔</strong>——丟給網頁版 AI 時一包就夠</li>
+</ul>
+<p>產出的 xml 是 build 產物，進 <code>.gitignore</code> 不進版控（我們為這個往返過一輪：一開始有人把 92,000 行的 xml commit 上去了）。要用之前跑一次指令重新產——或者開著 <code>pack:watch</code> 讓它自己保持最新。</p>
 <h2 id="搭配-cursorrules兩支柱工作流">搭配 .cursor/rules：兩支柱工作流</h2>
 <p>Repomix 解決「AI 沒看過 code」，但還有另一半問題：AI 不知道我們的規矩。commit 格式、i18n 三語系、空值顯示 <code>--</code>、權限要用 <code>hasPermission</code>，這些放在 <code>.cursor/rules/</code>（含一份 33 點的 Review 檢查清單，<code>alwaysApply: true</code>），Cursor 每次對話自動遵守。</p>
 <p><img src="/blog/2026-07-20-repomix-team-ai-context/04-two-pillars.webp" alt="新對話由兩支柱撐起：程式碼（Repomix）與規矩（.cursor/rules）"></p>
 <p>所以現在團隊開新對話修 bug 的固定流程是：</p>
 <ol>
 <li>開場說清楚範圍：類型（修 bug／做需求）、位置（哪個模組）、期望（怎樣算完成）、附檔（截圖、錯誤訊息、重現步驟）</li>
-<li>掛上對應的 Repomix（必要）：<code>@repomix/repomix-output-order.xml</code></li>
+<li>掛上上下文：本機 IDE <strong>優先直接 <code>@src/...</code></strong>（IDE 讀的是硬碟上最新的檔案，沒有過期問題）；整頁不熟、或用網頁版 AI，才掛剛 pack 的 <code>@repomix/orderManage/orderList.xml</code></li>
 <li>規範不用講，<code>.cursor/rules</code> 自動生效</li>
 </ol>
 <p>實際的 bug 報告長這樣（同事的真實範例，去識別化後）：</p>
@@ -120,7 +150,7 @@ main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width
 <span class="line"><span>步驟：打開批次出貨 → 搜尋訂單編號 → 勾選 → 再搜尋一次。</span></span>
 <span class="line"><span>期望：已勾選的訂單應保留。</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>@repomix/repomix-output-order.xml</span></span>
+<span class="line"><span>@repomix/orderManage/orderList.xml</span></span>
 <span class="line"><span>@src/views/orderManage/components/BatchShipping.vue</span></span>
 <span class="line"><span></span></span>
 <span class="line"><span>請先讀相關邏輯再改，改完說明驗證方式。</span></span></code></pre>
@@ -128,12 +158,18 @@ main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width
 <h2 id="不只-cursor同一套規則跨-ide-通用">不只 Cursor：同一套規則跨 IDE 通用</h2>
 <p><code>.cursor/rules</code> 的自動載入是 Cursor 專屬的，但團隊不會人人都用 Cursor。有人用 VS Code + Cline/Roo Code，有人用 Copilot Chat，複雜重構時甚至有人開網頁版 Claude。規則檔跟 Repomix 快照都是純文字檔，<strong>每個工具都讀得到，差別只在「怎麼把它塞進上下文」</strong>。所以我們補了一份跨 IDE 協作手冊，核心流程不變，只列各工具的載入方式：</p>
 <ul>
-<li><strong>Cursor</strong>：<code>.cursor/rules/*.mdc</code> 自動載入，開場只要 <code>@repomix/repomix-output-&#x3C;模組>.xml</code> 掛程式上下文</li>
-<li><strong>VS Code + Cline / Roo Code</strong>：在專案根目錄放一份 <code>.clinerules</code>，內容寫「開始任務前先讀 <code>.cursor/rules/</code> 下所有 mdc 規範」；沒設定就在首輪 prompt 手動 <code>@.cursor/rules/core-principles.mdc</code> + 模組快照</li>
-<li><strong>Copilot Chat</strong>：無法自動載入，用 <code>#file:</code> 指令手動附規則檔與快照，例如 <code>#file:.cursor/rules/core-principles.mdc #file:repomix/repomix-output-order.xml</code></li>
-<li><strong>網頁版 Claude / ChatGPT</strong>：把 <code>core-principles.mdc</code> 與對應模組的 <code>repomix-output-*.xml</code> 當附件上傳，再輸入需求</li>
+<li><strong>Cursor</strong>：<code>.cursor/rules/*.mdc</code> 自動載入；本機開發優先 <code>@src/...</code>，需要整頁地圖才 <code>@repomix/&#x3C;模組>/&#x3C;頁面>.xml</code></li>
+<li><strong>VS Code + Cline / Roo Code</strong>：在專案根目錄放一份 <code>.clinerules</code>，內容寫「開始任務前先讀 <code>.cursor/rules/</code> 下所有 mdc 規範；程式真相以 src 為準、過期 repomix 勿當邏輯依據」；沒設定就在首輪 prompt 手動 <code>@.cursor/rules/core-principles.mdc</code> + 對應 src 檔</li>
+<li><strong>Copilot Chat</strong>：無法自動載入，用 <code>#file:</code> 指令手動附規則檔與原始碼，例如 <code>#file:.cursor/rules/core-principles.mdc #file:src/views/orderManage/orderList/index.vue</code></li>
+<li><strong>網頁版 Claude / ChatGPT</strong>：本機硬碟連不到，這才是 Repomix 快照的主場——把 <code>core-principles.mdc</code> 與<strong>剛打包</strong>的 <code>repomix/&#x3C;模組>/&#x3C;頁面>.xml</code> 當附件上傳，再輸入需求並註明「以 src 為準」</li>
 </ul>
-<p>不管哪個工具，後面兩步都一樣：<strong>交付前對照 Review 清單自檢、大改後重跑 Repomix 更新快照</strong>（不然下一個人或下一次對話又拿到過期上下文）。</p>
+<p>手冊裡我們把上下文優先級寫死成三條，比工具差異更重要：</p>
+<ol>
+<li><strong><code>src/</code> 永遠是真相</strong>——已知檔案直接引用原始碼</li>
+<li><strong>Repomix xml 是快照</strong>——僅在剛 pack 後、需要整頁地圖或餵網頁版 AI 時使用</li>
+<li><strong>過期 xml 勿掛</strong>——比沒掛更糟；與 <code>src</code> 衝突時以 <code>src</code> 為準</li>
+</ol>
+<p>不管哪個工具，後面兩步都一樣：<strong>交付前對照 Review 清單自檢、大改後重跑 Repomix 更新快照</strong>（或本機開著 <code>pnpm run pack:watch</code>，存檔即自動重打，不然下一個人或下一次對話又拿到過期上下文）。</p>
 <p>把這份手冊放進 repo（我們放 <code>docs/ai-collaboration.md</code>）還有個附帶效果：規則檔本身變成「工具無關」的團隊資產，換 IDE、換 AI 供應商都不用重寫工作流。</p>
 <h2 id="進階當單頁包也開始爆上下文">進階：當「單頁包」也開始爆上下文</h2>
 <p>模組級拆分用了一陣子後，我們踩到下一個坎：<strong>有些單一頁面包自己就 2 萬多行、20 萬 token，直接超過模型的 200k 上下文</strong>。最肥的是會員列表，一開它就頂到天花板。</p>
@@ -170,7 +206,7 @@ main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width
 <li>幻覺明顯變少。AI 引用的函式、路徑、寫法都是模組裡真實存在的，因為它真的讀過整個模組</li>
 <li>對齊既有寫法。以前 AI 愛自創模式，現在它看得到鄰近頁面怎麼寫，會跟著寫</li>
 <li>新人友善。bug 報告模板 + 固定流程，資淺同事也能發出高品質的 AI 任務</li>
-<li>成本是要記得重新打包：xml 不進版控，改完 code 要跑一次指令。這是刻意的取捨，寧可多打一行指令，也不要拿舊上下文餵 AI</li>
+<li>成本是要記得重新打包：xml 不進版控，改完 code 要跑一次指令（或乾脆開著 <code>pack:watch</code> 自動重打）。這是刻意的取捨，寧可多打一行指令，也不要拿舊上下文餵 AI</li>
 </ul>
 <p>如果你的團隊也在用 Cursor / Claude 協作中大型專案，Repomix + rules 這套組合的導入成本非常低（一個下午），但把「每次都要重新解釋專案」這個最大的摩擦直接拿掉了。</p>
 <p>工具連結：<a href="https://github.com/yamadashy/repomix">github.com/yamadashy/repomix</a></p>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>

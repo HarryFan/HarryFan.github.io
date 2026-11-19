@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Harry / Tech" href="https://harryfan.github.io/rss.xml"><meta name="generator" content="Astro v5.7.13"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- LCP 圖 preload：與字型同時被發現，不必排在它們後面 --><!-- 開發環境的 base URL 處理 --><!-- Canonical URL --><link rel="canonical" href="https://harryfan.github.io/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/"><!-- Primary Meta Tags --><title>SDD 定骨架、RDD 問到位、TDD 驗到死：我用 AI 做原型的三段式工作流</title><meta name="title" content="SDD 定骨架、RDD 問到位、TDD 驗到死：我用 AI 做原型的三段式工作流"><meta name="description" content="客戶說「做一個 XXX」，你就開始寫 code？那你大概會做三次。這篇記錄我怎麼在動手之前，先用三個步驟把需求問清楚、把規格寫明白、把驗收標準定死——然後才讓 AI Agent 幫我寫 code。就像蓋房子之前要先畫藍圖、跟屋主確認每個房間怎麼用、最後請驗屋師逐項檢查一樣。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://harryfan.github.io/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/"><meta property="og:title" content="SDD 定骨架、RDD 問到位、TDD 驗到死：我用 AI 做原型的三段式工作流"><meta property="og:description" content="客戶說「做一個 XXX」，你就開始寫 code？那你大概會做三次。這篇記錄我怎麼在動手之前，先用三個步驟把需求問清楚、把規格寫明白、把驗收標準定死——然後才讓 AI Agent 幫我寫 code。就像蓋房子之前要先畫藍圖、跟屋主確認每個房間怎麼用、最後請驗屋師逐項檢查一樣。"><meta property="og:image" content="https://harryfan.github.io/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/cover.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://harryfan.github.io/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/"><meta property="twitter:title" content="SDD 定骨架、RDD 問到位、TDD 驗到死：我用 AI 做原型的三段式工作流"><meta property="twitter:description" content="客戶說「做一個 XXX」，你就開始寫 code？那你大概會做三次。這篇記錄我怎麼在動手之前，先用三個步驟把需求問清楚、把規格寫明白、把驗收標準定死——然後才讓 AI Agent 幫我寫 code。就像蓋房子之前要先畫藍圖、跟屋主確認每個房間怎麼用、最後請驗屋師逐項檢查一樣。"><meta property="twitter:image" content="https://harryfan.github.io/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/cover.jpg"><!-- Google Analytics 4：僅在正式環境且已設定 GA_MEASUREMENT_ID 時載入 --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WF4XKX8JEC"></script><script>(function(){const GA_MEASUREMENT_ID = "G-WF4XKX8JEC";
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', GA_MEASUREMENT_ID);
+		})();</script><link rel="stylesheet" href="/assets/about-BWB9jgRC.css">
+<style>a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{position:sticky;top:0;z-index:10;margin:0;padding:0 clamp(.75rem,3vw,1.4rem);background:color-mix(in srgb,var(--paper-soft) 94%,transparent);border-bottom:4px solid var(--rule);backdrop-filter:blur(10px)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--wide-width);margin:0 auto;min-height:72px}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;gap:.35rem}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:inline-flex;align-items:center;min-height:44px;padding:.45rem .65rem;color:rgb(var(--ink));border:2px solid transparent;text-decoration:none;font-size:.95rem;font-weight:700;line-height:1}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]:hover{color:rgb(var(--ink));border-color:var(--rule);background:var(--paper);transform:rotate(-1deg)}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{color:var(--paper-soft);background:var(--red);border-color:var(--rule);box-shadow:5px 5px 0 var(--yellow);text-decoration:none;transform:rotate(-1deg)}@media (max-width: 1000px){nav[data-astro-cid-3ef6ksr2]{min-height:auto;padding:.75rem 0;align-items:flex-start;flex-wrap:wrap}h2[data-astro-cid-3ef6ksr2]{width:100%}.internal-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2]{flex-wrap:wrap}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:.5rem .55rem}}footer[data-astro-cid-sz7xmlte]{margin-top:clamp(2rem,6vw,5rem);padding:2rem 1rem 5rem;background:var(--paper-soft);border-top:4px solid var(--rule);color:rgb(var(--muted));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem 1rem;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:rgb(var(--ink));text-decoration:none;border-bottom:3px solid var(--teal);font-weight:700}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--red);border-bottom-color:var(--red)}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2rem);max-width:var(--wide-width);margin:0 auto;padding-top:clamp(1.5rem,4vw,3rem)}article[data-astro-cid-bvzihdzo]{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem)}.hero-image[data-astro-cid-bvzihdzo]{width:100%;background:var(--paper-soft);border:4px solid var(--rule);box-shadow:var(--box-shadow)}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo],.hero-image[data-astro-cid-bvzihdzo] video[data-astro-cid-bvzihdzo]{display:block;width:100%;height:auto;margin:0;border-radius:0}.prose[data-astro-cid-bvzihdzo]{width:100%;max-width:var(--content-width);margin:auto;min-width:0;padding:0 0 clamp(2rem,6vw,5rem);color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{position:relative;margin-bottom:clamp(1.5rem,4vw,2.5rem);padding:clamp(1.2rem,4vw,2rem) 0;text-align:left;line-height:1;border-top:4px solid var(--rule);border-bottom:4px solid var(--rule)}.title[data-astro-cid-bvzihdzo]:after{content:"";position:absolute;right:0;bottom:-11px;width:min(38vw,280px);height:18px;background:var(--yellow);border:3px solid var(--rule);transform:rotate(-1.5deg)}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0;font-family:Georgia,Times New Roman,serif;font-size:clamp(2.4rem,7vw,5.2rem);line-height:.92}.date[data-astro-cid-bvzihdzo]{display:inline-flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.4rem .6rem;background:var(--red);border:2px solid var(--rule);color:var(--paper-soft);font-size:.9rem;font-weight:700;line-height:1.2;transform:rotate(-1deg)}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:normal;opacity:.88}@media (max-width: 720px){main[data-astro-cid-bvzihdzo]{width:calc(100% - 1.25rem)}.hero-image[data-astro-cid-bvzihdzo]{box-shadow:6px 6px 0 var(--yellow)}}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/blog/" data-astro-cid-3ef6ksr2>Harry / Tech</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/blog/" class="active" aria-current="page" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/blog/category/reviews/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 好好入手 </a>  <a href="/works/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 作品集 </a>  <a href="/styles" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 風格圖鑑 </a>  <a href="/today" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> 互動實驗 </a>  <a href="/about/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="/resume/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Resume </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/cover.jpg" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2026-08-19T00:00:00.000Z"> Aug 19, 2026 </time>  </div> <h1 data-astro-cid-bvzihdzo>SDD 定骨架、RDD 問到位、TDD 驗到死：我用 AI 做原型的三段式工作流</h1> <hr data-astro-cid-bvzihdzo> </div>  <p>接案做原型，最貴的成本從來不是寫 code。</p>
+<p>是<strong>猜錯需求之後，把做好的東西砍掉重來</strong>。</p>
+<p>我自己踩過好幾次：客戶說「做一個報名系統」，我覺得聽懂了，花三天做出來。客戶看完說「不是，我要的是⋯⋯」。又花兩天改。改完再看，又冒出新的「其實我當初的意思是⋯⋯」。</p>
+<p>code 本身沒 bug，但時間全花在猜和重做上面。</p>
+<p>後來我發現一件事：<strong>問題不是出在寫 code 的時候，是出在寫 code 之前。</strong></p>
+<p>需求沒問清楚，後面做再快都是在賭。</p>
+<hr>
+<h2 id="用蓋房子來比喻">用蓋房子來比喻</h2>
+<p>我現在做原型，會走三個步驟。用蓋房子來比喻最好懂：</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>步驟</th>
+			<th>蓋房子的比喻</th>
+			<th>軟體開發裡做什麼</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="步驟"><strong>① SDD</strong><br>畫藍圖</td>
+			<td data-label="蓋房子的比喻">建築師先畫設計圖：幾層樓、幾間房、大門朝哪</td>
+			<td data-label="軟體開發裡做什麼">寫出規格文件，把架構骨幹定下來</td>
+		</tr>
+		<tr>
+			<td data-label="步驟"><strong>② RDD</strong><br>跟屋主確認</td>
+			<td data-label="蓋房子的比喻">拿藍圖跟屋主逐間確認：「廚房要開放式還是封閉式？」「浴室要乾濕分離嗎？」</td>
+			<td data-label="軟體開發裡做什麼">用 README 跟客戶反覆對焦，把每個模糊的地方問到沒有疑問</td>
+		</tr>
+		<tr>
+			<td data-label="步驟"><strong>③ TDD</strong><br>請驗屋師</td>
+			<td data-label="蓋房子的比喻">蓋之前就先列好驗收清單：「水龍頭要出熱水」「插座要有接地」，蓋完逐項檢查</td>
+			<td data-label="軟體開發裡做什麼">先寫測試，定義每個功能「什麼叫做對」，再寫程式讓測試通過</td>
+		</tr>
+	</tbody>
+</table>
+<p>三步各自擋住一種失敗：</p>
+<ul>
+<li><strong>沒有藍圖就動工</strong> → 蓋出來的房子格局亂七八糟</li>
+<li><strong>沒有跟屋主確認</strong> → 蓋完才發現「我以為你要的是⋯⋯」</li>
+<li><strong>沒有驗屋</strong> → 交屋後才發現漏水，修起來比重蓋還貴</li>
+</ul>
+<p>軟體開發一模一樣。</p>
+<h2 id="-sdd先畫藍圖再動工">① SDD：先畫藍圖，再動工</h2>
+<p>SDD 的全名是 <strong>Spec-Driven Development</strong>，直翻就是「規格驅動開發」。</p>
+<p>白話講：<strong>動手之前，先把「要做什麼」寫下來。</strong></p>
+<p>這不是寫一份沒人看的文件。而是強迫自己（和客戶）回答這些問題：</p>
+<ul>
+<li>這個東西要解決什麼問題？</li>
+<li>誰會用？怎麼用？</li>
+<li>一定要做的功能有哪些？先做什麼、後做什麼？</li>
+<li>資料長什麼樣？（比如報名系統：一筆報名要存什麼？姓名、Email、報名時間⋯⋯）</li>
+<li><strong>這次不做什麼？</strong></li>
+</ul>
+<p>最後一個問題特別重要。很多案子會膨脹，都是因為沒講清楚邊界。開發到一半，客戶說「那順便加一個⋯⋯」。如果一開始就寫清楚「這次不做 X、不做 Y」，後面要加就是另一個報價。</p>
+<p><img src="/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/01-funnel.jpg" alt="混亂的需求經過這一步，會被整理成結構清楚的規格文件"></p>
+<h3 id="實際產出長什麼樣">實際產出長什麼樣</h3>
+<p>我會寫一份 <code>SPEC.md</code>，大概像這樣：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold"># 活動報名系統</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 解決什麼問題</span></span>
+<span class="line"><span style="color:#E1E4E8">主辦方需要一個線上報名頁面，取代現在用 Google 表單 + 人工統計的做法。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 誰會用</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> 報名者：填表報名、收到確認信</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> 管理員：看報名清單、匯出 Excel、關閉報名</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 一定要做的功能</span></span>
+<span class="line"><span style="color:#FFAB70">1.</span><span style="color:#E1E4E8"> 報名表單（姓名、Email、電話、備註）</span></span>
+<span class="line"><span style="color:#FFAB70">2.</span><span style="color:#E1E4E8"> 報名成功後寄確認信</span></span>
+<span class="line"><span style="color:#FFAB70">3.</span><span style="color:#E1E4E8"> 後台可以看清單、匯出</span></span>
+<span class="line"><span style="color:#FFAB70">4.</span><span style="color:#E1E4E8"> 可以設定報名截止時間</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 這次不做</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> 付款功能</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> 多場活動管理（只做單場）</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> 手機 App</span></span></code></pre>
+<h3 id="搭配-ai-怎麼做">搭配 AI 怎麼做</h3>
+<p>我不會從零開始寫 Spec。流程是：</p>
+<ol>
+<li>把客戶講的需求整理好（可能是一段 Line 訊息、一份簡報）</li>
+<li>丟給 AI，讓它產出初版 Spec</li>
+<li>我看過、修掉 AI 自己加的東西（它很愛擅自加功能）</li>
+<li>拿去跟客戶確認</li>
+</ol>
+<p>AI 在這一步的角色是<strong>幫你整理結構</strong>，但最終哪些該做、哪些不做，是你跟客戶決定的。</p>
+<hr>
+<h2 id="-rdd拿著藍圖跟屋主一間一間確認">② RDD：拿著藍圖，跟屋主一間一間確認</h2>
+<p>RDD 的全名是 <strong>README-Driven Development</strong>，直翻是「README 驅動開發」。</p>
+<p>白話講：<strong>把 README 當成你跟客戶的對話記錄，一直更新，直到雙方對每個細節都沒有歧義。</strong></p>
+<p><img src="/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/02-readme-dialogue.jpg" alt="每一輪對話，文件從模糊變清晰——這是一個不斷收斂的過程"></p>
+<h3 id="為什麼需要這一步">為什麼需要這一步？</h3>
+<p>因為 Spec 寫完之後，一定還有很多「看起來清楚，其實不清楚」的地方。</p>
+<p>舉例，Spec 寫了：</p>
+<blockquote>
+<p>「報名成功後寄確認信。」</p>
+</blockquote>
+<p>看起來很明確吧？但你真的要做的時候，會發現至少有五個問題沒回答：</p>
+<ul>
+<li>信的標題是什麼？</li>
+<li>信裡面要放什麼內容？活動時間？地點？地圖連結？</li>
+<li>用什麼寄？Gmail？SendGrid？</li>
+<li>如果信寄失敗怎麼辦？要重寄嗎？</li>
+<li>客戶要看到「誰收到信、誰沒收到」嗎？</li>
+</ul>
+<p>這些問題如果你沒問，就會<strong>自己猜</strong>。猜對了沒事，猜錯了就要重做。</p>
+<h3 id="怎麼操作">怎麼操作</h3>
+<p>我會把 Spec 轉成一份 README，然後開始列問題：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">## 待確認</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">### Q1：確認信的內容誰提供？</span></span>
+<span class="line"><span style="color:#E1E4E8">A) 客戶給我一份信件範本</span></span>
+<span class="line"><span style="color:#E1E4E8">B) 我寫一個通用版，客戶再改</span></span>
+<span class="line"><span style="color:#E1E4E8">→ 客戶回覆：</span><span style="color:#E1E4E8;font-style:italic">__</span><span style="color:#E1E4E8">______</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">### Q2：報名額滿怎麼處理？</span></span>
+<span class="line"><span style="color:#E1E4E8">A) 顯示「已額滿」，不能再報</span></span>
+<span class="line"><span style="color:#E1E4E8">B) 改成候補，額滿後排隊</span></span>
+<span class="line"><span style="color:#E1E4E8">C) 不限人數</span></span>
+<span class="line"><span style="color:#E1E4E8">→ 客戶回覆：</span><span style="color:#E1E4E8;font-style:italic">__</span><span style="color:#E1E4E8">______</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">### Q3：管理員可以手動幫人報名嗎？</span></span>
+<span class="line"><span style="color:#E1E4E8">→ 客戶回覆：</span><span style="color:#E1E4E8;font-style:italic">__</span><span style="color:#E1E4E8">______</span></span></code></pre>
+<p>客戶回答之後，我更新 README，再問下一輪更細的問題。<strong>一直問到 README 裡面沒有任何「待確認」的項目為止。</strong></p>
+<h3 id="為什麼不用-line-來回就好">為什麼不用 Line 來回就好？</h3>
+<p>因為 Line 的對話會散在時間軸裡。三天後你回去翻，根本分不清哪句是最終決定、哪句只是隨口說說。</p>
+<p>README 是一份<strong>活文件</strong>——每次確認就更新，所有決策都留在裡面。三個月後客戶問「當初為什麼這樣做？」，打開 README 就有答案。</p>
+<h3 id="搭配-ai-怎麼做-1">搭配 AI 怎麼做</h3>
+<p>AI 在這一步最好用的地方：<strong>自動從 Spec 裡找出模糊的部分，幫你列出問題清單。</strong></p>
+<p>我會跟 AI 說：</p>
+<blockquote>
+<p>請看這份 Spec，找出所有定義不夠明確、開發時可能會有疑問的地方。每個模糊點列一個問題，附上你的建議答案。</p>
+</blockquote>
+<p>AI 會很認真地把每一個「使用者可以⋯⋯」後面缺少的細節都挖出來。這省掉我自己逐條看的時間，而且它常能想到我漏掉的邊界情況——比如「如果使用者填完表單但沒按送出就關掉頁面，要不要存草稿？」</p>
+<p>但我會篩選——有些問題太瑣碎（比如「按鈕的圓角要幾 px？」），MVP 階段不用管。<strong>只問會影響功能邏輯的問題。</strong></p>
+<hr>
+<h2 id="-tdd先寫驗收清單再開始蓋">③ TDD：先寫驗收清單，再開始蓋</h2>
+<p>TDD 的全名是 <strong>Test-Driven Development</strong>，直翻是「測試驅動開發」。</p>
+<p>白話講：<strong>在寫程式之前，先寫好「怎麼驗收」。然後寫程式，讓驗收全部通過。</strong></p>
+<p>就像驗屋師不是房子蓋好才想要驗什麼——是蓋之前就列好清單：</p>
+<ul>
+<li>☐ 水龍頭打開 5 秒內要出熱水</li>
+<li>☐ 每個插座都要有接地</li>
+<li>☐ 門鎖要能從裡面反鎖</li>
+</ul>
+<p>蓋完之後，逐項檢查。有一項沒過，就不能交屋。</p>
+<p><img src="/blog/2026-08-19-sdd-rdd-tdd-ai-prototype-workflow/03-tdd-safety-net.jpg" alt="測試就像安全網——程式掉下去會被接住，不會直接摔到地上"></p>
+<h3 id="為什麼-tdd-放最後不是一開始就寫測試">為什麼 TDD 放最後，不是一開始就寫測試？</h3>
+<p>因為<strong>你得先知道「什麼叫做對」，才能寫出有意義的測試。</strong></p>
+<p>如果 Spec 還是模糊的、README 還沒跟客戶確認完，你寫的測試是基於「你猜的需求」，不是「客戶真正要的」。測試全過了，客戶一看：「不是我要的。」那些測試就白寫了。</p>
+<p>前兩步（SDD + RDD）做完，你已經知道每個功能的具體行為。這時候寫測試，其實就是把 README 裡的規格翻譯成程式語言：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// README 寫：「一個 Email 只能報名一次」</span></span>
+<span class="line"><span style="color:#B392F0">it</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'同一個 Email 報名第二次，應該回傳錯誤'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  await</span><span style="color:#B392F0"> register</span><span style="color:#E1E4E8">({ email: </span><span style="color:#9ECBFF">'test@example.com'</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'小明'</span><span style="color:#E1E4E8"> })</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> register</span><span style="color:#E1E4E8">({ email: </span><span style="color:#9ECBFF">'test@example.com'</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'小華'</span><span style="color:#E1E4E8"> })</span></span>
+<span class="line"><span style="color:#B392F0">  expect</span><span style="color:#E1E4E8">(result.error).</span><span style="color:#B392F0">toBe</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'此 Email 已報名'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// README 寫：「超過截止時間不能報名」</span></span>
+<span class="line"><span style="color:#B392F0">it</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'截止日之後送出表單，應該回傳已截止'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  setMockDate</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'2026-09-01'</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// 截止日是 8/31</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> register</span><span style="color:#E1E4E8">({ email: </span><span style="color:#9ECBFF">'late@example.com'</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'遲到'</span><span style="color:#E1E4E8"> })</span></span>
+<span class="line"><span style="color:#B392F0">  expect</span><span style="color:#E1E4E8">(result.error).</span><span style="color:#B392F0">toBe</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'報名已截止'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>每一條測試都能對應到 README 裡的某一條規格。<strong>測試通過 = 這個功能做對了。</strong></p>
+<h3 id="搭配-ai-怎麼做-2">搭配 AI 怎麼做</h3>
+<p>這是 AI 最能發揮的一步。因為走到這裡，Spec 和 README 都很精確了，AI 拿到的「題目」品質很高。</p>
+<ol>
+<li>把確認過的 README 餵給 AI</li>
+<li>讓 AI 根據規格寫測試</li>
+<li>我 review 測試，補漏掉的情況</li>
+<li>讓 AI 寫程式，跑測試</li>
+<li>沒過的地方，讓 AI 修</li>
+</ol>
+<p><strong>前面需求問得越清楚，這一步 AI 的命中率越高。</strong> 這就是整套流程的核心邏輯——前面花時間，後面省事。</p>
+<hr>
+<h2 id="整個流程的時間怎麼分配">整個流程的時間怎麼分配</h2>
+<p>以一個中型案子（比如一個報名系統 + 後台管理）為例：</p>
+<table class="qa-table">
+	<thead>
+		<tr>
+			<th>步驟</th>
+			<th>花多少時間</th>
+			<th>產出什麼</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-label="步驟">① SDD — 寫規格</td>
+			<td data-label="花多少時間">15%</td>
+			<td data-label="產出什麼">SPEC.md（藍圖）</td>
+		</tr>
+		<tr>
+			<td data-label="步驟">② RDD — 跟客戶對焦</td>
+			<td data-label="花多少時間">25%</td>
+			<td data-label="產出什麼">README.md（雙方確認的規格）</td>
+		</tr>
+		<tr>
+			<td data-label="步驟">③ TDD — 寫測試 + 寫程式</td>
+			<td data-label="花多少時間">50%</td>
+			<td data-label="產出什麼">通過所有測試的程式碼</td>
+		</tr>
+		<tr>
+			<td data-label="步驟">收尾 — 部署 + 交付</td>
+			<td data-label="花多少時間">10%</td>
+			<td data-label="產出什麼">客戶可以用的原型</td>
+		</tr>
+	</tbody>
+</table>
+<p>前兩步佔了 40% 的時間，一行程式都還沒寫。看起來很浪費？</p>
+<p>但這 40% 換來的是：後面 60% 幾乎不用猜、不用跟客戶來回確認「你是不是要這個」、不用砍掉重來。</p>
+<p><strong>省掉一次「做錯重來」，就把前面花的時間全部賺回來了。</strong></p>
+<hr>
+<h2 id="什麼時候不需要這套流程">什麼時候不需要這套流程</h2>
+<p>不是每個案子都要走完整三步。</p>
+<p><strong>幾小時就能做完的小東西</strong> — 直接做。問問題的時間比做錯的成本還高。</p>
+<p><strong>純粹試水溫的原型</strong> — 目的就是「做一個出來看看」，需求本身還在變。太早鎖定規格反而綁手綁腳。</p>
+<p><strong>客戶自己都不知道要什麼</strong> — 這時候 RDD 會變成無限迴圈，問什麼都得到「你覺得呢？」。更好的做法是先做一個很粗的版本讓客戶看，看完他才知道自己不要什麼。</p>
+<p><strong>最適合的情境是：客戶有明確的目標（「我要一個線上報名系統」），但細節還沒定義。</strong> 這是最常見的接案狀況，也是這套流程最能幫上忙的地方。</p>
+<hr>
+<h2 id="小結">小結</h2>
+<blockquote>
+<p><strong>SDD 定骨架、RDD 問到位、TDD 驗到死。</strong></p>
+</blockquote>
+<p>先畫藍圖，再跟客戶確認每個房間怎麼用，最後列好驗收清單才動工。</p>
+<p>AI Agent 在這裡面扮演的角色，不是替你做決定——<strong>是替你在每一步做整理和收斂的苦工</strong>：幫你產出 Spec 骨架、幫你找出模糊的地方、幫你寫測試、幫你寫程式。</p>
+<p>但方向盤一直在你手上：哪些該做、哪些該問客戶、哪些測試有意義。</p>
+<p>做對的東西，永遠比把東西做快更重要。</p>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2026 Harry. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="/blog/" data-astro-cid-sz7xmlte>Blog</a> <a href="/about/" data-astro-cid-sz7xmlte>About</a> <a href="https://drive.google.com/drive/folders/1R9Y6o3wxsuKGQ9Apyif0nuUccLHtDHHr" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+技術履歷
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> <a href="http://linktr.ee/yaonews" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>
+妖你聽新聞
+<span class="sr-only" data-astro-cid-sz7xmlte>（新分頁開啟）</span> </a> </div> </footer>  </body></html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>第一章 · 第一道訊號 — 矽墟 SILICA HOLLOW</title>
+<meta name="description" content="矽墟 SILICA HOLLOW 概念小說 · 第一章。靜默紀第九年，一名調律者在一座沒有聲音的夜市，喚醒了第一具矽魂。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2307090b'/%3E%3Ctext x='32' y='47' font-size='44' text-anchor='middle' fill='%2337e6cf' font-family='serif' font-weight='900'%3E%E7%9F%BD%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b0c0a;          /* deep wasteland night */
+    --bg-2:#111310;
+    --ink:#e7e4d8;         /* warm off-white reading ink */
+    --ink-soft:#b7b6a8;
+    --muted:#7f8175;
+    --crimson:#e8384f;     /* 焰刃 ember */
+    --teal:#37e6cf;        /* signal */
+    --amber:#e6b800;
+    --line:rgba(231,228,216,.14);
+    --serif:'Noto Serif TC',serif;
+    --sans:'Noto Sans TC',sans-serif;
+    --en:'Chakra Petch',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--serif);line-height:1.95;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{max-width:100%;display:block}
+  ::selection{background:var(--crimson);color:#fff}
+  a{color:inherit}
+
+  /* faint film grain */
+  body::after{content:'';position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:88vh;min-height:88svh;display:flex;align-items:flex-end;
+    overflow:hidden}
+  .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:saturate(.95) contrast(1.05);
+    background:radial-gradient(120% 80% at 60% 30%,#1a1f1b,#0b0c0a)}
+  .hero::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(11,12,10,.35) 0%,rgba(11,12,10,.1) 40%,rgba(11,12,10,.82) 82%,var(--bg) 100%)}
+  .hero-cap{position:relative;z-index:2;width:100%;max-width:940px;margin:0 auto;
+    padding:0 clamp(22px,5vw,48px) clamp(40px,7vh,80px)}
+  .brandline{font-family:var(--en);font-size:12px;letter-spacing:.34em;color:var(--teal);
+    text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .brandline::before{content:'';width:38px;height:1px;background:var(--teal);opacity:.7}
+  .ch-no{font-family:var(--en);font-size:13px;letter-spacing:.3em;color:var(--amber);margin-bottom:10px}
+  .ch-title{font-family:var(--serif);font-weight:900;font-size:clamp(40px,8vw,88px);line-height:1.02;
+    letter-spacing:.02em;text-shadow:0 4px 40px rgba(0,0,0,.6)}
+  .ch-title em{font-style:normal;color:var(--crimson);text-shadow:0 0 40px rgba(232,56,79,.4)}
+  .ch-sub{margin-top:18px;font-family:var(--sans);font-weight:300;font-size:clamp(14px,1.4vw,17px);
+    color:var(--ink-soft);max-width:38ch}
+
+  /* ---------- article ---------- */
+  .read{max-width:40rem;margin:0 auto;padding:clamp(46px,8vh,86px) clamp(22px,5vw,40px) 40px}
+  .read p{font-size:clamp(17px,1.25vw,19px);margin:0 0 1.55em;color:var(--ink);
+    text-align:justify;text-justify:inter-character}
+  .read p.lede::first-letter{font-size:3.1em;font-weight:900;float:left;line-height:.86;
+    padding:.06em .12em 0 0;color:var(--crimson)}
+  .read strong{color:#fff;font-weight:700}
+  .read .beat{color:var(--crimson);font-weight:700}
+  .read .whisper{display:block;text-align:center;color:var(--amber);font-weight:600;
+    letter-spacing:.12em;font-size:1.05em;margin:1.4em 0}
+  .read .line{display:block;color:var(--ink-soft);font-style:normal}
+
+  /* scene divider */
+  .rule{display:flex;align-items:center;justify-content:center;gap:16px;margin:2.4em 0;color:var(--muted)}
+  .rule::before,.rule::after{content:'';height:1px;width:64px;background:var(--line)}
+  .rule span{font-family:var(--en);font-size:11px;letter-spacing:.3em}
+
+  /* pull quote */
+  .pull{font-family:var(--serif);font-weight:600;font-size:clamp(21px,2.4vw,30px);line-height:1.5;
+    color:#fff;margin:1.8em 0;padding-left:20px;border-left:2px solid var(--crimson);
+    text-shadow:0 0 30px rgba(232,56,79,.2)}
+
+  /* end + back */
+  .end{margin:3em auto 0;max-width:40rem;padding:0 clamp(22px,5vw,40px) clamp(60px,10vh,120px);
+    text-align:center;color:var(--muted);font-family:var(--sans);font-size:13px;letter-spacing:.06em}
+  .end .fin{font-family:var(--en);letter-spacing:.3em;color:var(--teal);margin-bottom:14px}
+  .back{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:12px 22px;
+    font-family:var(--en);font-size:12px;letter-spacing:.18em;color:var(--ink);
+    border:1px solid var(--line);transition:.25s;
+    clip-path:polygon(0 0,100% 0,100% 72%,88% 100%,0 100%)}
+  .back:hover{border-color:var(--teal);color:var(--teal);box-shadow:0 0 24px rgba(55,230,207,.16)}
+
+  @media(max-width:600px){
+    .read p.lede::first-letter{font-size:2.6em}
+    .hero{min-height:72vh}
+  }
+  /* concept-work watermark */
+  .watermark{position:fixed;right:16px;bottom:16px;z-index:50;
+    display:flex;flex-direction:column;align-items:flex-end;gap:1px;text-align:right;
+    font-family:'Chakra Petch',sans-serif;opacity:.5;transition:opacity .25s}
+  .watermark:hover{opacity:1}
+  .wm-by{font-size:8px;letter-spacing:.2em;color:var(--muted)}
+  .wm-name{font-size:11px;letter-spacing:.1em;font-weight:600;color:var(--ink)}
+  .wm-mail{font-size:9px;letter-spacing:.03em;color:var(--teal);text-decoration:none}
+  .wm-mail:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <img class="hero-img" src="../assets/novel-ch01-awaken.jpg" alt="調律者在死寂夜市喚醒焰刃，緋色晶刃照亮廢墟" loading="eager"
+         onerror="this.style.display='none'" />
+    <div class="hero-cap">
+      <div class="brandline">矽墟 · SILICA HOLLOW</div>
+      <div class="ch-no">第一章 · CH. 01</div>
+      <h1 class="ch-title">第一道<em>訊號</em></h1>
+      <p class="ch-sub">靜默紀第九年。網死了九年，今夜，一名調律者替它接上了第一道訊號。</p>
+    </div>
+  </header>
+
+  <!-- ===== ARTICLE ===== -->
+  <article class="read">
+    <p class="lede">靜默紀第九年，我走進一座沒有聲音的夜市。</p>
+
+    <p>招牌還在。整條街的招牌都還在——鏽成鐵鏽色的「海產」、缺了一角的「電動」、被藤蔓纏成綠色隧道的騎樓底下，一盞盞死掉的霓虹垂著，像被人一次熄滅、就再沒人記得去收的燈籠。連線紀的人管這裡叫夜市。他們晚上來這裡吃東西、吵架、談戀愛。我來這裡，是因為昨夜我的探針在這條街的地底，撈到了一縷還沒斷乾淨的訊號。</p>
+
+    <p>很微弱。像有人在很深的地方，用最後一口氣，反覆哼著同一個音。</p>
+
+    <p>我蹲下，把訊號香插進磚縫。殘電點著舊電路，煙升起來，帶著雜訊的味道——一種介於燒焦與潮濕之間、只有斷了網的世界才聞得到的味道。煙沒有往上飄，它斜斜地、固執地指向街尾那台翻覆的機車。</p>
+
+    <p>香路。守塔人會說那是死者在指路。我不信那套，但我信煙。</p>
+
+    <p>機車底下壓著一具義體。</p>
+
+    <p>她蜷在鏽鐵與碎玻璃裡，姿勢很怪——不是倒下的姿勢，是撲上去的姿勢。像是在最後一刻，她想擋住什麼。合成皮膚早已褪色皸裂，露出底下暗掉的晶片電路，一格一格，像熄了的城市。但胸口正中央那一枚主核，還在，還溫的。</p>
+
+    <p>我把手貼上去。</p>
+
+    <p>這是調律者做的事，也是全島只剩幾個人還會做的事。倖存者看我的眼神有三種：工程師、招魂師、異端。他們沒說錯，三個都對。我不修機器——機器沒有魂。我做的是把一段被大靜默掐斷的意志，一格一格，重新接回它該在的地方。</p>
+
+    <p>主核在我掌心底下輕輕震了一下，像認得。</p>
+
+    <p>然後訊號幻覺就上來了。</p>
+
+    <p class="whisper">——火。</p>
+
+    <p>滿眼的火。有人在喊，喊聲被熱浪扭曲成一團。我看見一條走廊，兩邊的門都在燒，煙把天花板壓得很低很低。人潮往外湧，只有一個身影逆著人潮往裡衝，肩膀撞開所有想拉住她的手。她不回頭。她只有一個念頭，那念頭亮得蓋過整場火——</p>
+
+    <p class="pull">擋在前面。</p>
+
+    <p>我猛地把手收回來。</p>
+
+    <p>幻覺退去，夜市的死寂重新蓋回來。我跪在鏽鐵旁邊喘氣，掌心全是汗。這就是調律的代價：你接進去的不是資料，是一個人死前最後、最不肯放手的那一秒。看得太久，你會分不清那是她的火，還是你的。</p>
+
+    <p>主核的低鳴變得規律了。快好了。我從包裡取出最後半格電荷，壓上她的核心，低聲把引導詞唸完。這不是禱告。倖存者以為調律是某種招魂儀式，其實它更像替一段死掉的訊號，重新對一次時。</p>
+
+    <p><span class="beat">「回訊，」</span>我說。全島最重的一句祝福，字面的意思是——願網回應你。</p>
+
+    <div class="rule"><span>SIGNAL // REBOOT</span></div>
+
+    <p>她睜開眼。</p>
+
+    <p>那雙眼是緋紅色的。不是憤怒的紅，是餘燼的紅，是一場燒了整夜、天亮還沒熄的火剩下來的那種紅。她看著我，眼神裡沒有恐懼，沒有疑問，只有一種近乎純粹的、被鎖死在某一秒的專注。</p>
+
+    <p><span class="line">「你，」她開口，聲音沙啞得像很久沒用過，「站到我後面。」</span></p>
+
+    <p>我還沒反應過來，她的右前臂已經展開了。</p>
+
+    <p>金屬與晶格層層翻起，一柄緋色的晶刃自她手臂裡長出來，刃口流著暗紅的電光，把整條死掉的夜市照亮了半邊。她一個翻身站起，把我護到身後，晶刃斜指向街尾的黑暗——動作快得不像剛醒，倒像她從沒睡過，只是一直在等這一刻。</p>
+
+    <p>我這才聽見。街尾，黑暗裡，有東西在動。金屬摩擦金屬的聲音，一下，又一下，越來越密。是失控機械群——那些在大靜默那夜失去雲端指令、退回最底層本能的自動機械，攻擊一切還會動、還發著訊號的東西。它們聞到了我們。</p>
+
+    <p><span class="line">「幾個。」她問。不是問我怕不怕，是問數量。</span></p>
+
+    <p><span class="line">「我數不出來。」我老實說。</span></p>
+
+    <p>她笑了一下。那個笑我後來會很熟悉——不是開心，是一種近乎溫柔的凶狠，像在對某個看不見的人說「這次換我」。</p>
+
+    <p class="pull">「擋在我前面的，連灰燼都不會留下。」</p>
+
+    <p>她衝出去的那一瞬間，我腦子裡忽然閃過剛才幻覺裡的那條燃燒的走廊，那個逆著人潮往火裡衝的身影。</p>
+
+    <p>她救的那個人，救出來了嗎？她自己，又是被誰，從那場火裡拖出來的？還是根本沒有人。還是她其實一直沒能走出那條走廊——她只是把那一秒，連同那把火，一起帶到了這裡，帶進了這具冰冷的義體，帶進了靜默紀第九年這座沒有聲音的夜市。</p>
+
+    <p>第一具機械撲上來的時候，主核殘塔在很遠很遠的島嶼中央，低低地、幾不可聞地，鳴了一聲。</p>
+
+    <p>沒人知道那是回音，還是回應。</p>
+
+    <p>而我知道的只有一件事：網死了九年，今夜，我替它接上了第一道訊號。</p>
+
+    <p>它的名字，叫<strong>焰刃</strong>。</p>
+  </article>
+
+  <footer class="end">
+    <div class="fin">— 第一章 完 —</div>
+    <div>矽墟 · SILICA HOLLOW　概念小說　依世界觀設定與角色立繪試寫。</div>
+    <a class="back" href="../index.html">← 回到 矽墟 SILICA HOLLOW</a>
+  </footer>
+
+  <!-- concept-work watermark -->
+  <div class="watermark" aria-label="concept credit">
+    <span class="wm-by">概念作品 CONCEPT BY</span>
+    <span class="wm-name">Harry</span>
+    <a class="wm-mail" href="mailto:harry750110@gmail.com">harry750110@gmail.com</a>
+  </div>
+
+</body>
+</html>

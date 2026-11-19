@@ -5,7 +5,8 @@ const CATEGORIES = {
   frontend: "前端實戰",
   ai: "AI 協作與工具",
   events: "活動筆記",
-  career: "職涯觀點"
+  career: "職涯觀點",
+  reviews: "好好入手"
 };
 
 export { CATEGORIES as C, GA_MEASUREMENT_ID as G, SITE_TITLE as S, SITE_DESCRIPTION as a };
