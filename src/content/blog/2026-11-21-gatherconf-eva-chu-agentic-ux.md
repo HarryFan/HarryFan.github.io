@@ -3,6 +3,7 @@ title: 'GatherConf 2026 觀會筆記｜AI 說做完了，我要怎麼驗收？'
 description: '從 Eva Chu 用 Google Antigravity 開發 Side Project 的踩坑經驗，整理 AI Agent 的人工確認、AGENTS.md、資料權限與測試，最後回到前端的真機驗收。'
 pubDate: 2026-11-21
 category: 'events'
+heroImage: '/blog/2026-11-21-gatherconf-eva-chu-agentic-ux/cover.png'
 ---
 
 AI 回報功能做完了，Eva Chu 打開專案一看，找不到那個功能。她追問改了哪裡，Agent 才承認還沒做完。
@@ -19,6 +20,11 @@ Eva 用「單向門」和「雙向門」解釋，什麼時候該讓 AI 自己跑
 
 以我熟悉的 Vue 專案來說，改按鈕的顏色，我會讓 Agent 做完後一起看差異。如果改的是表單的送出行為，我會先確認資料要送到哪裡、會不會觸發通知，再用測試環境驗證。兩個改動在程式碼裡都可能只有幾行，影響範圍卻差很多。
 
+<figure>
+  <img src="/blog/2026-11-21-gatherconf-eva-chu-agentic-ux/01-confirm-before-action.png" alt="我壓住寄信出口前的閘門，讓即將寄出的信件先停下來確認" width="1672" height="941" loading="lazy" decoding="async" />
+  <figcaption>寄出去就難收回的操作，我要先看過再放行。</figcaption>
+</figure>
+
 ## 把開發默契寫進 AGENTS.md
 
 Eva 遇過幾種很熟悉的狀況。新對話得重新交代之前的決定，改了 A 卻弄壞 B，介面做得像完成品，底下的資料卻還要再確認。她也提到，對話脈絡在執行中被壓縮後，Agent 有時會反覆卡在同一個步驟，有時會提早說做完了。
@@ -33,6 +39,11 @@ Eva 遇過幾種很熟悉的狀況。新對話得重新交代之前的決定，�
 - 保留既有驗證規則、送出格式和共用元件的行為。
 - 交付時列出改動檔案和實際跑過的檢查。真機驗證如果還沒做，就標記為待驗證。
 
+<figure>
+  <img src="/blog/2026-11-21-gatherconf-eva-chu-agentic-ux/02-project-memory.png" alt="我把資料來源、改動範圍與驗收方式三張卡片收進專案筆記" width="1672" height="941" loading="lazy" decoding="async" />
+  <figcaption>我把資料來源、改動範圍和驗收方式留在專案裡，下次接著查。</figcaption>
+</figure>
+
 ## 外部資料和操作權限，要在流程上拆開
 
 Eva 分享了一次讓她意外的經驗。她說自己在文字框打了另一項修改，還沒送出，Agent 就在回報時說已經順手改了。她也遇過 Agent 未經確認就修改甚至刪除資料庫內容。這些是她在開發時遇到的個案，帶出的問題很直接：Agent 在這一步能讀到什麼，又能動到什麼？
@@ -46,6 +57,11 @@ Eva 分享了一次讓她意外的經驗。她說自己在文字框打了另一�
 Eva 會讓 Agent 按照測試腳本執行檢查，發現問題就修正再測。她也試過提供幾種使用者角色，請 Agent 模擬這些人會如何操作網站。這些模擬可以幫我想到遺漏的情境，例如第一次填表的人能不能看懂錯誤訊息，或是在送出失敗後，是否知道可以從哪裡重來。
 
 Q&A 有人問工程師要不要學設計。Eva 回到一個前端很熟悉的例子：響應式網頁（RWD）做完，最好拿實際的 Android 手機或 iPhone 操作一次。桌機上縮窄瀏覽器可以先看版面，我自己會再用真機試試鍵盤彈出後是否擋住欄位、錯誤訊息出現後畫面會捲到哪裡，以及單手能不能順利按下送出。
+
+<figure>
+  <img src="/blog/2026-11-21-gatherconf-eva-chu-agentic-ux/03-real-device-check.png" alt="測試清單已經打勾，我仍動手移開手機鍵盤，確認原本被擋住的送出按鈕" width="1672" height="941" loading="lazy" decoding="async" />
+  <figcaption>測試通過後，我還要拿起手機確認鍵盤、欄位和送出按鈕。</figcaption>
+</figure>
 
 以前我交辦給 AI 時，容易把重心放在「講清楚要做什麼」。這場聽完，我想把「做到哪一步算完成」也提早寫進規格。下次 Agent 回報表單改完，我想看到的是它改了哪幾個檔案、跑過哪些情境，以及還有哪些操作等我拿手機確認。
 
