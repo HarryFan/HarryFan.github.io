@@ -22,8 +22,8 @@ Maple 把 AI Agent 拆成「大腦加工具」。大腦是語言模型，她用�
 
 這裡有兩個容易混在一起的功能。
 
-- **提示詞快取（Prompt Caching）**會重用符合條件的既有前綴。前段內容保持一致，就有機會減少重複處理。Maple 用這點解釋，為什麼長對話接著聊，有時比表面上看起來多耗額度。實際用量還會受快取是否命中等因素影響。[Anthropic 的提示詞快取文件](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
-- **對話壓縮（`/compact`）**會把舊對話摘要成較短的內容，騰出上下文空間。Maple 提醒，摘要有取捨。已定案的需求、例外條件和驗收方式，值得寫進專案文件，後面才有地方回查。[Claude Code 指令文件](https://code.claude.com/docs/en/commands)
+- **提示詞快取**（Prompt Caching）會重用符合條件的既有前綴。前段內容保持一致，就有機會減少重複處理。Maple 用這點解釋，為什麼長對話接著聊，有時比表面上看起來多耗額度。實際用量還會受快取是否命中等因素影響。[Anthropic 的提示詞快取文件](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+- **對話壓縮**（`/compact`）會把舊對話摘要成較短的內容，騰出上下文空間。Maple 提醒，摘要有取捨。已定案的需求、例外條件和驗收方式，值得寫進專案文件，後面才有地方回查。[Claude Code 指令文件](https://code.claude.com/docs/en/commands)
 
 她也講到，一個 Skill 可以先用 `SKILL.md` 保存操作步驟，有需要再帶入參考資料。以她的用法，有些任務可以在主對話進行，有些適合用 `context: fork` 交到獨立的上下文。譬如只是想知道登入機制，子代理可以讀一批檔案，最後回傳結論和相關路徑。主對話不用一路帶著每份檔案的中間輸出。另開一個子代理同樣有用量成本，她會看這個任務是否值得獨立做。[Claude Code Skills 文件](https://code.claude.com/docs/en/skills)
 
