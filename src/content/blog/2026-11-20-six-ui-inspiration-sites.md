@@ -26,18 +26,18 @@ draft: false
 
 | # | 網站 | 解決什麼 | 費用 | 適合時機 |
 | --- | --- | --- | --- | --- |
-| 1 | Awwwards | 看得獎網站長怎樣、用了什麼技術 | 瀏覽免費 | 提案找參考 |
-| 2 | Variant | AI 一次生好幾種版面和配色 | 免費版每月 300 次；Pro 每月 20 美元 | 早期發想 |
-| 3 | minimal.gallery | 極簡風網站收藏 | 免費 | 畫面太花、想做減法 |
-| 4 | MotionSites | 電影感首屏的 AI 提示詞 | 範例免費看；完整提示詞一次買斷 29 美元（創始價） | 想做有記憶點的首屏 |
-| 5 | Radix Colors | 12 階配色系統 | 免費、開源 | 每天寫 UI |
-| 6 | kittenjam Motion Library | 327 種網頁動效＋複製 AI 提示詞 | 免費、不用註冊 | 每天寫 UI |
+| 1 | <a href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer">Awwwards</a> | 看得獎網站長怎樣、用了什麼技術 | 瀏覽免費 | 提案找參考 |
+| 2 | <a href="https://variant.com/" target="_blank" rel="noopener noreferrer">Variant</a> | AI 一次生好幾種版面和配色 | 免費版每月 300 次；Pro 每月 20 美元 | 早期發想 |
+| 3 | <a href="https://minimal.gallery/" target="_blank" rel="noopener noreferrer">minimal.gallery</a> | 極簡風網站收藏 | 免費 | 畫面太花、想做減法 |
+| 4 | <a href="https://motionsites.ai/" target="_blank" rel="noopener noreferrer">MotionSites</a> | 電影感首屏的 AI 提示詞 | 範例免費看；完整提示詞一次買斷 29 美元（創始價） | 想做有記憶點的首屏 |
+| 5 | <a href="https://www.radix-ui.com/colors" target="_blank" rel="noopener noreferrer">Radix Colors</a> | 12 階配色系統 | 免費、開源 | 每天寫 UI |
+| 6 | <a href="https://kittenjam-motion-library.vercel.app/" target="_blank" rel="noopener noreferrer">kittenjam Motion Library</a> | 327 種網頁動效＋複製 AI 提示詞 | 免費、不用註冊 | 每天寫 UI |
 
 ---
 
 ## 1. Awwwards：看別人得獎的作品
 
-[Awwwards](https://www.awwwards.com/) 是國際網頁設計獎，每天選一個 Site of the Day。
+<a href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer">Awwwards</a> 是國際網頁設計獎，每天選一個 Site of the Day。
 
 對前端來說，它最有用的地方不是「好看」，而是可以看到那些網站用了什麼技術。Three.js、GSAP、WebGL 這類作品很多，拿來跟客戶溝通「我們想做到這種感覺」很直接。
 
@@ -45,7 +45,7 @@ draft: false
 
 ## 2. Variant：讓 AI 先幫你畫幾個方向
 
-[Variant](https://variant.com/) 是 AI 設計工具，輸入需求後一次產出好幾種版面，往下捲就一直生新的。可以打亂版面、重混配色，也可以從一個設計延伸出三種方向。
+<a href="https://variant.com/" target="_blank" rel="noopener noreferrer">Variant</a> 是 AI 設計工具，輸入需求後一次產出好幾種版面，往下捲就一直生新的。可以打亂版面、重混配色，也可以從一個設計延伸出三種方向。
 
 免費版每月 300 次快速設計，Pro 每月 20 美元。
 
@@ -53,13 +53,13 @@ draft: false
 
 ## 3. minimal.gallery：想做減法時看這裡
 
-[minimal.gallery](https://minimal.gallery/) 專門收極簡風的網站。
+<a href="https://minimal.gallery/" target="_blank" rel="noopener noreferrer">minimal.gallery</a> 專門收極簡風的網站。
 
 做後台、做 B2B 產品頁的時候，最常犯的錯就是什麼都想放。卡住的時候來這裡逛一圈，通常就知道哪些東西可以拿掉。
 
 ## 4. MotionSites：電影感首屏的提示詞庫
 
-[MotionSites](https://motionsites.ai/) 收的是 Hero Section（首屏）的動態範例，每個範例都有對應的結構化提示詞，貼到 Claude Code、Cursor 這類工具就能生出類似的首屏。
+<a href="https://motionsites.ai/" target="_blank" rel="noopener noreferrer">MotionSites</a> 收的是 Hero Section（首屏）的動態範例，每個範例都有對應的結構化提示詞，貼到 Claude Code、Cursor 這類工具就能生出類似的首屏。
 
 範例可以免費看，完整提示詞要一次買斷，創始價 29 美元（原價 199 美元）。
 
@@ -70,7 +70,7 @@ draft: false
 
 ## 5. Radix Colors：不會配色就照 12 階走
 
-[Radix Colors](https://www.radix-ui.com/colors) 是我最推薦的一個。
+<a href="https://www.radix-ui.com/colors" target="_blank" rel="noopener noreferrer">Radix Colors</a> 是我最推薦的一個。
 
 它把每個顏色切成 12 階，而且**每一階都有固定用途**：前兩階是背景、中間幾階是元件和邊框、後面是實心色和文字。淺色、深色模式都有對應版本。
 
@@ -83,7 +83,7 @@ draft: false
 
 ## 6. kittenjam Motion Library：叫不出名字的動效，在這裡都有
 
-[Motion Library](https://kittenjam-motion-library.vercel.app/) 是 UI/UX 設計師 Hannah 整理的動效庫，目前收了 327 種：CSS 194 種、GSAP 119 種、Canvas 14 種。介面是繁體中文。
+<a href="https://kittenjam-motion-library.vercel.app/" target="_blank" rel="noopener noreferrer">Motion Library</a> 是 UI/UX 設計師 Hannah 整理的動效庫，目前收了 327 種：CSS 194 種、GSAP 119 種、Canvas 14 種。介面是繁體中文。
 
 每個效果都能直接在網頁上試玩，還有一個「複製 AI 提示詞」按鈕。提示詞描述的是動作、節奏和時間長度，不含顏色，所以很容易套進自己的網站風格。
 
