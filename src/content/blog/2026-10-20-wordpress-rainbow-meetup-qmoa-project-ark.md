@@ -3,6 +3,7 @@ title: 'AI 接走的是「做」，留給人的是「判斷」：WordPress 彩�
 description: '十月 WordPress 彩虹小聚的閃電講，AI 方舟計畫創辦人捲毛（Qmoa Liu）把一個品牌需要的 15 個角色一格一格拆開：哪些全交給 AI、哪些只能交一半、哪些一定要真人。整理投影片重點，加上我自己一人接案的對照。'
 pubDate: 2026-10-20
 category: 'events'
+heroImage: '/blog/2026-10-20-wordpress-rainbow-meetup-qmoa-project-ark/cover.png'
 ---
 
 > 本文是 2026/10/19 WordPress 彩虹小聚閃電講的心得，講者是 **捲毛（Qmoa Liu）**，[AI 方舟計畫 Project Ark](https://luma.com/projectark.tw) 的創辦人。
